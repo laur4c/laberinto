@@ -4,12 +4,12 @@
 ### Cátedra Calvo FIUBA
 
 
-Integrantes:
+#### Integrantes:
 
-Santiago Montiel
-Lucas Dreko
-Mariano Cinalli
-Ezequiel Guitler
-Laura Corvalán
+* Mariano Cinalli  
+* Lucas Dreko  
+* Santiago Montiel  
+* Ezequiel Guitler  
+* Laura Corvalán  
 
 
