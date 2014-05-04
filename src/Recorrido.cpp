@@ -1,4 +1,5 @@
-#include "recorrido.h"
+#include "Recorrido.h"
+#include <iostream>
 
 using namespace std;
 
@@ -12,7 +13,7 @@ bool Recorrido::estaVacia() {
    return this->frente == NULL;
 }
 
-void Recorrido::acolar(char orientacion, int pasos, bool objeto = false, string bifurcacion = "", string empalme = "") {
+void Recorrido::acolar(char orientacion, int pasos, bool objeto, string bifurcacion, string empalme) {
    Casillero * ultimo = new Casillero(orientacion, pasos, objeto);
    ultimo->cambiarBifurcacion(bifurcacion);
    ultimo->cambiarEmpalme(empalme);
@@ -32,3 +33,4 @@ void Recorrido::desacolar() {
 Casillero * Recorrido::obtenerFrente() {
    return this->frente;
 }
+

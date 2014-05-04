@@ -7,8 +7,8 @@
 #ifndef _RECORRIDO_H_
 #define _RECORRIDO_H_
 
-#include "color.h"
-#include "casillero.h"
+#include "Color.h"
+#include "Casillero.h"
 #include <string>
 
 class Recorrido {
@@ -17,7 +17,7 @@ class Recorrido {
 
       bool estaVacia();
 
-      void acolar(char orientacion, int pasos, bool objeto, std::string bifurcacion, std::string empalme);
+      void acolar(char orientacion, int pasos, bool objeto = false, std::string bifurcacion = "", std::string empalme = "");
 
       void desacolar();
 

@@ -1,4 +1,4 @@
-#include "color.h"
+#include "Color.h"
 
 Color::Color(int rojo, int verde, int azul) {
    this->rojo = rojo;

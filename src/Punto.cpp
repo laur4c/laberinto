@@ -1,4 +1,4 @@
-#include "punto.h"
+#include "Punto.h"
 
 Punto::Punto(int x, int y) {
    this->x = x;

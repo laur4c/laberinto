@@ -1,26 +1,26 @@
-#include "lista_comandos.h"
+#include "ListaComandos.h"
 #include <iostream>
 
 using namespace std;
 
 ListaComandos::ListaComandos() {
-   this->primero = NULL;
-   this->ultimo = NULL;
+   this->frente = NULL;
+   this->fondo = NULL;
    this->tamanio = 0;
 }
 
-void ListaComandos::insertar(std::string nombreComando, std::string argumento) {
+void ListaComandos::acolar(std::string nombreComando, std::string argumento) {
    Comando * comando = new Comando(nombreComando, argumento);
-   if(this->primero == NULL) {
-      this->primero = comando;
+   if(this->frente == NULL) {
+      this->frente = comando;
    } else {
-      this->ultimo->cambiarSiguiente(comando);
+      this->fondo->cambiarSiguiente(comando);
    }
    this->tamanio++;
-   this->ultimo = comando;
+   this->fondo = comando;
 }
 
-void ListaComandos::eliminar() {
+void ListaComandos::desacolar() {
    // falta implementar
 }
 
@@ -32,8 +32,12 @@ int ListaComandos::obtenerTamanio() {
    return this->tamanio;
 }
 
+Comando * ListaComandos::obtenerFrente() {
+   return this->frente;
+}
+
 void ListaComandos::mostrar() {
-   Comando * ultimoComando = this->primero;
+   Comando * ultimoComando = this->frente;
    for (unsigned int i = 0; i < this->tamanio; i++) {
       cout << "nombre comando: " << ultimoComando->obtenerNombre();
       cout << ", argumento: " << ultimoComando->obtenerArgumento() << endl;
@@ -44,6 +48,6 @@ void ListaComandos::mostrar() {
 
 ListaComandos::~ListaComandos() {
    while(this->tamanio < 0) {
-      this->eliminar();
+      this->desacolar();
    }
 }

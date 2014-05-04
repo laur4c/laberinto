@@ -1,4 +1,4 @@
-#include "casillero.h"
+#include "Casillero.h"
 
 #include <sstream>
 using namespace std;
@@ -42,25 +42,18 @@ void Casillero::cambiarEmpalme(std::string nombre) {
    this->empalme = nombre;
 }
 
-bool Casillero::hayObjeto() {
-   return this->objeto == true;
+char Casillero::obtenerOrientacion() {
+   return this->orientacion;
 }
 
-std::string Casillero::aString() {
-   stringstream str;
+Punto * Casillero::obtenerPunto() {
+   return this->punto;
+}
 
-   stringstream x;
-   x << this->punto->obtenerX();
-   stringstream y;
-   y << this->punto->obtenerY();
+int Casillero::obtenerCantidadDePasos() {
+   return this->cantidadDePasos;
+}
 
-   str << "orientacion: " + this->orientacion;
-   str << " (x, y): " + x.str() + ", " + y.str();
-   if (this->bifurcacion != "")
-     str << " bifurcacion: " + this->bifurcacion;
-
-   if (this->empalme != "")
-     str << " empalme: " + this->empalme;
-
-   return str.str();
+bool Casillero::hayObjeto() {
+   return this->objeto == true;
 }

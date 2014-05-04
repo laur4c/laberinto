@@ -7,7 +7,7 @@
 #ifndef _CASILLERO_H_
 #define _CASILLERO_H_
 
-#include "punto.h"
+#include "Punto.h"
 #include <string>
 
 class Casillero {
@@ -15,8 +15,6 @@ class Casillero {
       Casillero(char orientacion, int cantidadDePasos, bool hayObjeto);
 
       void cambiarXY(int x, int y);
-
-      std::string aString();
 
       Casillero * obtenerSiguiente();
 
@@ -29,6 +27,12 @@ class Casillero {
       std::string obtenerEmpalme();
 
       void cambiarEmpalme(std::string nombre);
+
+      char obtenerOrientacion();
+
+      int obtenerCantidadDePasos();
+
+      Punto * obtenerPunto();
 
       bool hayObjeto();
 

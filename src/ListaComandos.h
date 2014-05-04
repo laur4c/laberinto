@@ -7,15 +7,15 @@
 #ifndef _LISTA_COMANDOS_H_
 #define _LISTA_COMANDOS_H_
 #include <string>
-#include "comando.h"
+#include "Comando.h"
 
 class ListaComandos {
    public:
       ListaComandos();
 
-      void insertar(std::string nombreComando, std::string argumento);
+      void acolar(std::string nombreComando, std::string argumento);
 
-      void eliminar();
+      void desacolar();
 
       bool estaVacia();
 
@@ -23,13 +23,15 @@ class ListaComandos {
 
       void mostrar();
 
+      Comando * obtenerFrente();
+
       ~ListaComandos();
 
    private:
 
-      Comando * primero;
+      Comando * frente;
 
-      Comando * ultimo;
+      Comando * fondo;
 
       int tamanio;
 

@@ -1,4 +1,4 @@
-#include "comando.h"
+#include "Comando.h"
 
 using namespace std;
 
