@@ -48,8 +48,7 @@ class Laberinto {
       ListaRecorridos * recorridos;
 
       /**
-       * Setea las coordenadas (X, Y) de los casilleros de
-       * todos los recorridos del laberinto.
+       * Setea las coordenadas (X, Y) de los casilleros de un recorrido del laberinto
        * Siempre empezando en el punto (0, 0) dentro del eje de coordenadas
        */
       void definirCoordenadas(Recorrido * recorrido);
