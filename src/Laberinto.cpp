@@ -98,6 +98,11 @@ void Laberinto::definirCoordenadas(Recorrido * recorrido) {
          default:
             0;
       }
+
+      if (casillero->obtenerBifurcacion() != "") {
+         recorrido->obtenerBifurcaciones()->acolar(casillero->obtenerBifurcacion(), x, y);
+      }
+
       casillero->cambiarXY(x, y);
       casillero = casillero->obtenerSiguiente();
    }
@@ -114,6 +119,3 @@ void Laberinto::agregarElementoAMochila(std::string elemento) {
       this->mochila->agregar_elemento(elemento);
    }
 }
-
-
-

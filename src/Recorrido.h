@@ -43,6 +43,13 @@ class Recorrido {
        */
       Casillero * obtenerFrente();
 
+      /**
+       * Retorna lista de bifurcaciones
+       */
+      ListaBifurcaciones * obtenerBifurcaciones();
+
+      ~Recorrido();
+
    private:
 
       /**

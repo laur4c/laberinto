@@ -36,7 +36,17 @@ int main(int argc, char *argv[]) {
    while(nodoRecorrido != NULL) {
       Recorrido * recorrido = nodoRecorrido->obtenerRecorrido();
       Casillero * casillero = recorrido->obtenerFrente();
+      Bifurcacion * bifurcacion = recorrido->obtenerBifurcaciones()->obtenerFrente();
+
       cout << endl << "***** Nuevo Recorrido! ******" << endl;
+
+      cout << endl << "Bifurcaciones: " << endl << endl;
+      while(bifurcacion != NULL) {
+         cout << "Nombre: " << bifurcacion->obtenerNombre() << endl;
+         bifurcacion = bifurcacion->obtenerSiguiente();
+      }
+      cout << "-------------------------------------------" << endl;
+      cout << "Casilleros: " << endl;
 
       while(casillero != NULL) {
          cout << "Orientacion: " << casillero->obtenerOrientacion() << endl;

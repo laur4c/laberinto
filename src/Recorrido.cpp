@@ -7,6 +7,12 @@ Recorrido::Recorrido(Color * color) {
    this->color = color;
    this->frente = NULL;
    this->fondo = NULL;
+
+   this->bifurcaciones = new ListaBifurcaciones();
+}
+
+ListaBifurcaciones * Recorrido::obtenerBifurcaciones() {
+   return this->bifurcaciones;
 }
 
 bool Recorrido::estaVacia() {
@@ -34,3 +40,6 @@ Casillero * Recorrido::obtenerFrente() {
    return this->frente;
 }
 
+Recorrido::~Recorrido() {
+   delete this->bifurcaciones;
+}
