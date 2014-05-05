@@ -9,6 +9,8 @@
 
 #include "Color.h"
 #include "Casillero.h"
+#include "ListaBifurcaciones.h"
+
 #include <string>
 
 class Recorrido {
@@ -58,6 +60,11 @@ class Recorrido {
        * Puntero al ultimo elemento de la lista
        */
       Casillero * fondo;
+
+      /**
+       * Lista de bifurcaciones encontradas en el recorrido
+       */
+      ListaBifurcaciones * bifurcaciones;
 
       int ancho;
 

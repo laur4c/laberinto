@@ -3,6 +3,7 @@
 Mochila::Mochila () {
 	this -> primernodo = NULL;
 	this -> ultimonodo = NULL;
+	this->tamanio = 0;
 };
 
 bool Mochila::esta_vacia() {
@@ -11,11 +12,15 @@ bool Mochila::esta_vacia() {
 
 bool Mochila::existe_elemento (string elem_buscado) {
 	NodoMochila* seeker = this -> primernodo;
+	if (seeker == NULL) {
+		return false;
+	}
+
 	while ((seeker->siguiente != NULL) && (seeker->elemento != elem_buscado)) {
 		seeker = seeker->siguiente;
-	};
+	}
+
 	this -> encontrado = seeker;
-	
 	return (seeker -> elemento == elem_buscado);
 }
 
@@ -25,7 +30,7 @@ void Mochila::agregar_elemento(string elemento) {
 		this -> primernodo = nuevo;
 	}
 	else {
-		this -> ultimonodo -> siguiente = nuevo;		
+		this -> ultimonodo -> siguiente = nuevo;
 	}
 	this -> ultimonodo = nuevo;
 	this -> tamanio++;
@@ -42,7 +47,7 @@ void Mochila::tirar_elemento(string elem_buscado) {
 		anterior = seeker;
 		seeker = seeker->siguiente;
 	};
-	/* No valido el supuesto caso que el elemento no se encuentre ya que suponemos que se 
+	/* No valido el supuesto caso que el elemento no se encuentre ya que suponemos que se
 	usará correctamente en situaciones validas, es decir cuando haya al menos 1 elemento */
 	if (seeker->cantidad == 1) {
 		if (anterior != NULL) {

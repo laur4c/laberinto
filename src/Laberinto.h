@@ -10,6 +10,7 @@
 #include "util.h"
 #include "ListaRecorridos.h"
 #include "ListaComandos.h"
+#include "Mochila.h"
 
 class Laberinto {
    public:
@@ -29,7 +30,17 @@ class Laberinto {
        */
       ListaRecorridos * obtenerRecorridos();
 
+      /**
+       * Retorna instancia clase Mochila con todos los elementos encontrados en el camino
+       */
+      Mochila * obtenerMochila();
+
    private:
+
+      /**
+       * Lista con elementos levantados en el camino
+       */
+      Mochila * mochila;
 
       /**
        * Lista de recorridos
@@ -42,6 +53,11 @@ class Laberinto {
        * Siempre empezando en el punto (0, 0) dentro del eje de coordenadas
        */
       void definirCoordenadas(Recorrido * recorrido);
+
+      /**
+       * Agrega un elemento a la mochila
+       */
+      void agregarElementoAMochila(std::string elemento);
 };
 
 #endif
