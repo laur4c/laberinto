@@ -1,5 +1,6 @@
 #include "util.h"
 #include <stdlib.h>
+#include <sstream>
 
 using namespace std;
 
@@ -20,6 +21,18 @@ namespace util {
       azul = string_a_int(color.substr(pos2 + 1));
 
       return new Color(rojo, verde, azul);
+   }
+
+   std::string int_a_string(int i) {
+      std::stringstream ss;
+      ss << i;
+      return ss.str();
+   }
+
+   std::string char_a_string(char i) {
+      std::stringstream ss;
+      ss << i;
+      return ss.str();
    }
 
 }

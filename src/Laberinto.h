@@ -8,9 +8,13 @@
 #define _LABERINTO_H_
 
 #include "util.h"
-#include "ListaRecorridos.h"
-#include "ListaComandos.h"
+
 #include "Mochila.h"
+#include "Comando.h"
+#include "Recorrido.h"
+
+#include "ListaEnlazada.h"
+#include "Cola.h"
 
 class Laberinto {
    public:
@@ -23,12 +27,12 @@ class Laberinto {
        * A partir de una lista de comandos, popula la lista de recorridos
        * Ver ListaRecorridos.h, Recorrido.h
        */
-      void generarRecorridosDesdeListaDeComandos(ListaComandos * comandos);
+      void generarRecorridosDesdeListaDeComandos(Cola<Comando> * comandos);
 
       /**
        * Retorna lista de recorridos
        */
-      ListaRecorridos * obtenerRecorridos();
+      ListaEnlazada<Recorrido> * obtenerRecorridos();
 
       /**
        * Retorna instancia clase Mochila con todos los elementos encontrados en el camino
@@ -45,7 +49,7 @@ class Laberinto {
       /**
        * Lista de recorridos
        */
-      ListaRecorridos * recorridos;
+      ListaEnlazada<Recorrido> * recorridos;
 
       /**
        * Setea las coordenadas (X, Y) de los casilleros de un recorrido del laberinto

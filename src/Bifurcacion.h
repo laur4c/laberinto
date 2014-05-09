@@ -17,16 +17,6 @@ class Bifurcacion {
       Bifurcacion(std::string nombre, int x, int y);
 
       /**
-       * Retorna puntero al nodo siguiente
-       */
-      Bifurcacion * obtenerSiguiente();
-
-      /**
-       * Cambia el puntero al nodo siguiente
-       */
-      void cambiarSiguiente(Bifurcacion * bifurcacion);
-
-      /**
        * Retorna el dato del nodo, en este caso el nombre de la bifurcacion
        */
       std::string obtenerNombre();
@@ -35,6 +25,8 @@ class Bifurcacion {
        * Retorna una instancia de la clase Punto
        */
       Punto * obtenerPunto();
+
+      std::string aString();
    private:
       /**
        * Nombre de la bifurcacion
@@ -46,11 +38,6 @@ class Bifurcacion {
        * Coordenadas X, Y de la bifurcacion dentro del eje de coordenadas
        */
       Punto * punto;
-
-      /**
-       * Puntero al nodo siguiente
-       */
-      Bifurcacion * siguiente;
 };
 
 #endif

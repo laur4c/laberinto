@@ -1,5 +1,5 @@
 #include "Casillero.h"
-
+#include "util.h"
 #include <sstream>
 using namespace std;
 
@@ -9,21 +9,11 @@ Casillero::Casillero(char orientacion, int cantidadDePasos, bool objeto) {
    this->bifurcacion = "";
    this->empalme = "";
    this->objeto = objeto;
-
-   this->siguiente = NULL;
    this->punto = new Punto(0, 0);
 }
 
- void Casillero::cambiarXY(int x, int y) {
-   this->punto->cambiarXY(x, y);
- }
-
-Casillero * Casillero::obtenerSiguiente() {
-   return this->siguiente;
-}
-
-void Casillero::cambiarSiguiente(Casillero * casillero) {
-   this->siguiente = casillero;
+void Casillero::cambiarXY(int x, int y) {
+this->punto->cambiarXY(x, y);
 }
 
 std::string Casillero::obtenerBifurcacion() {
@@ -57,3 +47,14 @@ int Casillero::obtenerCantidadDePasos() {
 bool Casillero::hayObjeto() {
    return this->objeto == true;
 }
+
+std::string Casillero::aString() {
+   string str = "";
+   str += "Orientacion: " + util::char_a_string(this->orientacion) + " \n";
+   str += "Pasos: " + util::int_a_string(this->cantidadDePasos) + " \n";
+   str += "Bifurcacion: " + this->bifurcacion + " \n";
+   str += "Empalme: " + this->empalme + " \n";
+   str += "Punto: " + this->punto->aString() + " \n";
+   return str;
+}
+

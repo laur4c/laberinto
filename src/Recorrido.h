@@ -7,9 +7,10 @@
 #ifndef _RECORRIDO_H_
 #define _RECORRIDO_H_
 
+#include "ListaEnlazada.h"
 #include "Color.h"
 #include "Casillero.h"
-#include "ListaBifurcaciones.h"
+#include "Bifurcacion.h"
 
 #include <string>
 
@@ -20,33 +21,20 @@ class Recorrido {
        */
       Recorrido(Color * color);
 
-      /**
-       * Retorna true si la lista esta vacia, false en caso contrario
-       */
-      bool estaVacia();
+      void agregarCasillero(char orientacion, int pasos, bool tieneObjeto, std::string bifurcacion, std::string empalme);
 
-      /**
-       * Agrega un elemento al final de la lista
-       */
-      void acolar(char orientacion, int pasos, bool objeto = false, std::string bifurcacion = "", std::string empalme = "");
-
-      /**
-       * Remueve un elemento del principio de la lista
-       * @TODO
-       * Falta implementar.
-       * Que se retorna cuando el nodo no tiene solo un dato, sino varios?
-       */
-      void desacolar();
-
-      /**
-       * Retorna puntero a primer elemento de la lista
-       */
-      Casillero * obtenerFrente();
+      void agregarBifurcacion(std::string nombre, int x, int y);
 
       /**
        * Retorna lista de bifurcaciones
        */
-      ListaBifurcaciones * obtenerBifurcaciones();
+      ListaEnlazada<Bifurcacion> * obtenerBifurcaciones();
+
+      ListaEnlazada<Casillero> * obtenerCamino();
+
+      std::string aString();
+
+      void mostrar();
 
       ~Recorrido();
 
@@ -59,19 +47,11 @@ class Recorrido {
       Color * color;
 
       /**
-       * Puntero al primer elemento de la lista
-       */
-      Casillero * frente;
-
-      /**
-       * Puntero al ultimo elemento de la lista
-       */
-      Casillero * fondo;
-
-      /**
        * Lista de bifurcaciones encontradas en el recorrido
        */
-      ListaBifurcaciones * bifurcaciones;
+      ListaEnlazada<Bifurcacion> * bifurcaciones;
+
+      ListaEnlazada<Casillero> * camino;
 
       int ancho;
 

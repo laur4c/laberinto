@@ -7,11 +7,13 @@ using namespace std;
 
 Parser::Parser(string nombreArchivo) {
    this->nombreArchivo = nombreArchivo;
-   this->listaComandos = new ListaComandos();
+   this->listaComandos = new Cola<Comando>();
 }
 
 void Parser::iniciar() {
    ifstream fs (this->nombreArchivo.c_str());
+   Comando * cmd;
+
    if (fs.is_open()) {
       int pos;
       string nombreComando;
@@ -33,7 +35,8 @@ void Parser::iniciar() {
             nombreComando = linea.substr(0, pos);
             argumento = linea.substr(pos + 1);
          }
-         this->listaComandos->acolar(nombreComando, argumento);
+         cmd = new Comando(nombreComando, argumento);
+         this->listaComandos->acolar(cmd);
       }
       fs.close();
    } else {
@@ -41,6 +44,6 @@ void Parser::iniciar() {
    }
 }
 
-ListaComandos * Parser::obtenerLista() {
+Cola<Comando> * Parser::obtenerLista() {
    return this->listaComandos;
 }

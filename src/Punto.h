@@ -7,6 +7,8 @@
 #ifndef _PUNTO_H_
 #define _PUNTO_H_
 
+#include <iostream>
+
 class Punto {
    public:
       Punto(int x, int y);
@@ -16,6 +18,8 @@ class Punto {
       int obtenerY();
 
       void cambiarXY(int x, int y);
+
+      std::string aString();
 
    private:
       int x;

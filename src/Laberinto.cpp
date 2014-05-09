@@ -1,87 +1,116 @@
 #include "Laberinto.h"
+#include "Recorrido.h"
 
 #include <iostream>
 
 using namespace std;
 
 Laberinto::Laberinto() {
-   this->recorridos = new ListaRecorridos();
+   this->recorridos = new ListaEnlazada<Recorrido>();
    this->mochila = new Mochila();
 }
 
-ListaRecorridos * Laberinto::obtenerRecorridos() {
+ListaEnlazada<Recorrido> * Laberinto::obtenerRecorridos() {
    return this->recorridos;
 }
 
-void Laberinto::generarRecorridosDesdeListaDeComandos(ListaComandos * comandos) {
-   Comando * comando = comandos->obtenerFrente();
-   Recorrido * recorrido;
-   char ultimaOrientacion;
-   char orientacion;
-
+void Laberinto::generarRecorridosDesdeListaDeComandos(Cola<Comando> * comandos) {
    int pos = 0;
+   int ubicacion = 1;
+   char ultimaOrientacion = 'X'; // por default
+
+   Recorrido * recorrido;
+   Comando * comando;
+
+   char orientacion;
+   string bifurcacion;
+   string empalme;
+   int pasos;
+   bool tieneObjeto;
+
    string nombreComando;
    string argumento;
-   string bifurcacion;
 
-   while (comando != NULL) {
+   while (!comandos->estaVacia()) {
+      comando = comandos->desacolar();
+
       nombreComando = comando->obtenerNombre();
       argumento = comando->obtenerArgumento();
+
+      orientacion = ultimaOrientacion;
+      bifurcacion = "";
+      empalme = "";
+      pasos = 0;
+      tieneObjeto = false;
 
       if(nombreComando == "PP") {
          recorrido = new Recorrido(util::string_a_color(argumento));
 
-      } else if(nombreComando == "G") {
+      } else if(nombreComando == "PLL") {
+         this->recorridos->agregar(recorrido, ubicacion);
+         ++ubicacion;
+
+      } else if (nombreComando == "G") {
          ultimaOrientacion = argumento.c_str()[0];
 
-      } else if(nombreComando == "A") {
-         recorrido->acolar(ultimaOrientacion, util::string_a_int(argumento));
-
-      } else if(nombreComando == "R") {
-         recorrido->acolar(ultimaOrientacion, util::string_a_int(argumento) * -1 );
-
-      } else if(nombreComando == "B") {
-         pos = argumento.find(" ", 0);
-         orientacion = argumento.substr(0, pos).c_str()[0];
-         bifurcacion = argumento.substr(pos + 1);
-
-         recorrido->acolar(orientacion, 0, false, bifurcacion);
-
-      } else if (nombreComando == "U") {
-         recorrido->acolar(ultimaOrientacion, 1, false, "", argumento);
-
-      } else if (nombreComando == "L") {
-         this->agregarElementoAMochila(argumento);
-
-      } else if (nombreComando == "T") {
-         recorrido->acolar(ultimaOrientacion, 0, true);
-         this->mochila->tirar_elemento(argumento);
-
-      } else if (nombreComando == "PLL") {
-         this->recorridos->acolar(recorrido);
-
       } else {
-         cout << "ERR: Comando Invalido" << endl;
+
+         if(nombreComando == "A") {
+            orientacion = ultimaOrientacion;
+            pasos = util::string_a_int(argumento);
+
+         } else if(nombreComando == "R") {
+            orientacion = ultimaOrientacion;
+            pasos = util::string_a_int(argumento) * -1;
+
+         } else if(nombreComando == "B") {
+            pos = argumento.find(" ", 0);
+            orientacion = argumento.substr(0, pos).c_str()[0];
+            bifurcacion = argumento.substr(pos + 1);
+
+         } else if (nombreComando == "U") {
+            orientacion = ultimaOrientacion;
+            empalme = argumento;
+            pasos = 1;
+
+         } else if (nombreComando == "L") {
+            this->agregarElementoAMochila(argumento);
+
+         } else if (nombreComando == "T") {
+            orientacion = ultimaOrientacion;
+            tieneObjeto = true;
+            this->mochila->tirar_elemento(argumento);
+
+         } else {
+            // @TODO: usar una exception!
+            cout << "ERR: Comando Invalido" << endl;
+            return;
+         }
+
+         recorrido->agregarCasillero(orientacion, pasos, tieneObjeto, bifurcacion, empalme);
       }
-
-      comando = comando->obtenerSiguiente();
    }
 
-   NodoRecorrido * nodoRecorrido = this->recorridos->obtenerFrente();
-   while(nodoRecorrido != NULL) {
-      this->definirCoordenadas(nodoRecorrido->obtenerRecorrido());
-      nodoRecorrido = nodoRecorrido->obtenerSiguiente();
+   Recorrido * item;
+   int tamanio = this->recorridos->obtenerTamanio();
+   for (int i = 1; i <= tamanio; i++) {
+      item = this->recorridos->obtenerElemento(i);
+      this->definirCoordenadas(item);
    }
-
 }
 
 void Laberinto::definirCoordenadas(Recorrido * recorrido) {
    int x = 0;
    int y = 0;
-   Casillero * casillero = recorrido->obtenerFrente();
+   int pasos;
+   Casillero * casillero;
+   Bifurcacion * bifurcacion;
 
-   while(casillero != NULL) {
-      int pasos = casillero->obtenerCantidadDePasos();
+   int tamanio = recorrido->obtenerCamino()->obtenerTamanio();
+   for (unsigned int i = 1; i <= tamanio; i++) {
+      casillero = recorrido->obtenerCamino()->obtenerElemento(i);
+      pasos = casillero->obtenerCantidadDePasos();
+
       switch(casillero->obtenerOrientacion()) {
          case 'N':
            y = y + pasos;
@@ -100,11 +129,10 @@ void Laberinto::definirCoordenadas(Recorrido * recorrido) {
       }
 
       if (casillero->obtenerBifurcacion() != "") {
-         recorrido->obtenerBifurcaciones()->acolar(casillero->obtenerBifurcacion(), x, y);
+         recorrido->agregarBifurcacion(casillero->obtenerBifurcacion(), x, y);
       }
 
       casillero->cambiarXY(x, y);
-      casillero = casillero->obtenerSiguiente();
    }
 }
 

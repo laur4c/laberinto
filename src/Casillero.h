@@ -24,16 +24,6 @@ class Casillero {
       void cambiarXY(int x, int y);
 
       /**
-       * Retorna casillero siguiente
-       */
-      Casillero * obtenerSiguiente();
-
-      /**
-       * Modifica el casillero siguiente
-       */
-      void cambiarSiguiente(Casillero * casillero);
-
-      /**
        * Retorna nombre bifurcacion
        */
       std::string obtenerBifurcacion();
@@ -75,6 +65,8 @@ class Casillero {
        */
       bool hayObjeto();
 
+      std::string aString();
+
    private:
       /**
        * Orientacion. Valores posibles: N, S, E, O
@@ -108,10 +100,6 @@ class Casillero {
        */
       Punto * punto;
 
-      /**
-       * Puntero al siguiente casillero
-       */
-      Casillero * siguiente;
 };
 
 #endif

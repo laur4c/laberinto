@@ -5,7 +5,6 @@ using namespace std;
 Comando::Comando(string nombre, string argumento) {
    this->nombre = nombre;
    this->argumento = argumento;
-   this->siguiente = NULL;
 }
 
 string Comando::obtenerNombre() {
@@ -16,10 +15,6 @@ std::string Comando::obtenerArgumento() {
    return this->argumento;
 }
 
-Comando * Comando::obtenerSiguiente() {
-   return this->siguiente;
-}
-
-void Comando::cambiarSiguiente(Comando * comando) {
-   this->siguiente = comando;
+std::string Comando::aString() {
+   return "Nombre: " + this->nombre + " Argumento: " + this->argumento;
 }
