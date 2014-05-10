@@ -4,8 +4,8 @@
    @author Mariano Cinalli, Ezequiel Guitler, Santiago Montiel, Lucas Dreko, Laura Corvalan
 */
 
-#ifndef _RECORRIDO_H_
-#define _RECORRIDO_H_
+#ifndef _CAMINO_H_
+#define _CAMINO_H_
 
 #include "ListaEnlazada.h"
 #include "Color.h"
@@ -14,13 +14,16 @@
 
 #include <string>
 
-class Recorrido {
+class Camino {
    public:
       /**
        * Constructor
        */
-      Recorrido(Color * color);
+      Camino(Color * color);
 
+      /**
+       * Agrega un elemento al recorrido ListaEnlazada<Casillero>
+       */
       void agregarCasillero(char orientacion, int pasos, bool tieneObjeto, std::string bifurcacion, std::string empalme);
 
       void agregarBifurcacion(std::string nombre, int x, int y);
@@ -30,13 +33,16 @@ class Recorrido {
        */
       ListaEnlazada<Bifurcacion> * obtenerBifurcaciones();
 
-      ListaEnlazada<Casillero> * obtenerCamino();
+      /**
+       * Retorna lista de casilleros
+       */
+      ListaEnlazada<Casillero> * obtenerRecorrido();
 
       std::string aString();
 
       void mostrar();
 
-      ~Recorrido();
+      ~Camino();
 
    private:
 
@@ -51,7 +57,7 @@ class Recorrido {
        */
       ListaEnlazada<Bifurcacion> * bifurcaciones;
 
-      ListaEnlazada<Casillero> * camino;
+      ListaEnlazada<Casillero> * recorrido;
 
       int ancho;
 

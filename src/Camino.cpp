@@ -1,56 +1,56 @@
-#include "Recorrido.h"
+#include "Camino.h"
 #include <iostream>
 
 using namespace std;
 
-Recorrido::Recorrido(Color * color) {
+Camino::Camino(Color * color) {
    this->color = color;
-   this->camino = new ListaEnlazada<Casillero>();
+   this->recorrido = new ListaEnlazada<Casillero>();
    this->bifurcaciones = new ListaEnlazada<Bifurcacion>();
 }
 
-ListaEnlazada<Bifurcacion> * Recorrido::obtenerBifurcaciones() {
+ListaEnlazada<Bifurcacion> * Camino::obtenerBifurcaciones() {
    return this->bifurcaciones;
 }
 
-ListaEnlazada<Casillero> * Recorrido::obtenerCamino() {
-   return this->camino;
+ListaEnlazada<Casillero> * Camino::obtenerRecorrido() {
+   return this->recorrido;
 }
 
-void Recorrido::agregarCasillero(char orientacion, int pasos, bool tieneObjeto, string bifurcacion, string empalme) {
+void Camino::agregarCasillero(char orientacion, int pasos, bool tieneObjeto, string bifurcacion, string empalme) {
    Casillero * casillero = new Casillero(orientacion, pasos, tieneObjeto);
    casillero->cambiarBifurcacion(bifurcacion);
    casillero->cambiarEmpalme(empalme);
-   this->camino->agregar(casillero, this->camino->obtenerTamanio() + 1);
+   this->recorrido->agregar(casillero, this->recorrido->obtenerTamanio() + 1);
 }
 
-void Recorrido::agregarBifurcacion(string nombre, int x, int y) {
+void Camino::agregarBifurcacion(string nombre, int x, int y) {
    Bifurcacion * bifurcacion = new Bifurcacion(nombre, x, y);
    this->bifurcaciones->agregar(bifurcacion, this->bifurcaciones->obtenerTamanio() + 1);
 }
 
-Recorrido::~Recorrido() {
+Camino::~Camino() {
    delete this->bifurcaciones;
-   delete this->camino;
+   delete this->recorrido;
 }
 
-void Recorrido::mostrar() {
+void Camino::mostrar() {
    cout << "Camino: " << endl;
-   this->camino->mostrar();
+   this->recorrido->mostrar();
 
    cout << "Bifurcaciones: " << endl;
    this->bifurcaciones->mostrar();
 }
 
-std::string Recorrido::aString() {
-   string str = "\nRecorrido: ";
+std::string Camino::aString() {
+   string str = "\nCamino: ";
    str += "-------------------------------\n\n";
 
    Casillero * casillero;
    str += "Casilleros: \n\n";
-   int tamanio = this->camino->obtenerTamanio();
+   int tamanio = this->recorrido->obtenerTamanio();
    for (unsigned int i = 1; i <= tamanio; i++) {
-      casillero = this->camino->obtenerElemento(i);
+      casillero = this->recorrido->obtenerElemento(i);
       str += casillero->aString() + "\n";
    }
 

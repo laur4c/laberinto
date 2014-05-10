@@ -18,14 +18,14 @@ int main(int argc, char *argv[]) {
    listaComandos->mostrar();
 
    Laberinto laberinto;
-   laberinto.generarRecorridosDesdeListaDeComandos(listaComandos);
+   laberinto.crearCaminosDesdeListaDeComandos(listaComandos);
 
    Mochila * mochila = laberinto.obtenerMochila();
    cout << "Mochila: " << endl;
    mochila->mostrar();
 
-   ListaEnlazada<Recorrido> * recorridos = laberinto.obtenerRecorridos();
-   recorridos->mostrar();
+   ListaEnlazada<Camino> * caminos = laberinto.obtenerCaminos();
+   caminos->mostrar();
 
    return 0;
 }

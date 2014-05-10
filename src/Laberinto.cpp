@@ -1,25 +1,25 @@
 #include "Laberinto.h"
-#include "Recorrido.h"
+#include "Camino.h"
 
 #include <iostream>
 
 using namespace std;
 
 Laberinto::Laberinto() {
-   this->recorridos = new ListaEnlazada<Recorrido>();
+   this->caminos = new ListaEnlazada<Camino>();
    this->mochila = new Mochila();
 }
 
-ListaEnlazada<Recorrido> * Laberinto::obtenerRecorridos() {
-   return this->recorridos;
+ListaEnlazada<Camino> * Laberinto::obtenerCaminos() {
+   return this->caminos;
 }
 
-void Laberinto::generarRecorridosDesdeListaDeComandos(Cola<Comando> * comandos) {
+void Laberinto::crearCaminosDesdeListaDeComandos(Cola<Comando> * comandos) {
    int pos = 0;
    int ubicacion = 1;
    char ultimaOrientacion = 'X'; // por default
 
-   Recorrido * recorrido;
+   Camino * camino;
    Comando * comando;
 
    char orientacion;
@@ -44,10 +44,10 @@ void Laberinto::generarRecorridosDesdeListaDeComandos(Cola<Comando> * comandos) 
       tieneObjeto = false;
 
       if(nombreComando == "PP") {
-         recorrido = new Recorrido(util::string_a_color(argumento));
+         camino = new Camino(util::string_a_color(argumento));
 
       } else if(nombreComando == "PLL") {
-         this->recorridos->agregar(recorrido, ubicacion);
+         this->caminos->agregar(camino, ubicacion);
          ++ubicacion;
 
       } else if (nombreComando == "G") {
@@ -87,28 +87,28 @@ void Laberinto::generarRecorridosDesdeListaDeComandos(Cola<Comando> * comandos) 
             return;
          }
 
-         recorrido->agregarCasillero(orientacion, pasos, tieneObjeto, bifurcacion, empalme);
+         camino->agregarCasillero(orientacion, pasos, tieneObjeto, bifurcacion, empalme);
       }
    }
 
-   Recorrido * item;
-   int tamanio = this->recorridos->obtenerTamanio();
+   Camino * item;
+   int tamanio = this->caminos->obtenerTamanio();
    for (int i = 1; i <= tamanio; i++) {
-      item = this->recorridos->obtenerElemento(i);
+      item = this->caminos->obtenerElemento(i);
       this->definirCoordenadas(item);
    }
 }
 
-void Laberinto::definirCoordenadas(Recorrido * recorrido) {
+void Laberinto::definirCoordenadas(Camino * camino) {
    int x = 0;
    int y = 0;
    int pasos;
    Casillero * casillero;
    Bifurcacion * bifurcacion;
 
-   int tamanio = recorrido->obtenerCamino()->obtenerTamanio();
+   int tamanio = camino->obtenerRecorrido()->obtenerTamanio();
    for (unsigned int i = 1; i <= tamanio; i++) {
-      casillero = recorrido->obtenerCamino()->obtenerElemento(i);
+      casillero = camino->obtenerRecorrido()->obtenerElemento(i);
       pasos = casillero->obtenerCantidadDePasos();
 
       switch(casillero->obtenerOrientacion()) {
@@ -129,7 +129,7 @@ void Laberinto::definirCoordenadas(Recorrido * recorrido) {
       }
 
       if (casillero->obtenerBifurcacion() != "") {
-         recorrido->agregarBifurcacion(casillero->obtenerBifurcacion(), x, y);
+         camino->agregarBifurcacion(casillero->obtenerBifurcacion(), x, y);
       }
 
       casillero->cambiarXY(x, y);

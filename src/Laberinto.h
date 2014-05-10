@@ -11,7 +11,7 @@
 
 #include "Mochila.h"
 #include "Comando.h"
-#include "Recorrido.h"
+#include "Camino.h"
 
 #include "ListaEnlazada.h"
 #include "Cola.h"
@@ -24,15 +24,14 @@ class Laberinto {
       Laberinto();
 
       /**
-       * A partir de una lista de comandos, popula la lista de recorridos
-       * Ver ListaRecorridos.h, Recorrido.h
+       * A partir de una lista de comandos, popula la lista de caminos
        */
-      void generarRecorridosDesdeListaDeComandos(Cola<Comando> * comandos);
+      void crearCaminosDesdeListaDeComandos(Cola<Comando> * comandos);
 
       /**
-       * Retorna lista de recorridos
+       * Retorna lista de caminos
        */
-      ListaEnlazada<Recorrido> * obtenerRecorridos();
+      ListaEnlazada<Camino> * obtenerCaminos();
 
       /**
        * Retorna instancia clase Mochila con todos los elementos encontrados en el camino
@@ -47,15 +46,15 @@ class Laberinto {
       Mochila * mochila;
 
       /**
-       * Lista de recorridos
+       * Lista de caminos
        */
-      ListaEnlazada<Recorrido> * recorridos;
+      ListaEnlazada<Camino> * caminos;
 
       /**
-       * Setea las coordenadas (X, Y) de los casilleros de un recorrido del laberinto
+       * Setea las coordenadas (X, Y) de los casilleros de un camino del laberinto
        * Siempre empezando en el punto (0, 0) dentro del eje de coordenadas
        */
-      void definirCoordenadas(Recorrido * recorrido);
+      void definirCoordenadas(Camino * camino);
 
       /**
        * Agrega un elemento a la mochila
