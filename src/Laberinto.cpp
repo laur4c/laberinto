@@ -104,10 +104,9 @@ void Laberinto::definirCoordenadas(Camino * camino) {
    int y = 0;
    int pasos;
    Casillero * casillero;
-   Bifurcacion * bifurcacion;
 
    int tamanio = camino->obtenerRecorrido()->obtenerTamanio();
-   for (unsigned int i = 1; i <= tamanio; i++) {
+   for (int i = 1; i <= tamanio; i++) {
       casillero = camino->obtenerRecorrido()->obtenerElemento(i);
       pasos = casillero->obtenerCantidadDePasos();
 
@@ -124,8 +123,6 @@ void Laberinto::definirCoordenadas(Camino * camino) {
          case 'O':
            x = x - pasos;
            break;
-         default:
-            0;
       }
 
       if (casillero->obtenerBifurcacion() != "") {

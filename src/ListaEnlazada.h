@@ -62,7 +62,7 @@ void ListaEnlazada<T>::agregar(T * dato, int posicion) {
       this->frente = nodo;
    } else {
       Nodo<T> * unNodo = this->frente;
-      for (unsigned int i= 1; i < (posicion - 1) && unNodo && unNodo != NULL; i++) {
+      for (int i= 1; i < (posicion - 1) && unNodo && unNodo != NULL; i++) {
          unNodo = unNodo->obtenerSiguiente();
       }
       nodo->cambiarSiguiente(unNodo->obtenerSiguiente());
@@ -99,7 +99,7 @@ int ListaEnlazada<T>::obtenerTamanio() {
 template<class T>
 void ListaEnlazada<T>::mostrar() {
    T * elemento;
-   for (unsigned int i = 1; i <= this->tamanio; i++) {
+   for (int i = 1; i <= this->tamanio; i++) {
       elemento = this->obtenerElemento(i);
       std::cout << elemento->aString() << std::endl;
    }

@@ -49,7 +49,7 @@ std::string Camino::aString() {
    Casillero * casillero;
    str += "Casilleros: \n\n";
    int tamanio = this->recorrido->obtenerTamanio();
-   for (unsigned int i = 1; i <= tamanio; i++) {
+   for (int i = 1; i <= tamanio; i++) {
       casillero = this->recorrido->obtenerElemento(i);
       str += casillero->aString() + "\n";
    }
@@ -57,7 +57,7 @@ std::string Camino::aString() {
    Bifurcacion * bifurcacion;
    str += "Bifurcaciones: \n\n";
    tamanio = this->bifurcaciones->obtenerTamanio();
-   for (unsigned int j = 1; j <= tamanio; j++) {
+   for (int j = 1; j <= tamanio; j++) {
       bifurcacion = this->bifurcaciones->obtenerElemento(j);
       str += bifurcacion->aString() + "\n";
    }
