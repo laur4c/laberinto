@@ -55,6 +55,12 @@ std::string Casillero::aString() {
    str += "Bifurcacion: " + this->bifurcacion + " \n";
    str += "Empalme: " + this->empalme + " \n";
    str += "Punto: " + this->punto->aString() + " \n";
+   str += "Tiene objeto: ";
+   if (this->hayObjeto())
+      str += "SI \n";
+   else
+      str += "NO \n";
+
    return str;
 }
 

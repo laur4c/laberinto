@@ -26,12 +26,12 @@ class Laberinto {
       /**
        * A partir de una lista de comandos, popula la lista de caminos
        */
-      void crearCaminosDesdeListaDeComandos(Cola<Comando> * comandos);
+      void crearCaminosDesdeListaDeComandos(Cola<Comando*> * comandos);
 
       /**
        * Retorna lista de caminos
        */
-      ListaEnlazada<Camino> * obtenerCaminos();
+      ListaEnlazada<Camino*> * obtenerCaminos();
 
       /**
        * Retorna instancia clase Mochila con todos los elementos encontrados en el camino
@@ -48,7 +48,10 @@ class Laberinto {
       /**
        * Lista de caminos
        */
-      ListaEnlazada<Camino> * caminos;
+      ListaEnlazada<Camino*> * caminos;
+
+      // ListaEnlazada<EstructuraLaberinto*> * estructura;
+
 
       /**
        * Setea las coordenadas (X, Y) de los casilleros de un camino del laberinto

@@ -5,15 +5,16 @@ using namespace std;
 
 Camino::Camino(Color * color) {
    this->color = color;
-   this->recorrido = new ListaEnlazada<Casillero>();
-   this->bifurcaciones = new ListaEnlazada<Bifurcacion>();
+   this->recorrido = new ListaEnlazada<Casillero*>();
+   this->bifurcaciones = new ListaEnlazada<Bifurcacion*>();
+   this->empalmes = new ListaEnlazada<Bifurcacion*>();
 }
 
-ListaEnlazada<Bifurcacion> * Camino::obtenerBifurcaciones() {
+ListaEnlazada<Bifurcacion*> * Camino::obtenerBifurcaciones() {
    return this->bifurcaciones;
 }
 
-ListaEnlazada<Casillero> * Camino::obtenerRecorrido() {
+ListaEnlazada<Casillero*> * Camino::obtenerRecorrido() {
    return this->recorrido;
 }
 
@@ -21,12 +22,21 @@ void Camino::agregarCasillero(char orientacion, int pasos, bool tieneObjeto, str
    Casillero * casillero = new Casillero(orientacion, pasos, tieneObjeto);
    casillero->cambiarBifurcacion(bifurcacion);
    casillero->cambiarEmpalme(empalme);
-   this->recorrido->agregar(casillero, this->recorrido->obtenerTamanio() + 1);
+   this->recorrido->agregar(casillero);
 }
 
 void Camino::agregarBifurcacion(string nombre, int x, int y) {
    Bifurcacion * bifurcacion = new Bifurcacion(nombre, x, y);
-   this->bifurcaciones->agregar(bifurcacion, this->bifurcaciones->obtenerTamanio() + 1);
+   this->bifurcaciones->agregar(bifurcacion);
+}
+
+void Camino::agregarEmpalme(string nombre, int x, int y) {
+   Bifurcacion * empalme = new Bifurcacion(nombre, x, y);
+   this->empalmes->agregar(empalme);
+}
+
+bool Camino::tieneEmpalmes() {
+   return !this->empalmes->estaVacia();
 }
 
 Camino::~Camino() {

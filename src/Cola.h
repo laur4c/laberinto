@@ -28,12 +28,12 @@ template<class T> class Cola {
       /**
        * Agrega un elemento al final de la lista.
        */
-      void acolar(T * dato);
+      void acolar(T dato);
 
       /**
        * Remueve un elemento del frente de la lista.
        */
-      T * desacolar();
+      T desacolar();
 
       /**
        * toString a cada elemento de la cola
@@ -69,7 +69,7 @@ bool Cola<T>::estaVacia() {
 }
 
 template<class T>
-void Cola<T>::acolar(T * dato) {
+void Cola<T>::acolar(T dato) {
    Nodo<T> * ultimo = new Nodo<T>(dato);
 
    if (this->estaVacia()) {
@@ -81,8 +81,8 @@ void Cola<T>::acolar(T * dato) {
 }
 
 template<class T>
-T * Cola<T>::desacolar() {
-   T * elemento;
+T Cola<T>::desacolar() {
+   T elemento;
    if (!this->estaVacia()) {
       elemento = this->frente->obtenerDato();
       Nodo<T> * primero = this->frente;

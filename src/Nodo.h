@@ -17,7 +17,7 @@ class Nodo {
       /**
        * Constructor
        */
-      Nodo(T * dato);
+      Nodo(T dato);
 
       /**
        * Retorna puntero al nodo siguiente
@@ -32,13 +32,13 @@ class Nodo {
       /**
        * Retorna el dato del nodo
        */
-      T * obtenerDato();
+      T obtenerDato();
 
    private:
       /**
        * Dato contenido en el nodo
        */
-      T * dato;
+      T dato;
 
       /**
        * Puntero al nodo siguiente
@@ -47,13 +47,13 @@ class Nodo {
 };
 
 template<class T>
-Nodo<T>::Nodo(T * dato) {
+Nodo<T>::Nodo(T dato) {
    this->dato = dato;
    this->siguiente = NULL;
 }
 
 template<class T>
-T * Nodo<T>::obtenerDato() {
+T Nodo<T>::obtenerDato() {
    return this->dato;
 }
 

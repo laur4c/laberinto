@@ -7,7 +7,7 @@ using namespace std;
 
 Parser::Parser(string nombreArchivo) {
    this->nombreArchivo = nombreArchivo;
-   this->listaComandos = new Cola<Comando>();
+   this->listaComandos = new Cola<Comando*>();
 }
 
 void Parser::iniciar() {
@@ -44,6 +44,6 @@ void Parser::iniciar() {
    }
 }
 
-Cola<Comando> * Parser::obtenerLista() {
+Cola<Comando*> * Parser::obtenerLista() {
    return this->listaComandos;
 }

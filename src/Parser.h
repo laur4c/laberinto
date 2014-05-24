@@ -34,7 +34,7 @@ class Parser {
       /**
        * Retorna lista de comandos
        */
-      Cola<Comando> * obtenerLista();
+      Cola<Comando*> * obtenerLista();
    private:
 
       /**
@@ -45,7 +45,7 @@ class Parser {
       /**
        * Lista de comandos
        */
-      Cola<Comando> * listaComandos;
+      Cola<Comando*> * listaComandos;
 };
 
 #endif

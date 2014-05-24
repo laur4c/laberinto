@@ -28,15 +28,19 @@ class Camino {
 
       void agregarBifurcacion(std::string nombre, int x, int y);
 
+      void agregarEmpalme(std::string nombre, int x, int y);
+
+      bool tieneEmpalmes();
+
       /**
        * Retorna lista de bifurcaciones
        */
-      ListaEnlazada<Bifurcacion> * obtenerBifurcaciones();
+      ListaEnlazada<Bifurcacion*> * obtenerBifurcaciones();
 
       /**
        * Retorna lista de casilleros
        */
-      ListaEnlazada<Casillero> * obtenerRecorrido();
+      ListaEnlazada<Casillero*> * obtenerRecorrido();
 
       std::string aString();
 
@@ -55,9 +59,11 @@ class Camino {
       /**
        * Lista de bifurcaciones encontradas en el recorrido
        */
-      ListaEnlazada<Bifurcacion> * bifurcaciones;
+      ListaEnlazada<Bifurcacion*> * bifurcaciones;
 
-      ListaEnlazada<Casillero> * recorrido;
+      ListaEnlazada<Bifurcacion*> * empalmes;
+
+      ListaEnlazada<Casillero*> * recorrido;
 
       int ancho;
 

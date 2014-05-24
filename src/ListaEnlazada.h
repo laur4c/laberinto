@@ -25,20 +25,20 @@ template<class T> class ListaEnlazada {
       /**
        * Agrega un elemento al final de la lista.
        */
-      void agregar(T * dato, int posicion);
+      void agregar(T dato, int posicion);
 
 
       /*
       * Agrega el elemento al final de la Lista
       */
-      void agregar(T * dato);
+      void agregar(T dato);
 
       /**
        * Remueve un elementode la lista.
        */
-      T * eliminar(int posicion);
+      T eliminar(int posicion);
 
-      T * obtenerElemento(int posicion);
+      T obtenerElemento(int posicion);
 
       int obtenerTamanio();
 
@@ -59,7 +59,7 @@ template<class T> class ListaEnlazada {
        * El cursor está posicionado sobre un elemento de la Lista,
        * Devuelve el elemento en la posición del cursor.
        */
-      T * obtenerCursor();
+      T obtenerCursor();
 
       ~ListaEnlazada();
    private:
@@ -90,7 +90,7 @@ bool ListaEnlazada<T>::estaVacia() {
 }
 
 template<class T>
-void ListaEnlazada<T>::agregar(T * dato, int posicion) {
+void ListaEnlazada<T>::agregar(T dato, int posicion) {
    if ((posicion > 0) && (posicion <= this->tamanio + 1)) {
       Nodo<T> * nodo = new Nodo<T>(dato);
       if (posicion == 1) {
@@ -107,13 +107,13 @@ void ListaEnlazada<T>::agregar(T * dato, int posicion) {
 }
 
 template<class T>
-void ListaEnlazada<T>::agregar(T * dato) {
+void ListaEnlazada<T>::agregar(T dato) {
    this->agregar(dato, this->tamanio + 1);
 }
 
 template<class T>
-T * ListaEnlazada<T>::obtenerElemento(int posicion) {
-   T * elemento;
+T ListaEnlazada<T>::obtenerElemento(int posicion) {
+   T elemento;
    if ((posicion > 0) && (posicion <= this->tamanio)) {
       elemento = this->obtenerNodo(posicion)->obtenerDato();
    }
@@ -121,7 +121,7 @@ T * ListaEnlazada<T>::obtenerElemento(int posicion) {
 }
 
 template<class T>
-T * ListaEnlazada<T>::eliminar(int posicion) {
+T ListaEnlazada<T>::eliminar(int posicion) {
    if ((posicion > 0) && (posicion <= this->tamanio)) {
       Nodo<T>* removido;
 
@@ -162,8 +162,8 @@ bool ListaEnlazada<T>::avanzarCursor() {
 }
 
 template<class T>
-T * ListaEnlazada<T>::obtenerCursor() {
-   T * elemento;
+T ListaEnlazada<T>::obtenerCursor() {
+   T elemento;
    if (this->cursor != NULL) {
       elemento = this->cursor->obtenerDato();
    }
@@ -181,7 +181,7 @@ Nodo<T> * ListaEnlazada<T>::obtenerNodo(int posicion) {
 
 template<class T>
 void ListaEnlazada<T>::mostrar() {
-   T * elemento;
+   T elemento;
    for (int i = 1; i <= this->tamanio; i++) {
       elemento = this->obtenerElemento(i);
       std::cout << elemento->aString() << std::endl;
