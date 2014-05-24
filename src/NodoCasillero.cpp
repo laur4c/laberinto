@@ -2,12 +2,14 @@
 #define _NODO_CASILLERO_H_
 #include "Casillero.h"
 #include <iostream>
-
+#include "util.h"
 using namespace std;
 
 class NodoCasillero {
    public:
       bool dibujado;
+
+      Color * color;
 
       NodoCasillero(Casillero * dato) {
          this->dato = dato;
@@ -16,6 +18,19 @@ class NodoCasillero {
          this->sur = NULL;
          this->este = NULL;
          this->oeste = NULL;
+      }
+
+      std::string aString() {
+         string str = "";
+         str += "DATO: " + this->dato->aString() + " \n";
+         str += "dibujado: ";
+
+         if (this->dibujado)
+            str += "SI \n";
+         else
+            str += "NO \n";
+
+         return str;
       }
 
       bool esUltimo() {

@@ -80,8 +80,9 @@ void Laberinto::crearCaminosDesdeListaDeComandos(Cola<Comando*> * comandos) {
          } else if (nombreComando == "T") {
             orientacion = ultimaOrientacion;
             tieneObjeto = true;
-            this->mochila->tirar_elemento(argumento);
-
+// cout << "TIRO EL " << argumento << endl;
+            // this->mochila->tirar_elemento(argumento);
+// cout << "OBJETO" << endl;
          } else {
             // @TODO: usar una exception!
             cout << "ERR: Comando Invalido" << endl;

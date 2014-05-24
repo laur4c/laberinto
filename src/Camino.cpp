@@ -10,6 +10,10 @@ Camino::Camino(Color * color) {
    this->empalmes = new ListaEnlazada<Bifurcacion*>();
 }
 
+Color * Camino::obtenerColor() {
+   return this->color;
+}
+
 ListaEnlazada<Bifurcacion*> * Camino::obtenerBifurcaciones() {
    return this->bifurcaciones;
 }

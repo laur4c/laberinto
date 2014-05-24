@@ -32,6 +32,8 @@ class Camino {
 
       bool tieneEmpalmes();
 
+      Color * obtenerColor();
+
       /**
        * Retorna lista de bifurcaciones
        */

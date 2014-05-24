@@ -14,6 +14,12 @@
 class Casillero {
    public:
       /**
+       * Orientacion. Valores posibles: N, S, E, O
+       */
+      char orientacion;
+
+
+      /**
        * Constructor.
        */
       Casillero(char orientacion, int cantidadDePasos, bool hayObjeto);
@@ -68,10 +74,6 @@ class Casillero {
       std::string aString();
 
    private:
-      /**
-       * Orientacion. Valores posibles: N, S, E, O
-       */
-      char orientacion;
 
       /**
        * @TODO

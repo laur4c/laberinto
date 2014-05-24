@@ -10,6 +10,8 @@ class Estructura {
 
       NodoCasillero * primero;
 
+      Color * color;
+
       ListaEnlazada<NodoCasillero*> * bifurcaciones;
       ListaEnlazada<NodoCasillero*> * empalmes;
 
@@ -21,11 +23,36 @@ class Estructura {
          return !this->empalmes->estaVacia();
       }
 
-      Estructura() {
+      Estructura(Color * color) {
+         this->color = color;
          this->bifurcaciones = new ListaEnlazada<NodoCasillero*>();
          this->empalmes = new ListaEnlazada<NodoCasillero*>();
       }
 
+      void recMostrar(NodoCasillero * nodo) {
+         cout << "----------------" << endl;
+         cout << nodo->obtenerDato()->aString() << endl;
+
+         if (nodo->obtenerNorte() != NULL) {
+
+            this->recMostrar(nodo->obtenerNorte());
+         }
+         if (nodo->obtenerSur() != NULL) {
+
+            this->recMostrar(nodo->obtenerSur());
+         }
+         if (nodo->obtenerEste() != NULL) {
+            this->recMostrar(nodo->obtenerEste());
+         }
+         if (nodo->obtenerOeste() != NULL) {
+            this->recMostrar(nodo->obtenerOeste());
+         }
+         cout << "------FIN----------" << endl;
+      }
+
+      void mostrar() {
+         recMostrar(this->primero);
+      }
 };
 
 #endif
