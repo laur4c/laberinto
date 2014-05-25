@@ -11,6 +11,7 @@ ImagenLaberinto::ImagenLaberinto(ListaEnlazada<Camino*> * caminos, int unidad) {
 void ImagenLaberinto::generar() {
    Camino * camino;
    Punto * comienzo;
+   // Tomamos un valor arbitrario
    int sum = 1000;
 
    int x = sum / 2;
@@ -43,6 +44,8 @@ void ImagenLaberinto::generar() {
 
          if (!comienzo->estaDibujado()) {
             this->dibujar(comienzo, comienzo->obtenerInformacion()->obtenerOrientacion(), x, y, maxAncho);
+            // Para separar un recorrido de otro, sumo un total arbitrario al ancho maximo alcanzado
+            // despues de dibujar los recorridos con uniones entre si
             x = maxAncho + 20;
          }
 

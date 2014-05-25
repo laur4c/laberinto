@@ -74,6 +74,45 @@ void Laberinto::crearCaminosDesdeListaDeComandos(Cola<Comando*> * comandos) {
    this->unirPuntos();
 }
 
+InfoPunto * Laberinto::obtenerInfoDeComando(std::string comando, std::string argumento, char orientacion) {
+   string bifurcacion = "";
+   string empalme = "";
+   int pasos = 0;
+   bool tieneObjeto = false;
+
+   if(comando == "A") {
+      this->info->sumar_paso();
+      pasos = util::string_a_int(argumento);
+
+   } else if(comando == "R") {
+      pasos = util::string_a_int(argumento) * -1;
+
+   } else if(comando == "B") {
+      this->info->sumar_bifurcacion();
+
+      int pos = argumento.find(" ", 0);
+      orientacion = argumento.substr(0, pos).c_str()[0];
+      bifurcacion = argumento.substr(pos + 1);
+
+   } else if (comando == "U") {
+      this->info->sumar_union();
+
+      empalme = argumento;
+      pasos = 1;
+
+   } else if (comando == "T") {
+      tieneObjeto = true;
+      this->mochila->tirar_elemento(argumento);
+   } else
+      throw "ERR: Comando Invalido";
+
+   InfoPunto * infoPunto = new InfoPunto(orientacion, pasos, tieneObjeto);
+   infoPunto->cambiarBifurcacion(bifurcacion);
+   infoPunto->cambiarEmpalme(empalme);
+
+   return infoPunto;
+}
+
 void Laberinto::unirPuntos() {
    Punto * ptoEmpalme;
    Punto * ptoBifurcacion;
@@ -87,7 +126,7 @@ void Laberinto::unirPuntos() {
       ptoEmpalme = this->empalmes->obtenerCursor();
       nombreEmpalme = ptoEmpalme->obtenerInformacion()->obtenerEmpalme();
 
-      // busco la bifurcacion
+      // buscamos la bifurcacion
       this->bifurcaciones->iniciarCursor();
       encontrado = false;
 
@@ -167,45 +206,6 @@ char Laberinto::obtenerOrientacionContraria(char orientacion) {
       throw "ERR: Orientacion Invalida";
 
    return orientacionContraria;
-}
-
-InfoPunto * Laberinto::obtenerInfoDeComando(std::string comando, std::string argumento, char orientacion) {
-   string bifurcacion = "";
-   string empalme = "";
-   int pasos = 0;
-   bool tieneObjeto = false;
-
-   if(comando == "A") {
-      this->info->sumar_paso();
-      pasos = util::string_a_int(argumento);
-
-   } else if(comando == "R") {
-      pasos = util::string_a_int(argumento) * -1;
-
-   } else if(comando == "B") {
-      this->info->sumar_bifurcacion();
-
-      int pos = argumento.find(" ", 0);
-      orientacion = argumento.substr(0, pos).c_str()[0];
-      bifurcacion = argumento.substr(pos + 1);
-
-   } else if (comando == "U") {
-      this->info->sumar_union();
-
-      empalme = argumento;
-      pasos = 1;
-
-   } else if (comando == "T") {
-      tieneObjeto = true;
-      this->mochila->tirar_elemento(argumento);
-   } else
-      throw "ERR: Comando Invalido";
-
-   InfoPunto * infoPunto = new InfoPunto(orientacion, pasos, tieneObjeto);
-   infoPunto->cambiarBifurcacion(bifurcacion);
-   infoPunto->cambiarEmpalme(empalme);
-
-   return infoPunto;
 }
 
 Laberinto::~Laberinto() {
