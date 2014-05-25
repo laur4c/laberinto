@@ -7,7 +7,7 @@
 #ifndef _IMAGEN_LABERINTO_H_
 #define _IMAGEN_LABERINTO_H_
 
-#include "EasyBMP/EasyBMP.h"
+#include "../EasyBMP/EasyBMP.h"
 #include "Camino.h"
 #include "Color.h"
 #include "ListaEnlazada.h"

@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include "ImagenLaberinto.h"
+#include "cabeceras/ImagenLaberinto.h"
 
 
 ImagenLaberinto::ImagenLaberinto(ListaEnlazada<Camino*> * caminos, int unidad = 5) {

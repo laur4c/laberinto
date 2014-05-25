@@ -1,5 +1,5 @@
-#include "Punto.h"
-#include "util.h"
+#include "cabeceras/Punto.h"
+#include "cabeceras/util.h"
 
 #include <iostream>
 

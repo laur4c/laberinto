@@ -1,4 +1,4 @@
-#include "InfoRecorrido.h"
+#include "cabeceras/InfoRecorrido.h"
 
 InfoRecorrido::InfoRecorrido() {
 	this -> cant_bifurcaciones = 0;

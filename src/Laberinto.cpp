@@ -1,5 +1,4 @@
-#include "Laberinto.h"
-#include "Camino.h"
+#include "cabeceras/Laberinto.h"
 
 #include <iostream>
 

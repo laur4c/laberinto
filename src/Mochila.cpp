@@ -1,4 +1,4 @@
-#include "Mochila.h"
+#include "cabeceras/Mochila.h"
 
 Mochila::Mochila () {
 	this -> primernodo = NULL;

@@ -1,4 +1,4 @@
-#include "Comando.h"
+#include "cabeceras/Comando.h"
 
 using namespace std;
 

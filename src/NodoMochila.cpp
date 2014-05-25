@@ -1,4 +1,4 @@
-# include "NodoMochila.h"
+# include "cabeceras/NodoMochila.h"
 
 NodoMochila::NodoMochila (string elemento) {
 	this -> elemento = elemento;

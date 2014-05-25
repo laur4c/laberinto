@@ -1,5 +1,5 @@
-#include "InfoPunto.h"
-#include "util.h"
+#include "cabeceras/InfoPunto.h"
+#include "cabeceras/util.h"
 
 #include <sstream>
 using namespace std;

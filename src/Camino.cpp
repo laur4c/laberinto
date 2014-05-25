@@ -1,4 +1,4 @@
-#include "Camino.h"
+#include "cabeceras/Camino.h"
 #include <iostream>
 
 using namespace std;

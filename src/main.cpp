@@ -1,8 +1,8 @@
 #include <iostream>
 
-#include "ImagenLaberinto.h"
-#include "Parser.h"
-#include "Laberinto.h"
+#include "cabeceras/ImagenLaberinto.h"
+#include "cabeceras/Parser.h"
+#include "cabeceras/Laberinto.h"
 
 using namespace std;
 
