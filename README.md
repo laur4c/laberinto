@@ -12,17 +12,20 @@
 * Ezequiel Guitler
 * Laura Corvalán
 
-#### + src/cabeceras/
+### Directorios
+----
+
+**+ src/cabeceras/**
    Headers (*.h)
 
-#### + test/
+**+ test/**
    Contiene un ejemplo que subieron al campus y otros archivos de prueba
    que utilizamos para probar el programa
 
-#### + src/
+**+ src/**
    Archivos fuente
 
-   * Camino.cpp:
+   * **Camino.cpp**:
       Representa un recorrido en el laberinto. Está compuesto por puntos.
       Cada punto tiene referencias a sus cuatro direcciones: Norte, Sur, Oeste, Este
 
@@ -33,17 +36,17 @@
 
       Cada camino tiene referencia al comienzo y al final del recorrido.
 
-   * Punto.cpp:
+   * **Punto.cpp**:
       Representa un "punto" en un recorrido del laberinto.
       El punto tiene un atributo: "informacion" que es una instancia de InfoPunto.
       InfoPunto contiene informacion acerca de la orientacion del punto, cuantos pasos se van a avanzar
       en esa direccion, si existe un objeto, si hay una bifurcacion o una union.
 
-   * ImagenLaberinto.cpp:
+   * **ImagenLaberinto.cpp**:
       Recibe la lista de caminos y se encarga de dibujar todos los recorridos del laberinto a
       una imagen. Se ultiliza la libreria EasyBMP: http://easybmp.sourceforge.net/
 
-   * Comando.cpp:
+   * **Comando.cpp**:
       Cuando se ejecuta el programa, el sistema pide al usuario que indique el nombre y la ruta
       del archivo de texto (.txt), con los recorridos.
       Lo primero que hace el programa es procesar el archivo y transformar cada directiva
@@ -56,7 +59,7 @@
 
       El nombre del comando es L (levantar) y su argumento es: "moneda".
 
-   * Parser.cpp:
+   * **Parser.cpp**:
       Se encarga de procesar el archivo de texto y generar la lista de Comandos (ver arriba).
       La lista es de tipo cola.
 
