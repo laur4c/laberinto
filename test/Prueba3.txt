@@ -22,7 +22,7 @@ PP 130 186 47
 GS
 A 4
 BO bifurcacion2
-BE bifurcacion3
+BO bifurcacion3
 PLL
 PP 51 86 168
 GO
@@ -30,9 +30,6 @@ A 4
 GS
 A 6
 GO
-A 1
-T pepino
-A 4
+A 5
 U bifurcacion3
-U bifurcacion2
 PLL
