@@ -30,7 +30,7 @@ class ImagenLaberinto {
        * @param caminos Lista de caminos. Representacion de todo el laberinto
        * @param unidad Tamanio de la unidad, por default: 3x3
        */
-      ImagenLaberinto(ListaEnlazada<Camino*> * caminos, int unidad);
+      ImagenLaberinto(ListaEnlazada<Camino*> * caminos, int unidad = 3);
 
       /**
        * Generar imagen de caminos del laberinto

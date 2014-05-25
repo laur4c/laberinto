@@ -2,7 +2,7 @@
 #include "cabeceras/ImagenLaberinto.h"
 
 
-ImagenLaberinto::ImagenLaberinto(ListaEnlazada<Camino*> * caminos, int unidad = 3) {
+ImagenLaberinto::ImagenLaberinto(ListaEnlazada<Camino*> * caminos, int unidad) {
    this->caminos = caminos;
    this->unidad = unidad;
 }
