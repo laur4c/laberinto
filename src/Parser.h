@@ -11,7 +11,9 @@
 #ifndef _PARSER_H_
 #define _PARSER_H_
 
-#include "ListaComandos.h"
+#include "Comando.h"
+#include "Cola.h"
+
 #include <string>
 
 class Parser {
@@ -26,14 +28,13 @@ class Parser {
        * Parsea el archivo y genera una lista de comandos.
        * La funcion es separar lo que nosotros llamamos el comando
        * de sus argumentos.
-       * Ver ListaComandos.h
        */
       void iniciar();
 
       /**
        * Retorna lista de comandos
        */
-      ListaComandos * obtenerLista();
+      Cola<Comando*> * obtenerLista();
    private:
 
       /**
@@ -44,7 +45,7 @@ class Parser {
       /**
        * Lista de comandos
        */
-      ListaComandos * listaComandos;
+      Cola<Comando*> * listaComandos;
 };
 
 #endif

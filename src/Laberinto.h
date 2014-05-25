@@ -8,9 +8,13 @@
 #define _LABERINTO_H_
 
 #include "util.h"
-#include "ListaRecorridos.h"
-#include "ListaComandos.h"
+
 #include "Mochila.h"
+#include "Comando.h"
+#include "Camino.h"
+
+#include "ListaEnlazada.h"
+#include "Cola.h"
 
 class Laberinto {
    public:
@@ -20,15 +24,14 @@ class Laberinto {
       Laberinto();
 
       /**
-       * A partir de una lista de comandos, popula la lista de recorridos
-       * Ver ListaRecorridos.h, Recorrido.h
+       * A partir de una lista de comandos, popula la lista de caminos
        */
-      void generarRecorridosDesdeListaDeComandos(ListaComandos * comandos);
+      void crearCaminosDesdeListaDeComandos(Cola<Comando*> * comandos);
 
       /**
-       * Retorna lista de recorridos
+       * Retorna lista de caminos
        */
-      ListaRecorridos * obtenerRecorridos();
+      ListaEnlazada<Camino*> * obtenerCaminos();
 
       /**
        * Retorna instancia clase Mochila con todos los elementos encontrados en el camino
@@ -43,20 +46,27 @@ class Laberinto {
       Mochila * mochila;
 
       /**
-       * Lista de recorridos
+       * Lista de caminos
        */
-      ListaRecorridos * recorridos;
+      ListaEnlazada<Camino*> * caminos;
 
-      /**
-       * Setea las coordenadas (X, Y) de los casilleros de un recorrido del laberinto
-       * Siempre empezando en el punto (0, 0) dentro del eje de coordenadas
-       */
-      void definirCoordenadas(Recorrido * recorrido);
+      ListaEnlazada<Punto*> * empalmes;
+
+      ListaEnlazada<Punto*> * bifurcaciones;
 
       /**
        * Agrega un elemento a la mochila
        */
       void agregarElementoAMochila(std::string elemento);
+
+
+      void unirPuntos();
+
+      void agregarCamino(Color * color, ListaEnlazada<InfoPunto*> * listaInfo);
+
+      InfoPunto * obtenerInfoDeComando(std::string comando, std::string argumento, char orientacion);
+
+      char obtenerOrientacionContraria(char orientacion);
 };
 
 #endif

@@ -27,15 +27,7 @@ class Comando {
        */
       std::string obtenerArgumento();
 
-      /**
-       * Retorna puntero al siguiente comando
-       */
-      Comando * obtenerSiguiente();
-
-      /**
-       * Modifica el puntero al siguiente comando
-       */
-      void cambiarSiguiente(Comando * comando);
+      std::string aString();
 
    private:
 
@@ -48,11 +40,6 @@ class Comando {
        * Argumento del comando
        */
       std::string argumento;
-
-      /**
-       * Puntero al siguiente comando
-       */
-      Comando * siguiente;
 };
 
 #endif

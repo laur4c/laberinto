@@ -5,38 +5,30 @@
    @author Mariano Cinalli, Ezequiel Guitler, Santiago Montiel, Lucas Dreko, Laura Corvalan
 */
 
-#ifndef _CASILLERO_H_
-#define _CASILLERO_H_
+#ifndef _INFO_PUNTO_H_
+#define _INFO_PUNTO_H_
 
-#include "Punto.h"
 #include <string>
 
-class Casillero {
+class InfoPunto {
    public:
+      /**
+       * Orientacion. Valores posibles: N, S, E, O
+       */
+      char orientacion;
+
+
       /**
        * Constructor.
        */
-      Casillero(char orientacion, int cantidadDePasos, bool hayObjeto);
-
-      /**
-       * Modifica las coordenadas x, y
-       */
-      void cambiarXY(int x, int y);
-
-      /**
-       * Retorna casillero siguiente
-       */
-      Casillero * obtenerSiguiente();
-
-      /**
-       * Modifica el casillero siguiente
-       */
-      void cambiarSiguiente(Casillero * casillero);
+      InfoPunto(char orientacion, int cantidadDePasos, bool hayObjeto);
 
       /**
        * Retorna nombre bifurcacion
        */
       std::string obtenerBifurcacion();
+
+      bool tieneBifurcacion();
 
       /**
        * Modifica el nombre de la bifurcacion
@@ -47,6 +39,8 @@ class Casillero {
        * Retorna nombre union
        */
       std::string obtenerEmpalme();
+
+      bool tieneEmpalme();
 
       /**
        * Modifica el nombre de la bifurcacion con la que se une el casillero
@@ -65,27 +59,14 @@ class Casillero {
       int obtenerCantidadDePasos();
 
       /**
-       * Retorna un punto, donde se definen las coordenadas x, y para
-       * poder ubicar el casillero dentro de la imagen
-       */
-      Punto * obtenerPunto();
-
-      /**
        * Retorna true si se debe marcar un objeto en la imagen (Si el caminante tiro un objeto)
        */
       bool hayObjeto();
 
-   private:
-      /**
-       * Orientacion. Valores posibles: N, S, E, O
-       */
-      char orientacion;
+      std::string aString();
 
-      /**
-       * @TODO
-       * Pasos dentro del casillero?... quizas tengamos que
-       * cambiar el nombre, se les ocurre algo?
-       */
+   private:
+
       int cantidadDePasos;
 
       /**
@@ -102,16 +83,6 @@ class Casillero {
        * True si se tiro un objeto en el casillero, false caso contrario
        */
       bool objeto;
-
-      /**
-       * Coordenadas X Y
-       */
-      Punto * punto;
-
-      /**
-       * Puntero al siguiente casillero
-       */
-      Casillero * siguiente;
 };
 
 #endif

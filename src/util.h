@@ -16,6 +16,16 @@ namespace util {
     */
    Color * string_a_color(std::string color);
 
+   /**
+    * Convierte un entero a string
+    */
+   std::string int_a_string(int i);
+
+    /**
+    * Convierte un char a string
+    */
+   std::string char_a_string(char i);
+
 }
 
 #endif

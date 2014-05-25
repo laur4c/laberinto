@@ -7,20 +7,69 @@
 #ifndef _PUNTO_H_
 #define _PUNTO_H_
 
+#include <iostream>
+#include "InfoPunto.h"
+#include "Color.h"
+
 class Punto {
    public:
-      Punto(int x, int y);
 
-      int obtenerX();
+      Punto(InfoPunto * info, Color * color);
 
-      int obtenerY();
+      Punto * obtenerPunto(char orientacion);
 
-      void cambiarXY(int x, int y);
+      void cambiarPunto(char orientacion, Punto * punto);
+
+      Punto * obtenerNorte();
+
+      Punto * obtenerSur();
+
+      Punto * obtenerEste();
+
+      Punto * obtenerOeste();
+
+      bool tienePuntoEn(char orientacion);
+
+      bool tieneNorte();
+
+      bool tieneSur();
+
+      bool tieneEste();
+
+      bool tieneOeste();
+
+      void cambiarSur(Punto * punto);
+
+      void cambiarNorte(Punto * punto);
+
+      void cambiarEste(Punto * punto);
+
+      void cambiarOeste(Punto * punto);
+
+      InfoPunto * obtenerInformacion();
+
+      Color * obtenerColor();
+
+      void marcarComoDibujado();
+
+      bool estaDibujado();
+
+      std::string aString();
 
    private:
-      int x;
+         Color * color;
 
-      int y;
+         InfoPunto * informacion;
+
+         bool dibujado;
+
+         Punto * norte;
+
+         Punto * sur;
+
+         Punto * este;
+
+         Punto * oeste;
 };
 
 #endif
