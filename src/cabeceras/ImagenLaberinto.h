@@ -22,7 +22,6 @@
 #include <string>
 
 const char orientaciones[] = {'N', 'S', 'E', 'O'};
-
 class ImagenLaberinto {
    public:
       /**
@@ -54,6 +53,11 @@ class ImagenLaberinto {
        * Mapa del laberinto
        */
       BMP imagen;
+
+      /**
+       * Color que se va a usar para pintar los objetos
+       */
+      Color * colorObjeto;
 
       /**
        * Dibuja en mapa total de unidades hacia el norte

@@ -197,8 +197,7 @@ InfoPunto * Laberinto::obtenerInfoDeComando(std::string comando, std::string arg
 
    } else if (comando == "T") {
       tieneObjeto = true;
-      // @TODO Falla llamada a metodo
-      // this->mochila->tirar_elemento(argumento);
+      this->mochila->tirar_elemento(argumento);
    } else
       throw "ERR: Comando Invalido";
 

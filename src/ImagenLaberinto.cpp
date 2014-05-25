@@ -5,71 +5,7 @@
 ImagenLaberinto::ImagenLaberinto(ListaEnlazada<Camino*> * caminos, int unidad) {
    this->caminos = caminos;
    this->unidad = unidad;
-}
-
-void ImagenLaberinto::dibujar(Punto * punto, char orientacion, int x, int y, int &maxAncho) {
-   InfoPunto * infoPunto = punto->obtenerInformacion();
-   int pasos = infoPunto->obtenerCantidadDePasos();
-
-   bool estaAvanzando = pasos > 0; // o retrocede...
-   pasos = abs(pasos);
-   Color * color = punto->obtenerColor();
-
-   if (pasos > 0) { // NOTE: algunos puntos (como las bifurcaciones por ej.) no avanzan ningun paso
-      switch(orientacion) {
-         case 'N':
-            if (estaAvanzando) {
-               this->avanzarNorte(color, x, y, pasos);
-            } else {
-               this->avanzarSur(color, x, y, pasos);
-            }
-
-            break;
-         case 'S':
-            if (estaAvanzando)
-               this->avanzarSur(color, x, y, pasos);
-            else
-               this->avanzarNorte(color, x, y, pasos);
-            break;
-
-         case 'E':
-            if (estaAvanzando)
-               this->avanzarEste(color, x, y, pasos);
-            else
-               this->avanzarOeste(color, x, y, pasos);
-            break;
-
-         case 'O':
-            if (estaAvanzando)
-               this->avanzarOeste(color, x, y, pasos);
-            else
-               this->avanzarEste(color, x, y, pasos);
-            break;
-      }
-   }
-
-   punto->marcarComoDibujado();
-   if (maxAncho < x) maxAncho = x; // maximo ancho del camino
-
-   InfoPunto * info;
-   char nvaOrientacion;
-   char unaOrientacion;
-
-   // dibujo ramas en todas las direcciones
-   for (unsigned int i = 0; i < 4; i++) {
-      unaOrientacion = orientaciones[i];
-
-      if (punto->tienePuntoEn(unaOrientacion) && !punto->obtenerPunto(unaOrientacion)->estaDibujado()) {
-         info = punto->obtenerPunto(unaOrientacion)->obtenerInformacion();
-         nvaOrientacion = info->obtenerOrientacion();
-
-         // si dibujo al reves cambio la orientacion del punto
-         if (nvaOrientacion != unaOrientacion)
-            nvaOrientacion = this->obtenerOrientacionContraria(nvaOrientacion);
-
-         this->dibujar(punto->obtenerPunto(unaOrientacion), nvaOrientacion, x, y, maxAncho);
-      }
-   }
+   this->colorObjeto = new Color(0, 0, 0);
 }
 
 void ImagenLaberinto::generar() {
@@ -113,6 +49,88 @@ void ImagenLaberinto::generar() {
       }
    }
    this->imagen.WriteToFile("laberinto.bmp");
+}
+
+void ImagenLaberinto::dibujar(Punto * punto, char orientacion, int x, int y, int &maxAncho) {
+   InfoPunto * infoPunto = punto->obtenerInformacion();
+   int pasos = infoPunto->obtenerCantidadDePasos();
+
+   bool estaAvanzando = pasos > 0; // o retrocede...
+   pasos = abs(pasos);
+   Color * color = punto->obtenerColor();
+
+   switch(orientacion) {
+      case 'N':
+         if (infoPunto->hayObjeto()) {
+            this->avanzarNorte(this->colorObjeto, x, y, 1);
+            pasos--;
+         }
+
+         if (estaAvanzando) {
+            this->avanzarNorte(color, x, y, pasos);
+         } else {
+            this->avanzarSur(color, x, y, pasos);
+         }
+         break;
+      case 'S':
+         if (infoPunto->hayObjeto()) {
+            this->avanzarSur(this->colorObjeto, x, y, 1);
+            pasos--;
+         }
+
+         if (estaAvanzando)
+            this->avanzarSur(color, x, y, pasos);
+         else
+            this->avanzarNorte(color, x, y, pasos);
+         break;
+
+      case 'E':
+         if (infoPunto->hayObjeto()) {
+            this->avanzarEste(this->colorObjeto, x, y, 1);
+            pasos--;
+         }
+
+         if (estaAvanzando)
+            this->avanzarEste(color, x, y, pasos);
+         else
+            this->avanzarOeste(color, x, y, pasos);
+         break;
+
+      case 'O':
+         if (infoPunto->hayObjeto()) {
+            this->avanzarOeste(this->colorObjeto, x, y, 1);
+            pasos--;
+         }
+
+         if (estaAvanzando)
+            this->avanzarOeste(color, x, y, pasos);
+         else
+            this->avanzarEste(color, x, y, pasos);
+         break;
+   }
+
+   punto->marcarComoDibujado();
+   if (maxAncho < x) maxAncho = x; // maximo ancho del camino
+
+   InfoPunto * info;
+   char nvaOrientacion;
+   char unaOrientacion;
+
+   // dibujo ramas en todas las direcciones
+   for (unsigned int i = 0; i < 4; i++) {
+      unaOrientacion = orientaciones[i];
+
+      if (punto->tienePuntoEn(unaOrientacion) && !punto->obtenerPunto(unaOrientacion)->estaDibujado()) {
+         info = punto->obtenerPunto(unaOrientacion)->obtenerInformacion();
+         nvaOrientacion = info->obtenerOrientacion();
+
+         // si dibujo al reves cambio la orientacion del punto
+         if (nvaOrientacion != unaOrientacion)
+            nvaOrientacion = this->obtenerOrientacionContraria(nvaOrientacion);
+
+         this->dibujar(punto->obtenerPunto(unaOrientacion), nvaOrientacion, x, y, maxAncho);
+      }
+   }
 }
 
 void ImagenLaberinto::avanzarNorte(Color * color, int &x, int &y, int total) {
