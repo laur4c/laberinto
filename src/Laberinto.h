@@ -14,6 +14,7 @@
 #include "Camino.h"
 
 #include "ListaEnlazada.h"
+#include "InfoRecorrido.h"
 #include "Cola.h"
 
 class Laberinto {
@@ -38,6 +39,8 @@ class Laberinto {
        */
       Mochila * obtenerMochila();
 
+      void mostrarInfo();
+
    private:
 
       /**
@@ -53,6 +56,8 @@ class Laberinto {
       ListaEnlazada<Punto*> * empalmes;
 
       ListaEnlazada<Punto*> * bifurcaciones;
+
+      InfoRecorrido * info;
 
       /**
        * Agrega un elemento a la mochila

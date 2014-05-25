@@ -24,8 +24,8 @@ void InfoRecorrido::sumar_giro() {
 }
 
 void InfoRecorrido::mostrar() {
-	cout << "Cantidad de pasos:         " << this -> cant_pasos;
-	cout << "Cantidad de giros:         " << this -> cant_giros;
-	cout << "Cantidad de bifurcaciones: " << this -> cant_bifurcaciones;
-	cout << "Cantidad de uniones:       " << this -> cant_uniones;
+	cout << "Cantidad de pasos:         " << this -> cant_pasos << endl;
+	cout << "Cantidad de giros:         " << this -> cant_giros << endl;
+	cout << "Cantidad de bifurcaciones: " << this -> cant_bifurcaciones << endl;
+	cout << "Cantidad de uniones:       " << this -> cant_uniones << endl;
 }

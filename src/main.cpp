@@ -23,8 +23,11 @@ int main(int argc, char *argv[]) {
    laberinto->crearCaminosDesdeListaDeComandos(listaComandos);
 
    Mochila * mochila = laberinto->obtenerMochila();
-   cout << "Mochila: " << endl;
+   cout << "Estado de la mochila del caminante: " << endl;
    mochila->mostrar();
+
+   cout << "Description cuantitativa del recorrido realizado por el caminante: " << endl;
+   laberinto->mostrarInfo();
 
    ImagenLaberinto * imagen = new ImagenLaberinto(laberinto->obtenerCaminos(), 3);
    imagen->generar();

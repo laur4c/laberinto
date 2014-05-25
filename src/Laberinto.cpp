@@ -10,10 +10,15 @@ Laberinto::Laberinto() {
    this->mochila = new Mochila();
    this->bifurcaciones = new ListaEnlazada<Punto*>();
    this->empalmes = new ListaEnlazada<Punto*>();
+   this->info = new InfoRecorrido();
 }
 
 ListaEnlazada<Camino*> * Laberinto::obtenerCaminos() {
    return this->caminos;
+}
+
+void Laberinto::mostrarInfo() {
+   this->info->mostrar();
 }
 
 Mochila * Laberinto::obtenerMochila() {
@@ -55,6 +60,7 @@ void Laberinto::crearCaminosDesdeListaDeComandos(Cola<Comando*> * comandos) {
          listaInfo = NULL;
 
       } else if (nombreComando == "G") { // Giro
+         this->info->sumar_giro();
          ultimaOrientacion = argumento.c_str()[0];
 
       } else if (nombreComando == "L") { // Levantar objeto
@@ -171,17 +177,22 @@ InfoPunto * Laberinto::obtenerInfoDeComando(std::string comando, std::string arg
    bool tieneObjeto = false;
 
    if(comando == "A") {
+      this->info->sumar_paso();
       pasos = util::string_a_int(argumento);
 
    } else if(comando == "R") {
       pasos = util::string_a_int(argumento) * -1;
 
    } else if(comando == "B") {
+      this->info->sumar_bifurcacion();
+
       int pos = argumento.find(" ", 0);
       orientacion = argumento.substr(0, pos).c_str()[0];
       bifurcacion = argumento.substr(pos + 1);
 
    } else if (comando == "U") {
+      this->info->sumar_union();
+
       empalme = argumento;
       pasos = 1;
 
