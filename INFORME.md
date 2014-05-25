@@ -41,9 +41,9 @@
       a una lista de Comandos. Cada comando tiene un nombre y un argumento.
       Por ej. Si la entrada del archivo de texto es:
 
-      PP 255 0 0
-      L moneda
-      ...
+      PP 255 0 0   
+      L moneda    
+      ...   
 
       El nombre del comando es L (levantar) y su argumento es: "moneda".
 
