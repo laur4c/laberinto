@@ -50,19 +50,23 @@ class Laberinto {
        */
       ListaEnlazada<Camino*> * caminos;
 
-      // ListaEnlazada<EstructuraLaberinto*> * estructura;
+      ListaEnlazada<Punto*> * empalmes;
 
-
-      /**
-       * Setea las coordenadas (X, Y) de los casilleros de un camino del laberinto
-       * Siempre empezando en el punto (0, 0) dentro del eje de coordenadas
-       */
-      void definirCoordenadas(Camino * camino);
+      ListaEnlazada<Punto*> * bifurcaciones;
 
       /**
        * Agrega un elemento a la mochila
        */
       void agregarElementoAMochila(std::string elemento);
+
+
+      void unirPuntos();
+
+      void agregarCamino(Color * color, ListaEnlazada<InfoPunto*> * listaInfo);
+
+      InfoPunto * obtenerInfoDeComando(std::string comando, std::string argumento, char orientacion);
+
+      char obtenerOrientacionContraria(char orientacion);
 };
 
 #endif

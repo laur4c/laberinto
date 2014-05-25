@@ -7,11 +7,7 @@
 #ifndef _CAMINO_H_
 #define _CAMINO_H_
 
-#include "ListaEnlazada.h"
-#include "Color.h"
-#include "Casillero.h"
-#include "Bifurcacion.h"
-
+#include "Punto.h"
 #include <string>
 
 class Camino {
@@ -19,57 +15,29 @@ class Camino {
       /**
        * Constructor
        */
-      Camino(Color * color);
+      Camino();
 
-      /**
-       * Agrega un elemento al recorrido ListaEnlazada<Casillero>
-       */
-      void agregarCasillero(char orientacion, int pasos, bool tieneObjeto, std::string bifurcacion, std::string empalme);
+      void cambiarComienzo(Punto * punto);
 
-      void agregarBifurcacion(std::string nombre, int x, int y);
+      void cambiarFin(Punto * punto);
 
-      void agregarEmpalme(std::string nombre, int x, int y);
+      Punto * obtenerComienzo();
 
-      bool tieneEmpalmes();
+      Punto * obtenerFin();
 
-      Color * obtenerColor();
+      void marcarEmpalme();
 
-      /**
-       * Retorna lista de bifurcaciones
-       */
-      ListaEnlazada<Bifurcacion*> * obtenerBifurcaciones();
-
-      /**
-       * Retorna lista de casilleros
-       */
-      ListaEnlazada<Casillero*> * obtenerRecorrido();
-
-      std::string aString();
-
-      void mostrar();
+      bool tieneEmpalme();
 
       ~Camino();
 
    private:
 
-      /**
-       * Color del recorrido. La clase Color tiene solo tres atributos:
-       * rojo, verde y azul
-       */
-      Color * color;
+      Punto * comienzoRecorrido;
 
-      /**
-       * Lista de bifurcaciones encontradas en el recorrido
-       */
-      ListaEnlazada<Bifurcacion*> * bifurcaciones;
+      Punto * finRecorrido;
 
-      ListaEnlazada<Bifurcacion*> * empalmes;
-
-      ListaEnlazada<Casillero*> * recorrido;
-
-      int ancho;
-
-      int alto;
+      bool empalme;
 };
 
 #endif

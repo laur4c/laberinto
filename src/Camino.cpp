@@ -3,78 +3,35 @@
 
 using namespace std;
 
-Camino::Camino(Color * color) {
-   this->color = color;
-   this->recorrido = new ListaEnlazada<Casillero*>();
-   this->bifurcaciones = new ListaEnlazada<Bifurcacion*>();
-   this->empalmes = new ListaEnlazada<Bifurcacion*>();
+Camino::Camino() {
+   this->comienzoRecorrido = NULL;
+   this->finRecorrido = NULL;
+   this->empalme = false;
 }
 
-Color * Camino::obtenerColor() {
-   return this->color;
+void Camino::cambiarComienzo(Punto * punto) {
+   this->comienzoRecorrido = punto;
 }
 
-ListaEnlazada<Bifurcacion*> * Camino::obtenerBifurcaciones() {
-   return this->bifurcaciones;
+void Camino::cambiarFin(Punto * punto) {
+   this->finRecorrido = punto;
 }
 
-ListaEnlazada<Casillero*> * Camino::obtenerRecorrido() {
-   return this->recorrido;
+Punto * Camino::obtenerComienzo() {
+   return this->comienzoRecorrido;
 }
 
-void Camino::agregarCasillero(char orientacion, int pasos, bool tieneObjeto, string bifurcacion, string empalme) {
-   Casillero * casillero = new Casillero(orientacion, pasos, tieneObjeto);
-   casillero->cambiarBifurcacion(bifurcacion);
-   casillero->cambiarEmpalme(empalme);
-   this->recorrido->agregar(casillero);
+Punto * Camino::obtenerFin() {
+   return this->finRecorrido;
 }
 
-void Camino::agregarBifurcacion(string nombre, int x, int y) {
-   Bifurcacion * bifurcacion = new Bifurcacion(nombre, x, y);
-   this->bifurcaciones->agregar(bifurcacion);
+void Camino::marcarEmpalme() {
+   this->empalme = true;
 }
 
-void Camino::agregarEmpalme(string nombre, int x, int y) {
-   Bifurcacion * empalme = new Bifurcacion(nombre, x, y);
-   this->empalmes->agregar(empalme);
-}
-
-bool Camino::tieneEmpalmes() {
-   return !this->empalmes->estaVacia();
+bool Camino::tieneEmpalme() {
+   return this->empalme;
 }
 
 Camino::~Camino() {
-   delete this->bifurcaciones;
-   delete this->recorrido;
-}
-
-void Camino::mostrar() {
-   cout << "Camino: " << endl;
-   this->recorrido->mostrar();
-
-   cout << "Bifurcaciones: " << endl;
-   this->bifurcaciones->mostrar();
-}
-
-std::string Camino::aString() {
-   string str = "\nCamino: ";
-   str += "-------------------------------\n\n";
-
-   Casillero * casillero;
-   str += "Casilleros: \n\n";
-   int tamanio = this->recorrido->obtenerTamanio();
-   for (int i = 1; i <= tamanio; i++) {
-      casillero = this->recorrido->obtenerElemento(i);
-      str += casillero->aString() + "\n";
-   }
-
-   Bifurcacion * bifurcacion;
-   str += "Bifurcaciones: \n\n";
-   tamanio = this->bifurcaciones->obtenerTamanio();
-   for (int j = 1; j <= tamanio; j++) {
-      bifurcacion = this->bifurcaciones->obtenerElemento(j);
-      str += bifurcacion->aString() + "\n";
-   }
-
-   return str;
 }
