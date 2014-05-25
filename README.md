@@ -63,7 +63,7 @@
       Se encarga de procesar el archivo de texto y generar la lista de Comandos (ver arriba).
       La lista es de tipo cola.
 
-   * util.cpp:
+   * **util.cpp**:
       Tiene funciones que se utilizan en todo el sistema, como por ej. util::string_a_int()
       que transforma un string a entero.
 
