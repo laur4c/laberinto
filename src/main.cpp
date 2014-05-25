@@ -11,8 +11,7 @@ int main(int argc, char *argv[]) {
    string nombreArchivo;
    cout << "Ingrese el path del archivo: ";
 
-   // cin >> nombreArchivo;
-   nombreArchivo = "/home/laurac/src/fiuba/laberinto/test/Caminos.txt";
+   cin >> nombreArchivo;
    Parser parser(nombreArchivo);
    parser.iniciar();
 
