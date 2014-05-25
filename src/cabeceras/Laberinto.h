@@ -49,6 +49,8 @@ class Laberinto {
        */
       void mostrarInfo();
 
+      ~Laberinto();
+
    private:
 
       /**

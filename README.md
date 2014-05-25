@@ -6,10 +6,11 @@
 
 #### Integrantes:
 
-* Mariano Cinalli  
-* Lucas Dreko  
-* Santiago Montiel  
-* Ezequiel Guitler  
-* Laura Corvalán  
+* Mariano Cinalli
+* Lucas Dreko
+* Santiago Montiel
+* Ezequiel Guitler
+* Laura Corvalán
+
 
 

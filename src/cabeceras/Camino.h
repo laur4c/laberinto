@@ -79,6 +79,11 @@ class Camino {
        * Valor booleano que indica si el camino tiene uniones
        */
       bool empalme;
+
+      /**
+       * Valor booleano que indica si el camino tiene uniones
+       */
+      void eliminarTodoElRecorrido(char * orientaciones, Punto * punto);
 };
 
 #endif

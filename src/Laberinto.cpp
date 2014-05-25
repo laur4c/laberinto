@@ -208,3 +208,10 @@ InfoPunto * Laberinto::obtenerInfoDeComando(std::string comando, std::string arg
    return infoPunto;
 }
 
+Laberinto::~Laberinto() {
+   this->caminos->iniciarCursor();
+   while(this->caminos->avanzarCursor()) {
+      delete this->caminos->obtenerCursor();
+   }
+}
+

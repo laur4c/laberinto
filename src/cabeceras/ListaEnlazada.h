@@ -197,7 +197,6 @@ ListaEnlazada<T>::~ListaEnlazada() {
    while (this->frente != NULL) {
       Nodo<T> * aBorrar = this->frente;
       this->frente = this->frente->obtenerSiguiente();
-
       delete aBorrar;
    }
 }

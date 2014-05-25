@@ -33,5 +33,27 @@ bool Camino::tieneEmpalme() {
    return this->empalme;
 }
 
+void Camino::eliminarTodoElRecorrido(char * orientaciones, Punto * punto) {
+   char unaOrientacion;
+   Punto * puntoSiguiente;
+   for (unsigned int i = 0; i < 4; i++) {
+      unaOrientacion = orientaciones[i];
+
+      if (punto->tienePuntoEn(unaOrientacion)) {
+         puntoSiguiente = punto->obtenerPunto(unaOrientacion);
+         punto->cambiarPunto(unaOrientacion, NULL);
+         this->eliminarTodoElRecorrido(orientaciones, puntoSiguiente);
+      }
+   }
+   delete punto;
+}
+
 Camino::~Camino() {
+   char * orientaciones = new char[3];
+   orientaciones[0] = 'N';
+   orientaciones[1] = 'S';
+   orientaciones[2] = 'E';
+   orientaciones[3] = 'O';
+
+   this->eliminarTodoElRecorrido(orientaciones, this->comienzoRecorrido);
 }

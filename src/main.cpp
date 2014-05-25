@@ -13,12 +13,19 @@ int main(int argc, char *argv[]) {
 
    cin >> nombreArchivo;
    Parser parser(nombreArchivo);
-   parser.iniciar();
 
+   // Se genera una lista con comandos. Cada comando representa una directiva
+   // del archivo de texto
+   parser.iniciar();
    Cola<Comando*> * listaComandos = parser.obtenerLista();
    // cout << "Lista de comandos" << endl;
    // listaComandos->mostrar();
 
+   // A partir de la lista de comandos, se crea una lista de caminos
+   // El camino es una estructura de puntos entrelazados (cada punto tiene
+   // cuatro punteros, que representan las uniones del punto
+   // con otros puntos en todas las direcciones: norte, sur, este, oeste)
+   // Estos puntos pretenden representar todos los recorridos del laberinto
    Laberinto * laberinto = new Laberinto();
    laberinto->crearCaminosDesdeListaDeComandos(listaComandos);
 
@@ -32,5 +39,6 @@ int main(int argc, char *argv[]) {
    ImagenLaberinto * imagen = new ImagenLaberinto(laberinto->obtenerCaminos());
    imagen->generar();
 
+   delete laberinto;
    return 0;
 }
