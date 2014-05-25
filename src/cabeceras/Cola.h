@@ -1,7 +1,13 @@
 /**
    Laberinto - TP 1
 
-   @author Mariano Cinalli, Ezequiel Guitler, Santiago Montiel, Lucas Dreko, Laura Corvalan
+   Implementacion de una lista de tipo: Cola
+
+   @author Mariano Cinalli
+   @author Ezequiel Guitler
+   @author Santiago Montiel
+   @author Lucas Dreko
+   @author Laura Corvalan
 */
 
 #ifndef _COLA_H_

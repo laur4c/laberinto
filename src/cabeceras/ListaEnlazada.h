@@ -1,7 +1,11 @@
 /**
    Laberinto - TP 1
 
-   @author Mariano Cinalli, Ezequiel Guitler, Santiago Montiel, Lucas Dreko, Laura Corvalan
+   @author Mariano Cinalli
+   @author Ezequiel Guitler
+   @author Santiago Montiel
+   @author Lucas Dreko
+   @author Laura Corvalan
 */
 
 #ifndef _LISTA_ENLAZADA_H_

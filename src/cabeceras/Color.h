@@ -1,7 +1,13 @@
 /**
    Laberinto - TP 1
+   Representa un color.
 
-   @author Mariano Cinalli, Ezequiel Guitler, Santiago Montiel, Lucas Dreko, Laura Corvalan
+   @author Mariano Cinalli
+   @author Ezequiel Guitler
+   @author Santiago Montiel
+   @author Lucas Dreko
+   @author Laura Corvalan
+
 */
 
 #ifndef _COLOR_H_

@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
    cout << "Description cuantitativa del recorrido realizado por el caminante: " << endl;
    laberinto->mostrarInfo();
 
-   ImagenLaberinto * imagen = new ImagenLaberinto(laberinto->obtenerCaminos(), 3);
+   ImagenLaberinto * imagen = new ImagenLaberinto(laberinto->obtenerCaminos());
    imagen->generar();
 
    return 0;

@@ -1,8 +1,12 @@
 /**
    Laberinto - TP 1
-   Representa un nodo de un recorrido, el recorrido está implementado como una lista.
+   Contiene la informacion de un punto del recorrido.
 
-   @author Mariano Cinalli, Ezequiel Guitler, Santiago Montiel, Lucas Dreko, Laura Corvalan
+   @author Mariano Cinalli
+   @author Ezequiel Guitler
+   @author Santiago Montiel
+   @author Lucas Dreko
+   @author Laura Corvalan
 */
 
 #ifndef _INFO_PUNTO_H_
@@ -40,10 +44,13 @@ class InfoPunto {
        */
       std::string obtenerEmpalme();
 
+      /**
+       * Retorna true si el punto tiene empalme
+       */
       bool tieneEmpalme();
 
       /**
-       * Modifica el nombre de la bifurcacion con la que se une el casillero
+       * Modifica el nombre de la bifurcacion con la que se une el punto
        */
       void cambiarEmpalme(std::string nombre);
 
@@ -54,7 +61,7 @@ class InfoPunto {
       char obtenerOrientacion();
 
       /**
-       * Retorna total de pasos que ocupa el casillero (?)
+       * Retorna total de pasos que ocupa el punto
        */
       int obtenerCantidadDePasos();
 
@@ -80,7 +87,7 @@ class InfoPunto {
       std::string empalme;
 
       /**
-       * True si se tiro un objeto en el casillero, false caso contrario
+       * True si se tiro un objeto en el punto, false caso contrario
        */
       bool objeto;
 };
