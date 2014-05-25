@@ -105,7 +105,7 @@ InfoPunto * Laberinto::obtenerInfoDeComando(std::string comando, std::string arg
    } else
       throw "ERR: Comando Invalido";
 
-   this->info->sumar_pasos(pasos);
+   this->info->sumar_pasos(abs(pasos));
 
    InfoPunto * infoPunto = new InfoPunto(orientacion, pasos, tieneObjeto);
    infoPunto->cambiarBifurcacion(bifurcacion);
