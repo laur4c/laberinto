@@ -17,7 +17,6 @@ class NodoMochila {
 	private:
 		string elemento;
 		int cantidad;
-		NodoMochila* siguiente;
 		
 	public:
 		
@@ -27,8 +26,13 @@ class NodoMochila {
 		*
 		*/
 		NodoMochila(string elemento);
+		void mod_elemento(string elemento);
+		string obtenerElemento();
+		int obtenerCantidad();
+		void sumarCantidad();
+		void restarCantidad();
 
-	friend class Mochila;		
+//	friend class Mochila;		
 };
 
 #endif /* NODOMOCHILA_H_ */

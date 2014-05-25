@@ -30,6 +30,16 @@ class Nodo {
       void cambiarSiguiente(Nodo<T> * nodo);
 
       /**
+       * Retorna puntero al nodo anterior
+       */
+      Nodo<T> * obtenerAnterior();
+
+      /**
+       * Cambia el puntero al nodo anterior
+       */
+      void cambiarAnterior(Nodo<T> * nodo);
+
+      /**
        * Retorna el dato del nodo
        */
       T obtenerDato();
@@ -44,12 +54,18 @@ class Nodo {
        * Puntero al nodo siguiente
        */
       Nodo<T> * siguiente;
+
+      /**
+       * Puntero al nodo anterior
+       */
+      Nodo<T> * anterior;
 };
 
 template<class T>
 Nodo<T>::Nodo(T dato) {
    this->dato = dato;
    this->siguiente = NULL;
+   this->anterior = NULL;
 }
 
 template<class T>
@@ -67,4 +83,13 @@ void Nodo<T>::cambiarSiguiente(Nodo<T> * nodo) {
    this->siguiente = nodo;
 }
 
+template<class T>
+Nodo<T> * Nodo<T>::obtenerAnterior() {
+   return this->anterior;
+}
+
+template<class T>
+void Nodo<T>::cambiarAnterior(Nodo<T> * nodo) {
+   this->anterior = nodo;
+}
 #endif

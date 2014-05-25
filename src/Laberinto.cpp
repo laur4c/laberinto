@@ -25,8 +25,8 @@ Mochila * Laberinto::obtenerMochila() {
 }
 
 void Laberinto::agregarElementoAMochila(std::string elemento) {
-   if (this->mochila->existe_elemento(elemento)) {
-      this->mochila->sumar_elemento(elemento);
+   if (this->mochila->buscar_elemento(elemento)) {
+      this->mochila->sumar_elemento();
    } else {
       this->mochila->agregar_elemento(elemento);
    }
@@ -100,8 +100,12 @@ InfoPunto * Laberinto::obtenerInfoDeComando(std::string comando, std::string arg
       pasos = 1;
 
    } else if (comando == "T") {
-      tieneObjeto = true;
-      this->mochila->tirar_elemento(argumento);
+      if (this->mochila->buscar_elemento(argumento)) {
+         tieneObjeto = true;
+         this->mochila->tirar_elemento();
+      } else
+         throw "ERR: Se intenta tirar un elemento que no se encuentra en la Mochila";
+
    } else
       throw "ERR: Comando Invalido";
 

@@ -1,8 +1,10 @@
+#include "cabeceras/NodoMochila.h"
 #include "cabeceras/Mochila.h"
 
 Mochila::Mochila () {
 	this -> primernodo = NULL;
 	this -> ultimonodo = NULL;
+	this -> cursor = NULL;
 	this->tamanio = 0;
 };
 
@@ -10,73 +12,75 @@ bool Mochila::esta_vacia() {
 	return (this -> primernodo == NULL);
 }
 
-bool Mochila::existe_elemento (string elem_buscado) {
-	NodoMochila* seeker = this -> primernodo;
-	if (seeker == NULL) {
-		return false;
+bool Mochila::buscar_elemento (string elem_buscado) {
+	this->cursor = this->primernodo;
+	int pos = 1;
+
+	while ((pos <= this->tamanio) && (this->cursor->obtenerDato()->obtenerElemento() != elem_buscado)) {
+		this->cursor = this->cursor->obtenerSiguiente();
 	}
 
-	while ((seeker->siguiente != NULL) && (seeker->elemento != elem_buscado)) {
-		seeker = seeker->siguiente;
-	}
-
-	this -> encontrado = seeker;
-	return (seeker -> elemento == elem_buscado);
+	return (this->cursor->obtenerDato()->obtenerElemento() == elem_buscado);
 }
 
+
 void Mochila::agregar_elemento(string elemento) {
-	NodoMochila* nuevo = new NodoMochila(elemento);
+	Nodo<NodoMochila*>* nuevo = new Nodo<NodoMochila*>(new NodoMochila(elemento));
+
 	if (this->esta_vacia() ) {
 		this -> primernodo = nuevo;
 	}
 	else {
-		this -> ultimonodo -> siguiente = nuevo;
+		this -> ultimonodo->cambiarSiguiente(nuevo);
 	}
 	this -> ultimonodo = nuevo;
 	this -> tamanio++;
 };
 
-void Mochila::sumar_elemento (string elemento) {
-	this -> encontrado -> cantidad ++;
+void Mochila::sumar_elemento () {
+	this -> cursor->obtenerDato()->sumarCantidad();
 };
 
-void Mochila::tirar_elemento(string elem_buscado) {
-	NodoMochila* anterior = NULL;
-	NodoMochila* seeker = this -> primernodo;
-	while (seeker->elemento != elem_buscado) {
-		anterior = seeker;
-		seeker = seeker->siguiente;
-	};
-	/* No valido el supuesto caso que el elemento no se encuentre ya que suponemos que se
-	usará correctamente en situaciones validas, es decir cuando haya al menos 1 elemento */
-	if (seeker->cantidad == 1) {
-		if (anterior != NULL) {
-			anterior->siguiente = seeker->siguiente;
-		}
-		else {
-			this -> primernodo = seeker -> siguiente;
-		}
-		delete seeker;
-		this->tamanio--;
+string Mochila::obtenerElemento(){
+	return (this->cursor->obtenerDato()->obtenerElemento());
+}
+
+void Mochila::tirar_elemento() {
+
+	if (this->cursor->obtenerDato()->obtenerCantidad() > 1) {
+		this->cursor->obtenerDato()->restarCantidad();
 	}
 	else {
-		seeker->cantidad--;
-	};
+		Nodo<NodoMochila*>* auxSig = this->cursor->obtenerSiguiente();
+		Nodo<NodoMochila*>* auxAnt = this->cursor->obtenerAnterior();
+		if (auxAnt == NULL) { // Eliminando primero
+			this->primernodo = this->cursor->obtenerSiguiente();
+			auxSig->cambiarAnterior(NULL);
+		}
+		else {
+			auxAnt->cambiarSiguiente(this->cursor->obtenerSiguiente());
+			auxSig->cambiarAnterior(this->cursor->obtenerAnterior());
+		}
+
+		delete this->cursor;
+	}
 };
 
 void Mochila::mostrar() {
- 	NodoMochila* tmp = this->primernodo;
- 	for (int count=1; count <= this->tamanio; count++) {
- 		cout << "Objeto: " << tmp->elemento << "  Cantidad: " << tmp->cantidad << endl;
- 		tmp = tmp->siguiente;
+ 	this->cursor = this->primernodo;
+ 	int pos =1;
+ 	while (pos <= this->tamanio) {
+ 		cout << "Objeto: " << this->cursor->obtenerDato()->obtenerElemento() << "  Cantidad: " << this->cursor->obtenerDato()->obtenerCantidad() << endl;
+ 		this->cursor = this->cursor->obtenerSiguiente();
  	}
 };
 
 Mochila::~Mochila () {
-	NodoMochila* seeker = this->primernodo;
-	for ( int cont = 1; cont <= this->tamanio; cont++) {
-		delete seeker;
-		seeker = seeker->siguiente;
+	int pos = 1;
+	this->cursor = this->primernodo;
+ 	while (pos <= this->tamanio) {
+		delete this->cursor;
+		this->cursor = this->cursor->obtenerSiguiente();
 	}
 };
 
