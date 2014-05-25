@@ -19,6 +19,10 @@ void InfoRecorrido::sumar_paso() {
 	this->cant_pasos++;
 }
 
+void InfoRecorrido::sumar_pasos(int pasos) {
+	this->cant_pasos = this->cant_pasos + pasos;
+}
+
 void InfoRecorrido::sumar_giro() {
 	this->cant_giros++;
 }
