@@ -12,14 +12,14 @@
 * Ezequiel Guitler
 * Laura Corvalán
 
-+ src/cabeceras/
+#### + src/cabeceras/
    Headers (*.h)
 
-+ test/
+#### + test/
    Contiene un ejemplo que subieron al campus y otros archivos de prueba
    que utilizamos para probar el programa
 
-+ src/
+#### + src/
    Archivos fuente
 
    * Camino.cpp:
