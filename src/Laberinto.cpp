@@ -126,6 +126,7 @@ void Laberinto::unirPuntos() {
    string nombreEmpalme;
    bool encontrado;
 
+   // recorremos todas las uniones y las unimos con las correspondientes bifurcaciones
    this->empalmes->iniciarCursor();
    while(this->empalmes->avanzarCursor()) {
       ptoEmpalme = this->empalmes->obtenerCursor();
@@ -153,6 +154,7 @@ void Laberinto::agregarCamino(Color * color, ListaEnlazada<InfoPunto*> * listaIn
    char orientacion;
    Camino * camino = new Camino();
 
+   // Agrego el primer punto del camino
    listaInfo->iniciarCursor();
    listaInfo->avanzarCursor();
 
@@ -170,7 +172,7 @@ void Laberinto::agregarCamino(Color * color, ListaEnlazada<InfoPunto*> * listaIn
    }
 
    Punto * siguiente;
-
+   // Agrego los siguientes puntos del camino
    while(listaInfo->avanzarCursor()) {
       infoPunto = listaInfo->obtenerCursor();
       siguiente = new Punto(infoPunto, color);
@@ -178,6 +180,7 @@ void Laberinto::agregarCamino(Color * color, ListaEnlazada<InfoPunto*> * listaIn
       orientacion = infoPunto->obtenerOrientacion();
       camino->obtenerFin()->cambiarPunto(orientacion, siguiente);
       siguiente->cambiarPunto(this->obtenerOrientacionContraria(orientacion), camino->obtenerFin());
+
       camino->cambiarFin(siguiente);
 
       if (infoPunto->tieneBifurcacion()) {

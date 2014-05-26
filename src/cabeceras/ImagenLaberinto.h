@@ -21,7 +21,6 @@
 #include "ListaEnlazada.h"
 #include <string>
 
-const char orientaciones[] = {'N', 'S', 'E', 'O'};
 class ImagenLaberinto {
    public:
       /**
@@ -58,6 +57,11 @@ class ImagenLaberinto {
        * Color que se va a usar para pintar los objetos
        */
       Color * colorObjeto;
+
+      /**
+       * Array con orientaciones posibles: 'N', 'O', 'S', 'E'
+       */
+      char * orientaciones;
 
       /**
        * Dibuja en mapa total de unidades hacia el norte
@@ -122,5 +126,11 @@ class ImagenLaberinto {
        * Dibuja una unica unidad en la imagen
        */
       void dibujarUnidad(Color * color, int x, int y);
+
+      /**
+       * Carga el array de orientaciones. Este atributo se ultiza en el metodo dibujar()
+       * Para dibujar las uniones de los puntos en todas las direcciones
+       */
+      void cargarOrientaciones();
 };
 #endif

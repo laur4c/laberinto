@@ -6,6 +6,7 @@ ImagenLaberinto::ImagenLaberinto(ListaEnlazada<Camino*> * caminos, int unidad) {
    this->caminos = caminos;
    this->unidad = unidad;
    this->colorObjeto = new Color(0, 0, 0);
+   this->cargarOrientaciones();
 }
 
 void ImagenLaberinto::generar() {
@@ -121,13 +122,14 @@ void ImagenLaberinto::dibujar(Punto * punto, char orientacion, int x, int y, int
 
    // dibujo ramas en todas las direcciones
    for (unsigned int i = 0; i < 4; i++) {
-      unaOrientacion = orientaciones[i];
+      unaOrientacion = this->orientaciones[i];
 
       if (punto->tienePuntoEn(unaOrientacion) && !punto->obtenerPunto(unaOrientacion)->estaDibujado()) {
          info = punto->obtenerPunto(unaOrientacion)->obtenerInformacion();
          nvaOrientacion = info->obtenerOrientacion();
 
-         // si dibujo al reves cambio la orientacion del punto
+         // si dibujo al reves cambio la orientacion del punto, porque los caminos pueden ser recorridos desde
+         // el comienzo o desde cualquiera de sus puntos
          if (nvaOrientacion != unaOrientacion)
             nvaOrientacion = this->obtenerOrientacionContraria(nvaOrientacion);
 
@@ -192,5 +194,13 @@ char ImagenLaberinto::obtenerOrientacionContraria(char orientacion) {
       throw "ERR: Orientacion Invalida";
 
    return orientacionContraria;
+}
+
+void ImagenLaberinto::cargarOrientaciones() {
+   this->orientaciones = new char[3];
+   this->orientaciones[0] = 'N';
+   this->orientaciones[1] = 'S';
+   this->orientaciones[2] = 'E';
+   this->orientaciones[3] = 'O';
 }
 
