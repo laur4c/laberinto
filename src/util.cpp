@@ -35,4 +35,26 @@ namespace util {
       return ss.str();
    }
 
+   char obtener_orientacion_contraria(char orientacion) {
+      char orientacionContraria;
+
+      if (orientacion == 'E') {
+         orientacionContraria = 'O';
+
+      } else if (orientacion == 'O') {
+         orientacionContraria = 'E';
+
+      } else if (orientacion == 'S') {
+         orientacionContraria = 'N';
+
+      } else if (orientacion == 'N') {
+         orientacionContraria = 'S';
+
+      } else
+         throw "ERR: Orientacion Invalida";
+
+      return orientacionContraria;
+   }
+
+
 }

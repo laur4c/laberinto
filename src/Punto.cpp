@@ -14,7 +14,7 @@ Punto::Punto(InfoPunto * info, Color * color) {
 }
 
 bool Punto::tienePuntoEn(char orientacion) {
-   bool resultado;
+   bool resultado = false;
    switch(orientacion) {
       case 'N':
          resultado = this->tieneNorte();

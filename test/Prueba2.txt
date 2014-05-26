@@ -25,8 +25,8 @@ A 2
 GE
 A 3
 GN
-A 1
-U bifurcacion2
+A 2
+GO
 A 2
 GN
 A 3

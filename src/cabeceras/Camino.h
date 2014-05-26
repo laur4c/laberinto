@@ -10,7 +10,7 @@
    @author Mariano Cinalli
    @author Ezequiel Guitler
    @author Santiago Montiel
-   @author Lucas Dreko
+   @author Lucas Bonastre
    @author Laura Corvalan
 */
 
@@ -18,6 +18,7 @@
 #define _CAMINO_H_
 
 #include "Punto.h"
+#include "util.h"
 #include <string>
 
 class Camino {

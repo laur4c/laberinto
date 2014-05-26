@@ -40,6 +40,7 @@ void Laberinto::crearCaminosDesdeListaDeComandos(Cola<Comando*> * comandos) {
    Color * colorActual;
    char ultimaOrientacion = 'X'; // por default
    ListaEnlazada<InfoPunto*> * listaInfo;
+   InfoPunto * infoPtoAnterior;
 
    while (!comandos->estaVacia()) {
       comando = comandos->desacolar();
@@ -49,6 +50,7 @@ void Laberinto::crearCaminosDesdeListaDeComandos(Cola<Comando*> * comandos) {
       if(nombreComando == "PP") { // Punto de partida
          listaInfo = new ListaEnlazada<InfoPunto*>();
          colorActual = util::string_a_color(argumento);
+         infoPtoAnterior = NULL;
 
       } else if(nombreComando == "PLL") { // Punto de llegada
          if (listaInfo == NULL)
@@ -65,57 +67,72 @@ void Laberinto::crearCaminosDesdeListaDeComandos(Cola<Comando*> * comandos) {
       } else if (nombreComando == "L") { // Levantar objeto
          this->agregarElementoAMochila(argumento);
 
-      } else {
-         infoPunto = this->obtenerInfoDeComando(nombreComando, argumento, ultimaOrientacion);
+      } else if (nombreComando == "A" || nombreComando == "R" || nombreComando == "U" || nombreComando == "B") {
+         if (nombreComando == "B") {
+            // y si el primer comando es una Bifurcacion??
+            // se agrega un punto a la lista con pasos = 0 porque ante una bifurcacion no se avanzan pasos
+            infoPunto = this->obtenerInfoBifurcacionDeComando(argumento, ultimaOrientacion);
+         } else {
+            infoPunto = this->obtenerInfoDeComando(nombreComando, argumento, ultimaOrientacion);
+            infoPtoAnterior = infoPunto;
+         }
          listaInfo->agregar(infoPunto);
-      }
+
+      } else if(nombreComando == "T") {
+         this->tirarElementoEnPuntoAnterior(infoPtoAnterior, argumento);
+
+      } else
+         throw "ERR: Comando Invalido";
    }
 
    this->unirPuntos();
 }
 
 InfoPunto * Laberinto::obtenerInfoDeComando(std::string comando, std::string argumento, char orientacion) {
-   string bifurcacion = "";
    string empalme = "";
    int pasos = 0;
-   bool tieneObjeto = false;
 
    if(comando == "A") {
       pasos = util::string_a_int(argumento);
 
    } else if(comando == "R") {
-      pasos = util::string_a_int(argumento) * -1;
-
-   } else if(comando == "B") {
-      this->info->sumar_bifurcacion();
-
-      int pos = argumento.find(" ", 0);
-      orientacion = argumento.substr(0, pos).c_str()[0];
-      bifurcacion = argumento.substr(pos + 1);
+      orientacion = util::obtener_orientacion_contraria(orientacion);
+      pasos = util::string_a_int(argumento);
 
    } else if (comando == "U") {
       this->info->sumar_union();
 
       empalme = argumento;
       pasos = 1;
-
-   } else if (comando == "T") {
-      if (this->mochila->existe_elemento(argumento)) {
-         tieneObjeto = true;
-         this->mochila->tirar_elemento(argumento);
-      } else
-         throw "ERR: Se intenta tirar un elemento que no se encuentra en la Mochila";
-
-   } else
-      throw "ERR: Comando Invalido";
+   }
 
    this->info->sumar_pasos(abs(pasos));
 
-   InfoPunto * infoPunto = new InfoPunto(orientacion, pasos, tieneObjeto);
-   infoPunto->cambiarBifurcacion(bifurcacion);
+   InfoPunto * infoPunto = new InfoPunto(orientacion, pasos, false);
    infoPunto->cambiarEmpalme(empalme);
 
    return infoPunto;
+}
+
+InfoPunto * Laberinto::obtenerInfoBifurcacionDeComando(std::string infoBifurcacion, char orientacion) {
+   this->info->sumar_bifurcacion();
+
+   int pos = infoBifurcacion.find(" ", 0);
+   char bifurcacionOrientacion = infoBifurcacion.substr(0, pos).c_str()[0];
+   std::string bifurcacionNombre = infoBifurcacion.substr(pos + 1);
+
+   InfoPunto * infoPunto = new InfoPunto(orientacion, 0, false);
+   infoPunto->cambiarBifurcacion(bifurcacionNombre, bifurcacionOrientacion);
+   return infoPunto;
+}
+
+void Laberinto::tirarElementoEnPuntoAnterior(InfoPunto * infoPtoAnterior, std::string objeto) {
+   if (this->mochila->existe_elemento(objeto)) {
+      this->mochila->tirar_elemento(objeto);
+      infoPtoAnterior->marcarConObjeto();
+
+   } else
+      throw "ERR: Se intenta tirar un elemento que no se encuentra en la Mochila";
 }
 
 void Laberinto::unirPuntos() {
@@ -125,6 +142,10 @@ void Laberinto::unirPuntos() {
 
    string nombreEmpalme;
    bool encontrado;
+
+   Punto * ptoSiguiente;
+   char orientacionEmpalme;
+   char orientacionBifurcacion;
 
    // recorremos todas las uniones y las unimos con las correspondientes bifurcaciones
    this->empalmes->iniciarCursor();
@@ -142,8 +163,19 @@ void Laberinto::unirPuntos() {
 
          if (infoPunto->obtenerBifurcacion() == nombreEmpalme) {
             encontrado = true;
-            ptoBifurcacion->cambiarPunto(infoPunto->obtenerOrientacion(), ptoEmpalme);
-            ptoEmpalme->cambiarPunto(ptoEmpalme->obtenerInformacion()->obtenerOrientacion(), ptoBifurcacion);
+
+            orientacionBifurcacion = infoPunto->obtenerOrientacionDeBifurcacion();
+            orientacionEmpalme = util::obtener_orientacion_contraria(orientacionBifurcacion);
+
+            ptoBifurcacion->cambiarPunto(orientacionBifurcacion, ptoEmpalme);
+
+            if (!ptoEmpalme->tienePuntoEn(orientacionEmpalme)) {
+               ptoEmpalme->cambiarPunto(orientacionEmpalme, ptoBifurcacion);
+            } else {
+               ptoSiguiente = ptoEmpalme->obtenerPunto(orientacionEmpalme);
+               ptoEmpalme->cambiarPunto(orientacionEmpalme, ptoBifurcacion);
+               ptoBifurcacion->cambiarPunto(orientacionEmpalme, ptoSiguiente);
+            }
          }
       }
    }
@@ -179,7 +211,7 @@ void Laberinto::agregarCamino(Color * color, ListaEnlazada<InfoPunto*> * listaIn
 
       orientacion = infoPunto->obtenerOrientacion();
       camino->obtenerFin()->cambiarPunto(orientacion, siguiente);
-      siguiente->cambiarPunto(this->obtenerOrientacionContraria(orientacion), camino->obtenerFin());
+      siguiente->cambiarPunto(util::obtener_orientacion_contraria(orientacion), camino->obtenerFin());
 
       camino->cambiarFin(siguiente);
 
@@ -193,27 +225,6 @@ void Laberinto::agregarCamino(Color * color, ListaEnlazada<InfoPunto*> * listaIn
       }
    }
    this->caminos->agregar(camino);
-}
-
-char Laberinto::obtenerOrientacionContraria(char orientacion) {
-   char orientacionContraria;
-
-   if (orientacion == 'E') {
-      orientacionContraria = 'O';
-
-   } else if (orientacion == 'O') {
-      orientacionContraria = 'E';
-
-   } else if (orientacion == 'S') {
-      orientacionContraria = 'N';
-
-   } else if (orientacion == 'N') {
-      orientacionContraria = 'S';
-
-   } else
-      throw "ERR: Orientacion Invalida";
-
-   return orientacionContraria;
 }
 
 Laberinto::~Laberinto() {

@@ -8,7 +8,7 @@
    @author Mariano Cinalli
    @author Ezequiel Guitler
    @author Santiago Montiel
-   @author Lucas Dreko
+   @author Lucas Bonastre
    @author Laura Corvalan
 */
 
@@ -16,6 +16,8 @@
 #define _IMAGEN_LABERINTO_H_
 
 #include "../EasyBMP/EasyBMP.h"
+#include "util.h"
+
 #include "Camino.h"
 #include "Color.h"
 #include "ListaEnlazada.h"
@@ -104,9 +106,9 @@ class ImagenLaberinto {
       void avanzarEste(Color * color, int &x, int &y, int total);
 
       /**
-       * Retorna la orientacion contraria. Por ej. si orientacion = 'N' retorna 'S'
+       * Modifica las coordenadas segun a que orientacion me vaya a mover
        */
-      char obtenerOrientacionContraria(char orientacion);
+      void cambiarCoordenadasPorOrientacion(char orientacion, int &x, int &y);
 
       /**
        * Este metodo se encarga de dibujar el punto y las ramas del mismo

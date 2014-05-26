@@ -7,7 +7,7 @@
 #### Integrantes:
 
 * Mariano Cinalli
-* Lucas Dreko
+* Lucas Bonastre
 * Santiago Montiel
 * Ezequiel Guitler
 * Laura Corvalán

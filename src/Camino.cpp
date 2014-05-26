@@ -36,12 +36,17 @@ bool Camino::tieneEmpalme() {
 void Camino::eliminarTodoElRecorrido(char * orientaciones, Punto * punto) {
    char unaOrientacion;
    Punto * puntoSiguiente;
+
    for (unsigned int i = 0; i < 4; i++) {
       unaOrientacion = orientaciones[i];
 
       if (punto->tienePuntoEn(unaOrientacion)) {
          puntoSiguiente = punto->obtenerPunto(unaOrientacion);
+
+         // elimino vinculacion entre puntos, para evitar un double free
          punto->cambiarPunto(unaOrientacion, NULL);
+         puntoSiguiente->cambiarPunto(util::obtener_orientacion_contraria(unaOrientacion), NULL);
+
          this->eliminarTodoElRecorrido(orientaciones, puntoSiguiente);
       }
    }

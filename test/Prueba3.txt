@@ -16,13 +16,14 @@ T moneda
 GE
 A 3
 GN
-A 4
+A 3
 PLL
 PP 130 186 47
 GS
 A 4
-BO bifurcacion2
-BO bifurcacion3
+BE bifurcacion2
+GO
+A 2
 PLL
 PP 51 86 168
 GO
@@ -31,5 +32,7 @@ GS
 A 6
 GO
 A 5
-U bifurcacion3
+U bifurcacion2
+A 10
+U bifurcacion1
 PLL

@@ -5,7 +5,7 @@
    @author Mariano Cinalli
    @author Ezequiel Guitler
    @author Santiago Montiel
-   @author Lucas Dreko
+   @author Lucas Bonastre
    @author Laura Corvalan
 */
 
@@ -101,9 +101,17 @@ class Laberinto {
       InfoPunto * obtenerInfoDeComando(std::string comando, std::string argumento, char orientacion);
 
       /**
-       * Retorna orientacion contraria. Por ej. si orientacion = 'N', entonces el valor retornado es: 'S'
+       * Retorna una instancia de InfoPunto en base al comando procesado y su argumento.
+       * Ante una bifurcacion se agrega a la lista de info de los puntos, un punto mas de pasos = 0
        */
-      char obtenerOrientacionContraria(char orientacion);
+      InfoPunto * obtenerInfoBifurcacionDeComando(std::string infoBifurcacion, char orientacion);
+
+      /**
+       * Tirar un elemento en el punto anterior
+       * Lo marca para que indique que tiene un objeto y remueve el elemento de la mochila
+       */
+      void tirarElementoEnPuntoAnterior(InfoPunto * infoPtoAnterior, std::string objeto);
+
 };
 
 #endif

@@ -26,6 +26,11 @@ namespace util {
     */
    std::string char_a_string(char i);
 
+   /**
+    * Retorna la orientacion contraria. Por ej. si orientacion = 'N' retorna 'S'
+    */
+   char obtener_orientacion_contraria(char orientacion);
+
 }
 
 #endif

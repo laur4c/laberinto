@@ -5,7 +5,7 @@
    @author Mariano Cinalli
    @author Ezequiel Guitler
    @author Santiago Montiel
-   @author Lucas Dreko
+   @author Lucas Bonastre
    @author Laura Corvalan
 */
 
@@ -32,12 +32,20 @@ class InfoPunto {
        */
       std::string obtenerBifurcacion();
 
+      /**
+       * Retorna la orientacion de la bifurcacion
+       */
+      char obtenerOrientacionDeBifurcacion();
+
+      /**
+       * Retorna true si tiene bifurcacion, false caso contrario
+       */
       bool tieneBifurcacion();
 
       /**
-       * Modifica el nombre de la bifurcacion
+       * Modifica el nombre y la orientacion de la bifurcacion
        */
-      void cambiarBifurcacion(std::string nombre);
+      void cambiarBifurcacion(std::string nombre, char orientacion);
 
       /**
        * Retorna nombre union
@@ -70,6 +78,11 @@ class InfoPunto {
        */
       bool hayObjeto();
 
+      /**
+       * Setea en true el atributo objeto, que indica si hay un objeto en el punto o no
+       */
+      void marcarConObjeto();
+
       std::string aString();
 
    private:
@@ -77,9 +90,14 @@ class InfoPunto {
       int cantidadDePasos;
 
       /**
-       * Nombre bifurcacion
+       * Nombre de la bifurcacion
        */
       std::string bifurcacion;
+
+      /**
+       * Orientacion de la bifurcacion
+       */
+      char bifurcacionOrientacion;
 
       /**
        * Nombre union. La palabra "union" es una palabra reservada en c++

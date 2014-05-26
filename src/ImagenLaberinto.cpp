@@ -58,59 +58,53 @@ void ImagenLaberinto::generar() {
 void ImagenLaberinto::dibujar(Punto * punto, char orientacion, int x, int y, int &maxAncho) {
    InfoPunto * infoPunto = punto->obtenerInformacion();
    int pasos = infoPunto->obtenerCantidadDePasos();
-
-   bool estaAvanzando = pasos > 0; // o retrocede...
-   pasos = abs(pasos);
    Color * color = punto->obtenerColor();
 
-   switch(orientacion) {
-      case 'N':
-         if (infoPunto->hayObjeto()) {
-            this->avanzarNorte(this->colorObjeto, x, y, 1);
-            pasos--;
-         }
+   if (pasos > 0) {
+      switch(orientacion) {
+         case 'N':
+            if (infoPunto->hayObjeto()) {
+               if (pasos > 1)
+                  this->avanzarNorte(color, x, y, pasos - 1);
 
-         if (estaAvanzando) {
-            this->avanzarNorte(color, x, y, pasos);
-         } else {
-            this->avanzarSur(color, x, y, pasos);
-         }
-         break;
-      case 'S':
-         if (infoPunto->hayObjeto()) {
-            this->avanzarSur(this->colorObjeto, x, y, 1);
-            pasos--;
-         }
+               this->avanzarNorte(this->colorObjeto, x, y, 1);
 
-         if (estaAvanzando)
-            this->avanzarSur(color, x, y, pasos);
-         else
-            this->avanzarNorte(color, x, y, pasos);
-         break;
+            } else
+               this->avanzarNorte(color, x, y, pasos);
 
-      case 'E':
-         if (infoPunto->hayObjeto()) {
-            this->avanzarEste(this->colorObjeto, x, y, 1);
-            pasos--;
-         }
+            break;
+         case 'S':
+            if (infoPunto->hayObjeto()) {
+               if (pasos > 1)
+                  this->avanzarSur(color, x, y, pasos - 1);
 
-         if (estaAvanzando)
-            this->avanzarEste(color, x, y, pasos);
-         else
-            this->avanzarOeste(color, x, y, pasos);
-         break;
+               this->avanzarSur(this->colorObjeto, x, y, 1);
 
-      case 'O':
-         if (infoPunto->hayObjeto()) {
-            this->avanzarOeste(this->colorObjeto, x, y, 1);
-            pasos--;
-         }
+            } else
+               this->avanzarSur(color, x, y, pasos);
 
-         if (estaAvanzando)
-            this->avanzarOeste(color, x, y, pasos);
-         else
-            this->avanzarEste(color, x, y, pasos);
-         break;
+            break;
+         case 'E':
+            if (infoPunto->hayObjeto()) {
+               if (pasos > 1)
+                  this->avanzarEste(color, x, y, pasos - 1);
+
+               this->avanzarEste(this->colorObjeto, x, y, 1);
+            } else
+               this->avanzarEste(color, x, y, pasos);
+
+            break;
+         case 'O':
+            if (infoPunto->hayObjeto()) {
+               if (pasos > 1)
+                  this->avanzarOeste(color, x, y, pasos - 1);
+
+               this->avanzarOeste(this->colorObjeto, x, y, 1);
+
+            } else
+               this->avanzarOeste(color, x, y, pasos);
+            break;
+      }
    }
 
    punto->marcarComoDibujado();
@@ -131,38 +125,68 @@ void ImagenLaberinto::dibujar(Punto * punto, char orientacion, int x, int y, int
          // si dibujo al reves cambio la orientacion del punto, porque los caminos pueden ser recorridos desde
          // el comienzo o desde cualquiera de sus puntos
          if (nvaOrientacion != unaOrientacion)
-            nvaOrientacion = this->obtenerOrientacionContraria(nvaOrientacion);
+            nvaOrientacion = util::obtener_orientacion_contraria(nvaOrientacion);
+
+         if (pasos > 0)
+            this->cambiarCoordenadasPorOrientacion(nvaOrientacion, x, y);
 
          this->dibujar(punto->obtenerPunto(unaOrientacion), nvaOrientacion, x, y, maxAncho);
       }
    }
 }
 
+void ImagenLaberinto::cambiarCoordenadasPorOrientacion(char orientacion, int &x, int &y) {
+   switch (orientacion) {
+      case 'N':
+         y = y - this->unidad;
+         break;
+
+      case 'S':
+         y = y + this->unidad;
+         break;
+
+      case 'E':
+         x = x + this->unidad;
+         break;
+
+      case 'O':
+         x = x - this->unidad;
+         break;
+
+      default:
+         throw "ERR: Orientacion Invalida";
+   }
+}
+
 void ImagenLaberinto::avanzarNorte(Color * color, int &x, int &y, int total) {
    for (int i = 1; i <= total; i++) {
+      if (i != 1) y = y - this->unidad;
+
       this->dibujarUnidad(color, x, y);
-      y = y - this->unidad;
    }
 }
 
 void ImagenLaberinto::avanzarSur(Color * color, int &x, int &y, int total) {
    for (int i = 1; i <= total; i++) {
+      if (i != 1) y = y + this->unidad;
+
       this->dibujarUnidad(color, x, y);
-      y = y + this->unidad;
    }
 }
 
 void ImagenLaberinto::avanzarOeste(Color * color, int &x, int &y, int total) {
    for (int i = 1; i <= total; i++) {
+      if (i != 1) x = x - this->unidad;
+
       this->dibujarUnidad(color, x, y);
-      x = x - this->unidad;
    }
 }
 
 void ImagenLaberinto::avanzarEste(Color * color, int &x, int &y, int total) {
    for (int i = 1; i <= total; i++) {
+      if (i != 1) x = x + this->unidad;
+
       this->dibujarUnidad(color, x, y);
-      x = x + this->unidad;
    }
 }
 
@@ -174,26 +198,6 @@ void ImagenLaberinto::dibujarUnidad(Color * color, int x, int y) {
          this->imagen(i + x, j + y)->Blue = color->azul;
       }
    }
-}
-
-char ImagenLaberinto::obtenerOrientacionContraria(char orientacion) {
-   char orientacionContraria;
-   if (orientacion == 'S')
-      orientacionContraria ='N';
-
-   else if (orientacion == 'N')
-      orientacionContraria = 'S';
-
-   else if (orientacion == 'E')
-      orientacionContraria = 'O';
-
-   else if (orientacion == 'O')
-      orientacionContraria = 'E';
-
-   else
-      throw "ERR: Orientacion Invalida";
-
-   return orientacionContraria;
 }
 
 void ImagenLaberinto::cargarOrientaciones() {

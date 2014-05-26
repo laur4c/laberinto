@@ -5,7 +5,7 @@
    por saltos de linea
 
    @author Santiago Montiel
-   @author Lucas Dreko
+   @author Lucas Bonastre
    @author Laura Corvalan
 */
 
