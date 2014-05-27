@@ -1,3 +1,14 @@
+/**
+ * Integrantes:
+ *
+ * Bonastre, Lucas 97106
+ * Cinalli, Mariano Roberto  95456
+ * Corvalan, Laura Estefania 93082
+ * Guitler, Ezequiel Oscar 96477
+ * Sosa Montiel, Santiago 95947
+ */
+
+
 #include <iostream>
 
 #include "cabeceras/ImagenLaberinto.h"
