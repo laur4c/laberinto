@@ -1,10 +1,5 @@
 /**
    Laberinto - TP 1
-
-   @author Mariano Cinalli
-   @author Ezequiel Guitler
-   @author Santiago Montiel
-   @author Lucas Bonastre
    @author Laura Corvalan
 */
 
