@@ -1,35 +1,35 @@
 #include "cabeceras/InfoRecorrido.h"
 
 InfoRecorrido::InfoRecorrido() {
-	this -> cant_bifurcaciones = 0;
-	this -> cant_uniones = 0;
-	this -> cant_pasos = 0;
-	this -> cant_giros = 0;
+	this->totalBifurcaciones = 0;
+	this->totalUniones = 0;
+	this->totalPasos = 0;
+	this->totalGiros = 0;
 }
 
-void InfoRecorrido::sumar_bifurcacion() {
-	this->cant_bifurcaciones++;
+void InfoRecorrido::agregarBifurcacion() {
+	this->totalBifurcaciones++;
 }
 
-void InfoRecorrido::sumar_union() {
-	this->cant_uniones++;
+void InfoRecorrido::agregarUnion() {
+	this->totalUniones++;
 }
 
-void InfoRecorrido::sumar_paso() {
-	this->cant_pasos++;
+void InfoRecorrido::agregarPaso() {
+	this->totalPasos++;
 }
 
-void InfoRecorrido::sumar_pasos(int pasos) {
-	this->cant_pasos = this->cant_pasos + pasos;
+void InfoRecorrido::agregarPasos(int pasos) {
+	this->totalPasos = this->totalPasos + pasos;
 }
 
-void InfoRecorrido::sumar_giro() {
-	this->cant_giros++;
+void InfoRecorrido::agregarGiro() {
+	this->totalGiros++;
 }
 
 void InfoRecorrido::mostrar() {
-	cout << "Cantidad de pasos:         " << this -> cant_pasos << endl;
-	cout << "Cantidad de giros:         " << this -> cant_giros << endl;
-	cout << "Cantidad de bifurcaciones: " << this -> cant_bifurcaciones << endl;
-	cout << "Cantidad de uniones:       " << this -> cant_uniones << endl;
+	cout << "Total Pasos:         " << this->totalPasos << endl;
+	cout << "Total Giros:         " << this->totalGiros << endl;
+	cout << "Total Bifurcaciones: " << this->totalBifurcaciones << endl;
+	cout << "Total Uniones:       " << this->totalUniones << endl;
 }

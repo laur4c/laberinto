@@ -7,10 +7,6 @@
 
    Ver Punto.h
 
-   @author Mariano Cinalli
-   @author Ezequiel Guitler
-   @author Santiago Montiel
-   @author Lucas Bonastre
    @author Laura Corvalan
 */
 

@@ -1,3 +1,10 @@
+/**
+   Laberinto - TP 1
+   Vertice del grafo
+
+   @author Laura Corvalan
+*/
+
 #ifndef _VERTICE_H_
 #define _VERTICE_H_
 

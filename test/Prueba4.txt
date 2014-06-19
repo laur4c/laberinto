@@ -1,0 +1,22 @@
+PP Vertice1 34 177 76
+GS
+L PALO
+A 4
+L PALO
+GE
+A 3
+BE bif1
+GS
+A 1
+PLL Vertice2
+PP Vertice3 255 174 201
+GS
+A 10
+T PALO
+A 2
+GO
+A 3
+U bif1
+GS
+A 10
+PLL Vertice4

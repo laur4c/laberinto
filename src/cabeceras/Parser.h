@@ -4,8 +4,6 @@
    ó más recorridos del laberinto. Las intrucciones estan separadas
    por saltos de linea
 
-   @author Santiago Montiel
-   @author Lucas Bonastre
    @author Laura Corvalan
 */
 

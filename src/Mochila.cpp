@@ -1,82 +1,57 @@
 #include "cabeceras/Mochila.h"
 
-Mochila::Mochila () {
-	this -> primernodo = NULL;
-	this -> ultimonodo = NULL;
-	this->tamanio = 0;
-};
-
-bool Mochila::esta_vacia() {
-	return (this -> primernodo == NULL);
+Mochila::Mochila() {
+	this->items = new ListaEnlazada<ItemMochila*>();
 }
 
-bool Mochila::existe_elemento (string elem_buscado) {
-	NodoMochila* seeker = this -> primernodo;
-	if (seeker == NULL) {
-		return false;
-	}
+void Mochila::agregar(std::string nombre) {
+	if (this->existeItem(nombre)) {
+		ItemMochila * item = this->obtenerItem(nombre);
+		item->total++;
 
-	while ((seeker->siguiente != NULL) && (seeker->elemento != elem_buscado)) {
-		seeker = seeker->siguiente;
+	} else {
+		this->items->agregar(new ItemMochila(nombre));
 	}
-
-	this -> encontrado = seeker;
-	return (seeker -> elemento == elem_buscado);
 }
 
-void Mochila::agregar_elemento(string elemento) {
-	NodoMochila* nuevo = new NodoMochila(elemento);
-	if (this->esta_vacia() ) {
-		this -> primernodo = nuevo;
-	}
-	else {
-		this -> ultimonodo -> siguiente = nuevo;
-	}
-	this -> ultimonodo = nuevo;
-	this -> tamanio++;
-};
+void Mochila::quitar(std::string nombre) {
+	ItemMochila * aQuitar = this->obtenerItem(nombre);
+	if (this->existeItem(nombre) && aQuitar->total > 0) {
+		aQuitar->total--;
 
-void Mochila::sumar_elemento (string elemento) {
-	this -> encontrado -> cantidad ++;
-};
+	} else
+		throw "ERR: Se intenta tirar un elemento que no se encuentra en la mochila";
+}
 
-void Mochila::tirar_elemento(string elem_buscado) {
-	NodoMochila* anterior = NULL;
-	NodoMochila* seeker = this -> primernodo;
-	while (seeker->elemento != elem_buscado) {
-		anterior = seeker;
-		seeker = seeker->siguiente;
-	};
-	/* No valido el supuesto caso que el elemento no se encuentre ya que suponemos que se
-	usará correctamente en situaciones validas, es decir cuando haya al menos 1 elemento */
-	if (seeker->cantidad == 1) {
-		if (anterior != NULL) {
-			anterior->siguiente = seeker->siguiente;
-		}
-		else {
-			this -> primernodo = seeker -> siguiente;
-		}
-		delete seeker;
-		this->tamanio--;
+bool Mochila::existeItem(std::string nombre) {
+	bool encontrado = false;
+	this->items->iniciarCursor();
+	while(!encontrado && this->items->avanzarCursor()) {
+		encontrado = (this->items->obtenerCursor()->nombre == nombre);
 	}
-	else {
-		seeker->cantidad--;
-	};
-};
+	return encontrado;
+}
+
+ItemMochila * Mochila::obtenerItem(std::string nombre) {
+	ItemMochila * cursor;
+	bool encontrado = false;
+	this->items->iniciarCursor();
+	while(!encontrado && this->items->avanzarCursor()) {
+		cursor = this->items->obtenerCursor();
+		encontrado = (cursor->nombre == nombre);
+	}
+	return cursor;
+}
 
 void Mochila::mostrar() {
- 	NodoMochila* tmp = this->primernodo;
- 	for (int count=1; count <= this->tamanio; count++) {
- 		cout << "Objeto: " << tmp->elemento << "  Cantidad: " << tmp->cantidad << endl;
- 		tmp = tmp->siguiente;
- 	}
-};
-
-Mochila::~Mochila () {
-	NodoMochila* seeker = this->primernodo;
-	for ( int cont = 1; cont <= this->tamanio; cont++) {
-		delete seeker;
-		seeker = seeker->siguiente;
+	ItemMochila * cursor;
+	this->items->iniciarCursor();
+	while(this->items->avanzarCursor()) {
+		cursor = this->items->obtenerCursor();
+		if (cursor->total > 0) {
+			std::cout << cursor->nombre;
+			std::cout << ": ";
+			std::cout << cursor->total << std::endl;
+		}
 	}
-};
-
+}

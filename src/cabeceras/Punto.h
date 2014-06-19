@@ -1,16 +1,12 @@
 /**
    Laberinto - TP 1
-   Representa un punto del laberinto.
+   Representa un vector del laberinto. (Mal elegido el nombre de la clase :/)
    Tiene punteros a las cuatro direcciones posibles, para poder representar
    toda la estructura de los caminos.
 
-   Cuando se generan los caminos en la clase Laberinto, los puntos se unen
+   Cuando se generan los caminos en la clase Laberinto, los "puntos" se unen
    de acuerdo a las uniones y bifurcaciones que se indiquen desde el archivo de texto
 
-   @author Mariano Cinalli
-   @author Ezequiel Guitler
-   @author Santiago Montiel
-   @author Lucas Bonastre
    @author Laura Corvalan
 */
 

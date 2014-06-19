@@ -1,3 +1,10 @@
+/**
+   Laberinto - TP 1
+   Arista: Relacion entre dos vertices del grafo
+
+   @author Laura Corvalan
+*/
+
 #ifndef _ARISTA_H_
 #define _ARISTA_H_
 
@@ -8,12 +15,19 @@ template<class V> class Arista {
    public:
       Arista(V dato, Vertice<V> * entrada, Vertice<V> * salida, int peso);
 
-
+      /**
+       * Retorna entrada de la arista
+       */
       Vertice<V> * obtenerEntrada();
 
-
+      /**
+       * Retorna salida de la arista
+       */
       Vertice<V> * obtenerSalida();
 
+      /**
+       * Retorna el peso de la arista
+       */
       int obtenerPeso();
 
       void mostrar();

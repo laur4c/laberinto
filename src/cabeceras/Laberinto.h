@@ -1,11 +1,6 @@
 /**
    Laberinto - TP 1
 
-
-   @author Mariano Cinalli
-   @author Ezequiel Guitler
-   @author Santiago Montiel
-   @author Lucas Bonastre
    @author Laura Corvalan
 */
 
@@ -21,6 +16,7 @@
 #include "ListaEnlazada.h"
 #include "InfoRecorrido.h"
 #include "Cola.h"
+#include "Grafo.h"
 
 class Laberinto {
    public:
@@ -33,6 +29,8 @@ class Laberinto {
        * A partir de una lista de comandos, popula la lista de caminos
        */
       void crearCaminosDesdeListaDeComandos(Cola<Comando*> * comandos);
+
+      Grafo<std::string> * crearGrafoDesdeListaDeComandos(Cola<Comando*> * comandos);
 
       /**
        * Retorna lista de caminos
@@ -112,6 +110,7 @@ class Laberinto {
        */
       void tirarElementoEnPuntoAnterior(InfoPunto * infoPtoAnterior, std::string objeto);
 
+      void generarArista(Grafo<std::string> * grafo, Cola<Comando*> * componentes);
 };
 
 #endif

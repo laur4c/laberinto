@@ -2,10 +2,6 @@
    Laberinto - TP 1
    Contiene la informacion de un punto del recorrido.
 
-   @author Mariano Cinalli
-   @author Ezequiel Guitler
-   @author Santiago Montiel
-   @author Lucas Bonastre
    @author Laura Corvalan
 */
 

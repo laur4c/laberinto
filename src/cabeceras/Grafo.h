@@ -1,3 +1,11 @@
+/**
+   Laberinto - TP 1
+   Grafo: Implementacion con listas enlazadas
+   Grafo dirigido ponderado
+
+   @author Laura Corvalan
+*/
+
 #ifndef _GRAFO_H_
 #define _GRAFO_H_
 
@@ -14,8 +22,8 @@
 #define MAX_PESO_ARISTA 100000
 
 struct comparador {
-   bool operator() (int * a, int * b) {
-      return a[1] > b[1];
+   bool operator() (pair<string, int> a, pair<string, int> b) {
+      return a.second > b.second;
    }
 };
 
@@ -37,10 +45,23 @@ template<class V> class Grafo {
 
       void recorrer(V desdeVertice);
 
+      /**
+       * Ejemplo de Uso. Ver grafo en resources/grafo.png
+       * Grafo<int> * grafo = new Grafo<int>();
+       * grafo->agregarArista("1", "2", "a", 5);
+       * grafo->agregarArista("1", "4", "f", 32);
+       * grafo->agregarArista("1", "5", "g", 80);
+       * grafo->agregarArista("2", "3", "b", 60);
+       * grafo->agregarArista("3", "5", "h", 5);
+       * grafo->agregarArista("5", "4", "e", 10);
+       * grafo->agregarArista("4", "5", "d", 75);
+       * grafo->agregarArista("4", "3", "c", 25);
+       * grafo->imprimirCaminoMinimo("1", "3");
+       */
       void imprimirCaminoMinimo(V origen, V destino);
 
    private:
-      std::priority_queue<int*, vector<int*>, comparador> ColaDePrioridad;
+      std::priority_queue<pair<string, int>, vector< pair<string, int> >, comparador> ColaDePrioridad;
 
       void procesarVertice(Vertice<V> * vertice);
 
@@ -190,22 +211,22 @@ void Grafo<V>::imprimirCaminoMinimo(V origen, V destino) {
 
 template<class V>
 void Grafo<V>::optimizarDistancias(Vertice<V> * actual, Vertice<V> * adyacente, int peso) {
-   if ((actual->obtenerPesoArista() + peso) < adyacente->obtenerPesoArista()) {
+   if (adyacente->obtenerPesoArista() > (actual->obtenerPesoArista() + peso)) {
       adyacente->guardarPesoArista(actual->obtenerPesoArista() + peso);
       adyacente->guardarAnterior(actual);
 
-      int * nuevo = new int[2];
-      nuevo[0] = adyacente->obtenerDato();
-      nuevo[1] = adyacente->obtenerPesoArista();
+      pair<string, int> nuevo;
+      nuevo.first = adyacente->obtenerDato();
+      nuevo.second = adyacente->obtenerPesoArista();
       ColaDePrioridad.push(nuevo);
    }
 }
 
 template<class V>
 void Grafo<V>::dijkstra(Vertice<V> * origen) {
-   int * elemento = new int[2];
-   elemento[0] = origen->obtenerDato();
-   elemento[1] = 0;
+   pair<string, int> elemento;
+   elemento.first = origen->obtenerDato();
+   elemento.second = 0;
 
    ColaDePrioridad.push(elemento);
    origen->guardarPesoArista(0);
@@ -217,7 +238,7 @@ void Grafo<V>::dijkstra(Vertice<V> * origen) {
    Arista<V> * arista;
 
    while(!ColaDePrioridad.empty()) {
-      datoVertice = ColaDePrioridad.top()[0];
+      datoVertice = ColaDePrioridad.top().first;
       ColaDePrioridad.pop();
 
       verticeActual = this->obtenerVertice(datoVertice);

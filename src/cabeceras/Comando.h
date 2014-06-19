@@ -2,10 +2,6 @@
    Laberinto - TP 1
    Representa un comando, el cual se compone de un nombre y un argumento
 
-   @author Mariano Cinalli
-   @author Ezequiel Guitler
-   @author Santiago Montiel
-   @author Lucas Bonastre
    @author Laura Corvalan
 */
 

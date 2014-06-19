@@ -5,10 +5,6 @@
    La imagen se guarda en el directorio desde donde se ejecuta el programa
    El nombre de la imagen es: laberinto.bmp
 
-   @author Mariano Cinalli
-   @author Ezequiel Guitler
-   @author Santiago Montiel
-   @author Lucas Bonastre
    @author Laura Corvalan
 */
 
