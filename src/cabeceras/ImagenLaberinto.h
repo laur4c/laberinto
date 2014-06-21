@@ -14,13 +14,12 @@
 #include "../EasyBMP/EasyBMP.h"
 #include "util.h"
 
-#include "Camino.h"
 #include "Color.h"
 #include "Tramo.h"
 #include "ListaEnlazada.h"
-#include <string>
-
 #include "Grafo.h"
+
+#include <string>
 
 class ImagenLaberinto {
    public:
@@ -36,10 +35,8 @@ class ImagenLaberinto {
        * Generar imagen de caminos del laberinto
        * La imagen se guarda en el directorio actual con el nombre: laberinto.bmp
        */
-      void generar(ListaEnlazada<string> * puntosDePartida);
+      void generar();
 
-
-      void imprimirVerticeCaminoMinimo(string datoVertice);
 
       void dibujarCaminoMinimo(string origen, string destino);
 
@@ -64,12 +61,14 @@ class ImagenLaberinto {
       /**
        * Color que se va a usar para pintar los objetos
        */
-      Color * colorObjeto;
+      Color * colorNegro;
 
       /**
        * Array con orientaciones posibles: 'N', 'O', 'S', 'E'
        */
       char * orientaciones;
+
+      void imprimirVerticeCaminoMinimo(string datoVertice);
 
       /**
        * Dibuja en mapa total de unidades hacia el norte
@@ -112,11 +111,6 @@ class ImagenLaberinto {
       void avanzarEste(Color * color, int &x, int &y, int total);
 
       /**
-       * Modifica las coordenadas segun a que orientacion me vaya a mover
-       */
-      void cambiarCoordenadasPorOrientacion(char orientacion, int &x, int &y);
-
-      /**
        * Este metodo se encarga de dibujar el punto y las ramas del mismo
        * en todas las direcciones recursivamente
        *
@@ -128,7 +122,6 @@ class ImagenLaberinto {
        * si los hubiere
        *
        */
-      // void dibujar(Punto * punto, char orientacion, int x, int y, int &maxAncho);
       void dibujar(Tramo * tramo, int &x, int &y, bool cambiarSentido, bool esCaminoMinimo);
 
       /**
@@ -136,10 +129,5 @@ class ImagenLaberinto {
        */
       void dibujarUnidad(Color * color, int x, int y);
 
-      /**
-       * Carga el array de orientaciones. Este atributo se ultiza en el metodo dibujar()
-       * Para dibujar las uniones de los puntos en todas las direcciones
-       */
-      void cargarOrientaciones();
 };
 #endif

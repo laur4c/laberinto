@@ -18,78 +18,48 @@ int main(int argc, char *argv[]) {
       string nombreArchivo;
       cout << "Ingrese el path del archivo: ";
       // cin >> nombreArchivo;
-      nombreArchivo = "/home/laurac/src/fiuba/laberinto/test/Caminos.txt";
+      nombreArchivo = "/home/laurac/src/fiuba/laberinto/test/Prueba5.txt";
 
       Parser parser(nombreArchivo);
 
-      // Se genera una lista con comandos. Cada comando representa una directiva
-      // del archivo de texto
-      // parser.iniciar();
-      // Cola<Comando*> * listaComandos = parser.obtenerLista();
-      // // cout << "Lista de comandos" << endl;
-      // // listaComandos->mostrar();
-
-      // // A partir de la lista de comandos, se crea una lista de caminos
-      // // El camino es una estructura de puntos entrelazados (cada punto tiene
-      // // cuatro punteros, que representan las uniones del punto
-      // // con otros puntos en todas las direcciones: norte, sur, este, oeste)
-      // // Estos puntos pretenden representar todos los recorridos del laberinto
       Laberinto * laberinto = new Laberinto();
-      // laberinto->crearCaminosDesdeListaDeComandos(listaComandos);
-
-      // Mochila * mochila = laberinto->obtenerMochila();
-      // cout << "Estado de la mochila del caminante: " << endl;
-      // mochila->mostrar();
-
-      // cout << "Description cuantitativa del recorrido realizado por el caminante: " << endl;
-      // laberinto->mostrarInfo();
-
-      // ImagenLaberinto * imagen = new ImagenLaberinto(laberinto->obtenerCaminos());
-      // imagen->generar();
-
-      // // TP2
-      // // Sin terminar
-
-      // // Llegue a implementar el Grafo y el algoritmo de Dijkstra para el calculo de caminos
-      // // minimos, pero no llegue a integrarlo con lo que tenia hecho anteriormente en el TP1.
-      // // Comportamiento actual: Se imprimen los vertices del recorrido minimo en consola,
-      // // pero no se dibujan en la imagen generada.
-      // //
-      // // Qué falta: Representar de manera correcta los caminos del laberinto en un grafo :/
-      // // y dibujar el recorrido en la imagen laberinto.bmp
 
       parser.iniciar();
 
       Cola<Comando*> * listaComandos = parser.obtenerLista();
-      listaComandos->mostrar();
+      // listaComandos->mostrar();
       Grafo<string> * grafo = laberinto->crearGrafoDesdeListaDeComandos(listaComandos);
 
+      cout << "Estado de la mochila del caminante: " << endl;
+      laberinto->obtenerMochila()->mostrar();
+
+      cout << "Description cuantitativa del recorrido realizado por el caminante: " << endl;
+      laberinto->mostrarInfo();
+
       ImagenLaberinto * imagen = new ImagenLaberinto(grafo);
-      imagen->generar(laberinto->obtenerPuntosDePartida());
+      imagen->generar();
 
-
-      // imagen->dibujarCaminoMinimo("V10", "V6");
-
-      // bool continuar = true;
-      // string origen, destino, respuesta;
+      bool continuar = true;
+      string origen, destino, respuesta;
 
       // grafo->mostrar();
-      // while(continuar) {
-      //    cout << "Ingrese origen y destino para conocer el minimo camino a recorrer: " << endl;
 
-      //    cout << "Origen: ";
-      //    cin >> origen;
+      while(continuar) {
+         cout << "Ingrese origen y destino para conocer el minimo camino a recorrer: " << endl;
 
-      //    cout << "Destino: ";
-      //    cin >> destino;
+         cout << "Origen: ";
+         cin >> origen;
 
-      //    grafo->imprimirCaminoMinimo(origen, destino);
+         cout << "Destino: ";
+         cin >> destino;
 
-      //    cout << "Desea continuar? S/n ";
-      //    cin >> respuesta;
+         imagen->dibujarCaminoMinimo(origen, destino);
 
-      //    continuar = (respuesta != "n");
-      // }
+         cout << "Desea continuar? S/n ";
+         cin >> respuesta;
+
+         continuar = (respuesta != "n");
+      }
 
       delete laberinto;
    } catch (const char* msg) {

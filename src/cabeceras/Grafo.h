@@ -162,9 +162,7 @@ template<class V>
 void Grafo<V>::mostrar() {
    this->vertices->iniciarCursor();
    while(this->vertices->avanzarCursor()) {
-      // this->vertices->obtenerCursor()->mostrar();
-      std::cout << this->vertices->obtenerCursor()->obtenerDato() << std::endl;
-      std::cout << this->vertices->obtenerCursor()->x << "-" << this->vertices->obtenerCursor()->y << std::endl;
+      this->vertices->obtenerCursor()->mostrar();
    }
 }
 
@@ -195,8 +193,6 @@ void Grafo<V>::marcarTodosLosVerticesComoNoVisitados() {
 
 template<class V>
 void Grafo<V>::recorrer(V desde) {
-   std::cout << "Recorrido Grafo en anchura" << std::endl;
-
    this->marcarTodosLosVerticesComoNoVisitados();
 
    Vertice<V> * vertice = this->obtenerVertice(desde);
@@ -206,8 +202,6 @@ void Grafo<V>::recorrer(V desde) {
       vertice = this->cola->desacolar();
 
       if (!vertice->fueVisitado()) {
-         std::cout << "Proceso Vertice: ";
-
          this->procesarVertice(vertice);
          vertice->marcarComoVisitado();
       }
@@ -219,7 +213,6 @@ void Grafo<V>::imprimirVerticeCaminoMinimo(V datoVertice) {
    Vertice<V> * vertice = this->obtenerVertice(datoVertice);
    if(vertice->tieneAnterior()) {
       this->imprimirVerticeCaminoMinimo(vertice->obtenerAnterior()->obtenerDato());
-      std::cout << vertice->obtenerDato() << std::endl;
    }
 }
 
