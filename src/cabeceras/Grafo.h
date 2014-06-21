@@ -25,11 +25,8 @@
 
 template<class V> class Grafo {
    public:
-      Cola< Vertice<V>* > * cola;
 
       Grafo();
-
-      bool existeVertice(V dato);
 
       Vertice<V> * obtenerVertice(V dato);
 
@@ -75,16 +72,17 @@ template<class V> class Grafo {
    private:
       std::priority_queue<pair<V, int>, vector< pair<V, int> >, comparador> ColaDePrioridad;
 
+      Cola< Vertice<V>* > * cola;
+
+      ListaEnlazada< Vertice<V>* > * vertices;
+
+      bool existeVertice(V dato);
+
       void dijkstra(Vertice<V> * origen);
 
       void optimizarDistancias(Vertice<V> * actual, Vertice<V> * adyacente, int peso);
 
       void imprimirVerticeCaminoMinimo(V datoVertice);
-
-
-
-      ListaEnlazada< Vertice<V>* > * vertices;
-
 
 
 };
@@ -151,10 +149,9 @@ void Grafo<V>::agregarArista(V entrada, V salida, V dato, int peso, ListaEnlazad
    Arista<V> * arista = new Arista<V>(dato, vEntrada, vSalida, peso, tramos);
    vEntrada->agregarArista(arista);
 
-
-   // agrego la inversa para que cdo lo recorra poder recorrer todo
+   // agrego la inversa para poder recorrer todo el grafo desde un vertice
    Arista<V> * aristaInversa = new Arista<V>(dato, vSalida, vEntrada, peso, tramos);
-   aristaInversa->enSentidoContrario = true;
+   aristaInversa->marcarSentidoContrario();
    vSalida->agregarArista(aristaInversa);
 }
 

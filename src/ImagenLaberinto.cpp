@@ -37,7 +37,7 @@ void ImagenLaberinto::imprimirVerticeCaminoMinimo(string datoVertice) {
                tramo = tramos->obtenerCursor();
 
                if (!tramo->estaDibujado()) {
-                  cambiarSentido = arista->enSentidoContrario;
+                  cambiarSentido = arista->dibujarEnSentidoContrario();
 
                   this->dibujar(tramo, x, y, cambiarSentido, true);
                   tramo->marcarComoDibujado();
