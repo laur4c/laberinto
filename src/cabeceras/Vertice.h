@@ -14,6 +14,10 @@
 
 template<class V> class Vertice {
    public:
+      int x;
+
+      int y;
+
       Vertice(V dato);
 
       V obtenerDato();
@@ -60,6 +64,8 @@ Vertice<V>::Vertice(V dato) {
    this->aristas = new ListaEnlazada< Arista<V>* >();
    this->visitado = false;
    this->anterior = NULL;
+   this->x = 0;
+   this->y = 0;
 }
 
 template<class V>

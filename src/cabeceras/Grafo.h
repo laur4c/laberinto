@@ -13,6 +13,8 @@
 #include "Arista.h"
 #include "ListaEnlazada.h"
 #include "Cola.h"
+#include "Color.h"
+#include "Tramo.h"
 
 #include <iostream>
 
@@ -21,25 +23,23 @@
 
 #define MAX_PESO_ARISTA 100000
 
-struct comparador {
-   bool operator() (pair<string, int> a, pair<string, int> b) {
-      return a.second > b.second;
-   }
-};
-
 template<class V> class Grafo {
    public:
+      Cola< Vertice<V>* > * cola;
+
       Grafo();
 
       bool existeVertice(V dato);
 
       Vertice<V> * obtenerVertice(V dato);
 
+      Vertice<V> * obtenerPrimerVertice();
+
       bool estaVacio();
 
       void agregarVertice(V dato);
 
-      void agregarArista(V entrada, V salida, V dato, int peso);
+      void agregarArista(V entrada, V salida, V dato, int peso, ListaEnlazada<Tramo*> * tramos);
 
       void mostrar();
 
@@ -60,12 +60,20 @@ template<class V> class Grafo {
        */
       void imprimirCaminoMinimo(V origen, V destino);
 
-   private:
-      std::priority_queue<pair<string, int>, vector< pair<string, int> >, comparador> ColaDePrioridad;
+      struct comparador {
+         bool operator() (pair<V, int> a, pair<V, int> b) {
+            return a.second > b.second;
+         }
+      };
 
       void procesarVertice(Vertice<V> * vertice);
 
       void marcarTodosLosVerticesComoNoVisitados();
+
+      void generarCaminosMinimos(V origen);
+
+   private:
+      std::priority_queue<pair<V, int>, vector< pair<V, int> >, comparador> ColaDePrioridad;
 
       void dijkstra(Vertice<V> * origen);
 
@@ -73,11 +81,10 @@ template<class V> class Grafo {
 
       void imprimirVerticeCaminoMinimo(V datoVertice);
 
-      void generarCaminosMinimos(V origen);
+
 
       ListaEnlazada< Vertice<V>* > * vertices;
 
-      Cola< Vertice<V>* > * cola;
 
 
 };
@@ -130,7 +137,7 @@ void Grafo<V>::agregarVertice(V dato) {
 }
 
 template<class V>
-void Grafo<V>::agregarArista(V entrada, V salida, V dato, int peso) {
+void Grafo<V>::agregarArista(V entrada, V salida, V dato, int peso, ListaEnlazada<Tramo*> * tramos) {
    if (!this->existeVertice(entrada)) {
       this->agregarVertice(entrada);
    }
@@ -141,26 +148,39 @@ void Grafo<V>::agregarArista(V entrada, V salida, V dato, int peso) {
    }
    Vertice<V> * vSalida = this->obtenerVertice(salida);
 
-   Arista<V> * arista = new Arista<V>(dato, vEntrada, vSalida, peso);
+   Arista<V> * arista = new Arista<V>(dato, vEntrada, vSalida, peso, tramos);
    vEntrada->agregarArista(arista);
+
+
+   // agrego la inversa para que cdo lo recorra poder recorrer todo
+   Arista<V> * aristaInversa = new Arista<V>(dato, vSalida, vEntrada, peso, tramos);
+   aristaInversa->enSentidoContrario = true;
+   vSalida->agregarArista(aristaInversa);
 }
 
 template<class V>
 void Grafo<V>::mostrar() {
    this->vertices->iniciarCursor();
    while(this->vertices->avanzarCursor()) {
-      this->vertices->obtenerCursor()->mostrar();
+      // this->vertices->obtenerCursor()->mostrar();
+      std::cout << this->vertices->obtenerCursor()->obtenerDato() << std::endl;
+      std::cout << this->vertices->obtenerCursor()->x << "-" << this->vertices->obtenerCursor()->y << std::endl;
    }
+}
+
+template<class V>
+Vertice<V> * Grafo<V>::obtenerPrimerVertice() {
+   this->vertices->iniciarCursor();
+   this->vertices->avanzarCursor();
+   return this->vertices->obtenerCursor();
 }
 
 template<class V>
 void Grafo<V>::procesarVertice(Vertice<V> * vertice) {
    ListaEnlazada< Arista<V>* > * aristas = vertice->obtenerAristas();
    aristas->iniciarCursor();
-   while(aristas->avanzarCursor()) {
-      std::cout << "Acolo Vertice Adyacente: ";
-      std::cout << aristas->obtenerCursor()->obtenerSalida()->obtenerDato() << std::endl;
 
+   while(aristas->avanzarCursor()) {
       this->cola->acolar(aristas->obtenerCursor()->obtenerSalida());
    }
 }
@@ -215,7 +235,7 @@ void Grafo<V>::optimizarDistancias(Vertice<V> * actual, Vertice<V> * adyacente, 
       adyacente->guardarPesoArista(actual->obtenerPesoArista() + peso);
       adyacente->guardarAnterior(actual);
 
-      pair<string, int> nuevo;
+      pair<V, int> nuevo;
       nuevo.first = adyacente->obtenerDato();
       nuevo.second = adyacente->obtenerPesoArista();
       ColaDePrioridad.push(nuevo);
@@ -224,7 +244,7 @@ void Grafo<V>::optimizarDistancias(Vertice<V> * actual, Vertice<V> * adyacente, 
 
 template<class V>
 void Grafo<V>::dijkstra(Vertice<V> * origen) {
-   pair<string, int> elemento;
+   pair<V, int> elemento;
    elemento.first = origen->obtenerDato();
    elemento.second = 0;
 

@@ -47,7 +47,11 @@ class Laberinto {
        */
       void mostrarInfo();
 
+      ListaEnlazada<string> * obtenerPuntosDePartida();
+
       ~Laberinto();
+
+
 
    private:
 
@@ -60,6 +64,8 @@ class Laberinto {
        * Lista de caminos
        */
       ListaEnlazada<Camino*> * caminos;
+
+      ListaEnlazada<string> * puntosDePartida;
 
       /**
        * Lista con todas las uniones del laberinto
@@ -110,7 +116,7 @@ class Laberinto {
        */
       void tirarElementoEnPuntoAnterior(InfoPunto * infoPtoAnterior, std::string objeto);
 
-      void generarArista(Grafo<std::string> * grafo, Cola<Comando*> * componentes);
+      void generarArista(Grafo<std::string> * grafo, Color * color, Cola<Comando*> * componentes, char ultimaOrientacion);
 };
 
 #endif

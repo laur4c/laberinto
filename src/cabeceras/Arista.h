@@ -9,11 +9,18 @@
 #define _ARISTA_H_
 
 #include <iostream>
+#include "Tramo.h"
+#include "ListaEnlazada.h"
 
 template<class V> class Vertice;
 template<class V> class Arista {
    public:
-      Arista(V dato, Vertice<V> * entrada, Vertice<V> * salida, int peso);
+      bool enSentidoContrario;
+
+
+      void marcarTramosComoNoDibujados();
+
+      Arista(V dato, Vertice<V> * entrada, Vertice<V> * salida, int peso, ListaEnlazada<Tramo*> * tramos);
 
       /**
        * Retorna entrada de la arista
@@ -25,6 +32,9 @@ template<class V> class Arista {
        */
       Vertice<V> * obtenerSalida();
 
+
+      ListaEnlazada<Tramo*> * obtenerTramos();
+
       /**
        * Retorna el peso de la arista
        */
@@ -32,11 +42,14 @@ template<class V> class Arista {
 
       void mostrar();
 
+      V dato;
    private:
 
-      V dato;
-
       int peso;
+
+
+
+      ListaEnlazada<Tramo*> * tramos;
 
       Vertice<V> * entrada;
 
@@ -45,12 +58,24 @@ template<class V> class Arista {
 };
 
 template<class V>
-Arista<V>::Arista(V dato, Vertice<V> * entrada, Vertice<V> * salida, int peso) {
+Arista<V>::Arista(V dato, Vertice<V> * entrada, Vertice<V> * salida, int peso, ListaEnlazada<Tramo*> * tramos) {
    this->entrada = entrada;
    this->salida = salida;
    this->dato = dato;
    this->peso = peso;
+   this->tramos = tramos;
+   this->enSentidoContrario = false;
 }
+
+
+template<class V>
+void Arista<V>::marcarTramosComoNoDibujados() {
+  this->tramos->iniciarCursor();
+  while(this->tramos->avanzarCursor()) {
+    this->tramos->obtenerCursor()->marcarComoNoDibujado();
+  }
+}
+
 
 template<class V>
 Vertice<V> * Arista<V>::obtenerEntrada() {
@@ -65,6 +90,11 @@ Vertice<V> * Arista<V>::obtenerSalida() {
 template<class V>
 int Arista<V>::obtenerPeso() {
    return this->peso;
+}
+
+template<class V>
+ListaEnlazada<Tramo*> * Arista<V>::obtenerTramos() {
+  return this->tramos;
 }
 
 template<class V>

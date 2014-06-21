@@ -10,6 +10,8 @@ Laberinto::Laberinto() {
    this->bifurcaciones = new ListaEnlazada<Punto*>();
    this->empalmes = new ListaEnlazada<Punto*>();
    this->info = new InfoRecorrido();
+
+   this->puntosDePartida = new ListaEnlazada<string>();
 }
 
 ListaEnlazada<Camino*> * Laberinto::obtenerCaminos() {
@@ -218,20 +220,21 @@ void Laberinto::agregarCamino(Color * color, ListaEnlazada<InfoPunto*> * listaIn
    this->caminos->agregar(camino);
 }
 
-void Laberinto::generarArista(Grafo<std::string> * grafo, Cola<Comando*> * componentes) {
+void Laberinto::generarArista(Grafo<std::string> * grafo, Color * color, Cola<Comando*> * componentes, char ultimaOrientacion) {
    Comando * comando;
-   string nombreVertice;
-   string nombre;
-   string argumento;
-   int pos;
+   string vertice, nombre, argumento, arista;
+   ListaEnlazada<Tramo*> * tramos = new ListaEnlazada<Tramo*>();
 
+   int pos, longitud;
    int peso = 0;
-   string nombreArista = "NombreArista-AUTO";
+   bool tiroObjeto = false;
+
    string entrada = "";
    string salida = "";
-
+   // cout << "---------------nueva arista------------------" << endl;
    while (!componentes->estaVacia()) {
       comando = componentes->desacolar();
+      // cout << comando->aString() << endl;
       nombre = comando->obtenerNombre();
       argumento = comando->obtenerArgumento();
 
@@ -239,71 +242,97 @@ void Laberinto::generarArista(Grafo<std::string> * grafo, Cola<Comando*> * compo
          pos = argumento.find(" ", 0);
          entrada = argumento.substr(0, pos);
 
-      } else if (nombre == "PLL" || nombre == "U") {
+         this->puntosDePartida->agregar(entrada);
+
+      } else if (nombre == "PLL") {
          salida = argumento;
 
-      } else if (nombre == "A") {
-         peso += util::string_a_int(argumento);
+      } else if (nombre == "U") {
+         if (entrada == "") {
+            entrada = argumento;
+         } else {
+            salida = argumento;
+         }
 
       } else if (nombre == "B") {
          pos = argumento.find(" ", 0);
-         nombreVertice = argumento.substr(pos + 1);
+         vertice = argumento.substr(pos + 1);
          if (entrada == "") {
-            entrada = nombreVertice;
+            entrada = vertice;
          } else {
-            salida = nombreVertice;
+            salida = vertice;
          }
+      } else if (nombre == "T") {
+         tiroObjeto = true;
+
+      } else if (nombre == "A") {
+         longitud = util::string_a_int(argumento);
+         // cout << ultimaOrientacion << endl;
+         tramos->agregar(new Tramo(ultimaOrientacion, longitud, tiroObjeto, color));
+         tiroObjeto = false;
+         peso += longitud;
 
       } else if (nombre == "G") {
-         nombreArista = "Arista" + argumento;
-         if (entrada == "") {
-            entrada = argumento;
-         } else if(componentes->estaVacia()) {
-            salida = argumento;
-         }
+         ultimaOrientacion = argumento.c_str()[0];
       }
    }
-   grafo->agregarArista(entrada, salida, nombreArista, peso);
+   arista = "arista-" + entrada + "-" + salida;
+   grafo->agregarArista(entrada, salida, arista, peso, tramos);
+   // cout << arista << endl;
+}
+
+ListaEnlazada<string> * Laberinto::obtenerPuntosDePartida() {
+   return this->puntosDePartida;
 }
 
 Grafo<std::string> * Laberinto::crearGrafoDesdeListaDeComandos(Cola<Comando*> * comandos) {
    Comando * comando;
-   string nombre;
-   string argumento;
-   string ultimaOrientacion = "";
-   string orientacionActual;
+   string nombre, argumento, orientacionContraria, ultimaOrientacion;
+   Color * color;
 
    Grafo<string> * grafo = new Grafo<string>();
    Cola<Comando*> * componentesArista = new Cola<Comando*>();
+   bool existeVerticeEntrada = false;
 
    while (!comandos->estaVacia()) {
       comando = comandos->desacolar();
       nombre = comando->obtenerNombre();
       argumento = comando->obtenerArgumento();
 
-      if (nombre == "PP" || nombre == "A") {
+      if (nombre == "PP") {
+         color = util::string_a_color(argumento.substr(argumento.find(" ", 0) + 1));
+      }
+      if (nombre != "R") {
          componentesArista->acolar(comando);
-
-      } else if (nombre == "U" || nombre == "B" || nombre == "PLL" || nombre == "G") {
-         componentesArista->acolar(comando);
-
-         if (nombre == "G") {
-            orientacionActual = argumento;
-            if (ultimaOrientacion != "" && orientacionActual != ultimaOrientacion) {
-               this->generarArista(grafo, componentesArista);
-               componentesArista->acolar(comando);
-            }
-         } else {
-            this->generarArista(grafo, componentesArista);
-            if (nombre != "PLL")
-               componentesArista->acolar(comando);
-         }
-
-
       }
 
-   }
+      // Si el comando genera un vertice...
+      if (nombre == "PP" || nombre == "B" || nombre == "U" || nombre == "PLL") {
+         if (existeVerticeEntrada) {
+            this->generarArista(grafo, color, componentesArista, ultimaOrientacion.c_str()[0]);
 
+            if (nombre != "PLL") {
+               // acolo de nuevo el comando ya que va a ser la entrada de la
+               // arista siguiente, salvo el punto de llegada (PLL)
+               componentesArista->acolar(comando);
+               existeVerticeEntrada = true;
+            } else {
+               existeVerticeEntrada = false;
+            }
+
+         } else {
+            existeVerticeEntrada = true;
+         }
+      } else if (nombre == "G") {
+         ultimaOrientacion = argumento;
+
+      } else if (nombre == "R") { // retroceder es igual a girar hacia el sentido contrario y avanzar
+         orientacionContraria = util::char_a_string(util::obtener_orientacion_contraria(ultimaOrientacion.c_str()[0]));
+
+         componentesArista->acolar(new Comando("G", orientacionContraria));
+         componentesArista->acolar(new Comando("A", argumento));
+      }
+   }
    return grafo;
 }
 
@@ -313,4 +342,13 @@ Laberinto::~Laberinto() {
       delete this->caminos->obtenerCursor();
    }
 }
+
+
+
+
+
+
+
+
+
 

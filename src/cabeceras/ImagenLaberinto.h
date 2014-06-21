@@ -16,8 +16,11 @@
 
 #include "Camino.h"
 #include "Color.h"
+#include "Tramo.h"
 #include "ListaEnlazada.h"
 #include <string>
+
+#include "Grafo.h"
 
 class ImagenLaberinto {
    public:
@@ -26,19 +29,26 @@ class ImagenLaberinto {
        * @param caminos Lista de caminos. Representacion de todo el laberinto
        * @param unidad Tamanio de la unidad, por default: 3x3
        */
-      ImagenLaberinto(ListaEnlazada<Camino*> * caminos, int unidad = 3);
+      // ImagenLaberinto(ListaEnlazada<Camino*> * caminos, int unidad = 3);
+      ImagenLaberinto(Grafo<string> * grafo, int unidad = 3);
 
       /**
        * Generar imagen de caminos del laberinto
        * La imagen se guarda en el directorio actual con el nombre: laberinto.bmp
        */
-      void generar();
+      void generar(ListaEnlazada<string> * puntosDePartida);
+
+
+      void imprimirVerticeCaminoMinimo(string datoVertice);
+
+      void dibujarCaminoMinimo(string origen, string destino);
 
    private:
       /**
        * Lista de caminos que representan todo el laberinto
        */
-      ListaEnlazada<Camino*> * caminos;
+      // ListaEnlazada<Camino*> * caminos;
+      Grafo<string> * grafo;
 
       /**
        * Tamanio de unidad de mapa.
@@ -118,7 +128,8 @@ class ImagenLaberinto {
        * si los hubiere
        *
        */
-      void dibujar(Punto * punto, char orientacion, int x, int y, int &maxAncho);
+      // void dibujar(Punto * punto, char orientacion, int x, int y, int &maxAncho);
+      void dibujar(Tramo * tramo, int &x, int &y, bool cambiarSentido, bool esCaminoMinimo);
 
       /**
        * Dibuja una unica unidad en la imagen

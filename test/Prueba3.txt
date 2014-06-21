@@ -1,4 +1,4 @@
-PP 192 126 172
+PP V7 192 126 172
 GS
 L moneda
 A 4
@@ -17,15 +17,15 @@ GE
 A 3
 GN
 A 3
-PLL
-PP 130 186 47
+PLL V5
+PP V4 130 186 47
 GS
 A 4
 BE bifurcacion2
 GO
 A 2
-PLL
-PP 51 86 168
+PLL V3
+PP V2 51 86 168
 GO
 A 4
 GS
@@ -35,4 +35,4 @@ A 5
 U bifurcacion2
 A 10
 U bifurcacion1
-PLL
+PLL V1
