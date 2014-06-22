@@ -167,8 +167,7 @@ ListaEnlazada< Arista<V>* > * Vertice<V>::obtenerAristas() {
 
 template<class V>
 void Vertice<V>::mostrar() {
-   std::cout << "Vertice: " << std::endl;
-   std::cout << this->dato << std::endl;
+   std::cout << "Vertice: " << this->dato << std::endl;
 
    this->aristas->iniciarCursor();
    while(this->aristas->avanzarCursor()) {

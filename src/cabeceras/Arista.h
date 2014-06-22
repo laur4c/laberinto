@@ -78,16 +78,16 @@ template<class V> class Arista {
 
       /**
        * Indica si debe dibujarse en sentido contrario.
-       * Al generar los vertices y aristas de los caminos del laberinto
-       * se generan dos aristas. Una con el sentido que indica el archivo de texto y
-       * otra con el sentido contrario. Esto se hace para poder, desde un vertice
+       * Cuando se agrega una arista al laberinto, se agrega la arista con el sentido
+       * que indica el archivo de texto y otra con el sentido contrario.
+       * Esto se hace para poder, desde un vertice
        * recorrer todo el laberinto
        */
       bool enSentidoContrario;
 
       /**
        * Lista de tramos
-       * Porque entre vertice y vertice las aristas no son lineas rectas
+       * Porque las aristas entre vertice y vertice no son lineas rectas
        */
       ListaEnlazada<Tramo*> * tramos;
 
@@ -153,13 +153,11 @@ int Arista<V>::obtenerPeso() {
 
 template<class V>
 void Arista<V>::mostrar() {
-   std::cout << "Arista: " << std::endl;
-   std::cout << this->dato << std::endl;
-   std::cout << "Con peso: " << std::endl;
-   std::cout << this->peso << std::endl;
+   std::cout << "Arista: ";
+   std::cout << this->dato << "(" << this->peso << ") -";
 
-   std::cout << "Vertices: " << std::endl;
-   std::cout << this->entrada->obtenerDato() << std::endl;
-   std::cout << this->salida->obtenerDato() << std::endl;
+   std::cout << "Vertices: ";
+   std::cout << "( " << this->entrada->obtenerDato() << " - ";
+   std::cout << this->salida->obtenerDato() << ")" << std::endl;
 }
 #endif
