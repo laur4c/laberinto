@@ -14,6 +14,11 @@ class Tramo {
    public:
 
       /**
+       * Color del tramo
+       */
+      Color * color;
+
+      /**
        * Constructor.
        */
       Tramo(char orientacion, int longitud, bool hayObjeto, Color * color);
@@ -34,18 +39,31 @@ class Tramo {
        */
       bool tieneObjeto();
 
-      Color * color;
-
+      /**
+       * Retorna true si el tramo fue dibujado
+       */
       bool estaDibujado();
 
+      /**
+       * Setea dibujado igual a true
+       */
       void marcarComoDibujado();
 
+      /**
+       * Setea dibujado igual a false
+       */
       void marcarComoNoDibujado();
 
    private:
 
+      /**
+       * Indica si el tramo ya fue dibujado. Ver ImagenLaberinto
+       */
       bool dibujado;
 
+      /**
+       * Longitud del tramo
+       */
       int longitud;
 
       /**

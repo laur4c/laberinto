@@ -13,8 +13,8 @@ void Laberinto::mostrarInfo() {
    this->info->mostrar();
 }
 
-Mochila * Laberinto::obtenerMochila() {
-   return this->mochila;
+void Laberinto::mostrarMochila() {
+   this->mochila->mostrar();
 }
 
 void Laberinto::generarArista(Grafo<std::string> * grafo, Color * color, Cola<Comando*> * componentes, char ultimaOrientacion) {

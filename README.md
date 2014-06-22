@@ -1,6 +1,6 @@
-# Laberinto
+# El Laberinto y sus atajos
 
-### TP I - Algoritmos y Programación II
+### Trabajo Practico - Algoritmos y Programación II
 ### Cátedra Calvo FIUBA
 
 #### Integrantes:

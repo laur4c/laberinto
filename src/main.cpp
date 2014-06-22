@@ -17,21 +17,18 @@ int main(int argc, char *argv[]) {
    try {
       string nombreArchivo;
       cout << "Ingrese el path del archivo: ";
-      // cin >> nombreArchivo;
-      nombreArchivo = "/home/laurac/src/fiuba/laberinto/test/Prueba5.txt";
+      cin >> nombreArchivo;
 
       Parser parser(nombreArchivo);
-
-      Laberinto * laberinto = new Laberinto();
-
       parser.iniciar();
-
       Cola<Comando*> * listaComandos = parser.obtenerLista();
       // listaComandos->mostrar();
+
+      Laberinto * laberinto = new Laberinto();
       Grafo<string> * grafo = laberinto->crearGrafoDesdeListaDeComandos(listaComandos);
 
       cout << "Estado de la mochila del caminante: " << endl;
-      laberinto->obtenerMochila()->mostrar();
+      laberinto->mostrarMochila();
 
       cout << "Description cuantitativa del recorrido realizado por el caminante: " << endl;
       laberinto->mostrarInfo();
@@ -61,7 +58,6 @@ int main(int argc, char *argv[]) {
          continuar = (respuesta != "n");
       }
 
-      delete laberinto;
    } catch (const char* msg) {
       cout << msg << endl;
    }

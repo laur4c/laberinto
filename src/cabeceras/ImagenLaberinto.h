@@ -111,18 +111,15 @@ class ImagenLaberinto {
       void avanzarEste(Color * color, int &x, int &y, int total);
 
       /**
-       * Este metodo se encarga de dibujar el punto y las ramas del mismo
-       * en todas las direcciones recursivamente
+       * Este metodo se encarga de dibujar un tramo de la arista del grafo que representa el laberinto
        *
-       * @param punto Punto a dibujar
+       * @param tramo Tramo a dibujar
        * @param x
        * @param y
-       * @param maxAncho Sirve para calcular cual es el ancho maximo del camino que
-       * se esta dibujando, para luego poder calcular donde dibujar los proximos caminos,
-       * si los hubiere
-       *
+       * @param cambiarSentido
+       * @param esCaminoMinimo Para indicar si se debe dibujar con otro color o no, para marcar camino minimo
        */
-      void dibujar(Tramo * tramo, int &x, int &y, bool cambiarSentido, bool esCaminoMinimo);
+      void dibujar(Tramo * tramo, int &x, int &y, bool cambiarSentido, bool esCaminoMinimo = false);
 
       /**
        * Dibuja una unica unidad en la imagen

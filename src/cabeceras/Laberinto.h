@@ -23,12 +23,18 @@ class Laberinto {
        */
       Laberinto();
 
+      /**
+       * Crea grafo de acuerdo a las entradas del archivo de texto, que terminan siendo "comandos"
+       * Los vertices pueden ser: el punto de llegada, punto de partida y bifurcaciones
+       * Con el resto de los comandos se generan los tramos de cada arista, ya que la arista
+       * no es una linea recta.
+       */
       Grafo<std::string> * crearGrafoDesdeListaDeComandos(Cola<Comando*> * comandos);
 
       /**
-       * Retorna instancia clase Mochila con todos los elementos encontrados en el camino
+       * Imprime items en la mochila, en consola
        */
-      Mochila * obtenerMochila();
+      void mostrarMochila();
 
       /**
        * Imprime info del recorrido

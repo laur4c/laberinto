@@ -14,47 +14,129 @@
 
 template<class V> class Vertice {
    public:
-      int x;
 
-      int y;
-
+      /**
+       * Constructor
+       */
       Vertice(V dato);
 
+      /**
+       * Retorna nombre del vertice
+       */
       V obtenerDato();
 
+      /**
+       * Agrega arista saliente del vertice
+       */
       void agregarArista(Arista<V> * arista);
 
+      /**
+       * Retorna lista de aristas
+       */
       ListaEnlazada< Arista<V>* > * obtenerAristas();
 
+      /**
+       * Marca vertice como no visitado (visitado = false)
+       */
       void marcarComoNoVisitado();
 
+      /**
+       * Marca vertice como visitado (visitado = true)
+       */
       void marcarComoVisitado();
 
+      /**
+       * Retorna true si el vertice fue visitado
+       */
       bool fueVisitado();
 
+      /**
+       * Imprime info del vertice en consola
+       */
       void mostrar();
 
+      /**
+       * Modifica el atributo pesoArista
+       */
       void guardarPesoArista(int value);
 
+      /**
+       * Retorna el peso de la arista de menor longitud
+       */
       int obtenerPesoArista();
 
+      /**
+       * Guarda el vertice anterior. Se ultiza para recorrer caminos minimos
+       */
       void guardarAnterior(Vertice<V> * anterior);
 
+      /**
+       * Retorna true si anterior distinto de NULL
+       */
       bool tieneAnterior();
 
+      /**
+       * Retorna vertice anterior. Utilizado para recorrer caminos minimos
+       */
       Vertice<V> * obtenerAnterior();
+
+      /**
+       * Actualiza coordenadas (x, y) del vertice
+       */
+      void actualizarXY(int x, int y);
+
+      /**
+       * Retorna valor coordenada X
+       */
+      int obtenerX();
+
+      /**
+       * Retorna valor coordenada Y
+       */
+      int obtenerY();
+
+      /**
+       * Retorna true si coordenadas igual a (0, 0)
+       */
+      bool tieneCoordenadas();
 
    private:
 
+      /**
+       * Nombre del vertice
+       */
       V dato;
 
+      /**
+       * Flag. Indica si el vertice fue visitado o no
+       */
       bool visitado;
 
+      /**
+       * Peso de la arista, utilizada para la busqueda de caminos minimos.
+       * Se almacena el peso de la arista de menor valor
+       */
       int pesoArista;
 
+      /**
+       * Vertice anterior. Se ultiliza para recorrer caminos minimos
+       */
       Vertice<V> * anterior;
 
+      /**
+       * Aristas salientes del vertice
+       */
       ListaEnlazada< Arista<V>* > * aristas;
+
+      /**
+       * Representa coordenada X en la imagen del laberinto
+       */
+      int x;
+
+      /**
+       * Representa coordenada Y en la imagen del laberinto
+       */
+      int y;
 
 };
 
@@ -132,6 +214,27 @@ void Vertice<V>::guardarAnterior(Vertice<V> * anterior) {
 template<class V>
 bool Vertice<V>::tieneAnterior() {
    return this->anterior != NULL;
+}
+
+template<class V>
+void Vertice<V>::actualizarXY(int x, int y) {
+   this->x = x;
+   this->y = y;
+}
+
+template<class V>
+int Vertice<V>::obtenerX() {
+   return this->x;
+}
+
+template<class V>
+int Vertice<V>::obtenerY() {
+   return this->y;
+}
+
+template<class V>
+bool Vertice<V>::tieneCoordenadas() {
+   return (this->x != 0 && this->y != 0);
 }
 
 

@@ -17,7 +17,6 @@
 #include "Tramo.h"
 
 #include <iostream>
-
 #include <queue>
 #include <vector>
 
@@ -26,21 +25,72 @@
 template<class V> class Grafo {
    public:
 
+      /**
+       * Constructor
+       */
       Grafo();
 
+      /**
+       * Retorna vertice por su nombre
+       */
       Vertice<V> * obtenerVertice(V dato);
 
+      /**
+       * Retorna el primer vertice agregado a la lista
+       */
       Vertice<V> * obtenerPrimerVertice();
 
+      /**
+       * Retorna true si el grafo no contiene vertices
+       */
       bool estaVacio();
 
+      /**
+       * Agrega vertice con nombre = dato. Si el vertice ya existe, no se hace nada.
+       */
       void agregarVertice(V dato);
 
+      /**
+       * Agrega arista al grafo. Si alguno de los vertices (entrada y salida) no existen, se agregan
+       */
       void agregarArista(V entrada, V salida, V dato, int peso, ListaEnlazada<Tramo*> * tramos);
 
+      /**
+       * Imprime info de vertices y aristas en consola
+       */
       void mostrar();
 
+      /**
+       * Recorrido en anchura
+       */
       void recorrer(V desdeVertice);
+
+      /**
+       * Retorna cola para recorrido en anchura
+       */
+      Cola< Vertice<V>* > * obtenerColaParaRecorrido();
+
+      struct comparador {
+         bool operator() (pair<V, int> a, pair<V, int> b) {
+            return a.second > b.second;
+         }
+      };
+
+      /**
+       * Agrega a la cola los vertices adyacentes.
+       * Metodo invocado para recorrer todos los vertices del grafo
+       */
+      void procesarVertice(Vertice<V> * vertice);
+
+      /**
+       * Setea en false el atributo visitado de cada vertice del grafo
+       */
+      void marcarTodosLosVerticesComoNoVisitados();
+
+      /**
+       * Genera caminos minimos utilizando el algoritmo de Dijkstra
+       */
+      void generarCaminosMinimos(V origen);
 
       /**
        * Ejemplo de Uso. Ver grafo en resources/grafo.png
@@ -57,33 +107,39 @@ template<class V> class Grafo {
        */
       void imprimirCaminoMinimo(V origen, V destino);
 
-      struct comparador {
-         bool operator() (pair<V, int> a, pair<V, int> b) {
-            return a.second > b.second;
-         }
-      };
-
-      void procesarVertice(Vertice<V> * vertice);
-
-      void marcarTodosLosVerticesComoNoVisitados();
-
-      void generarCaminosMinimos(V origen);
-
    private:
+      /**
+       * Cola de prioridad
+       */
       std::priority_queue<pair<V, int>, vector< pair<V, int> >, comparador> ColaDePrioridad;
 
+      /**
+       * Cola para recorrido en anchura
+       */
       Cola< Vertice<V>* > * cola;
 
       ListaEnlazada< Vertice<V>* > * vertices;
 
+      /**
+       * Retorna true si el vertice existe en el grafo
+       */
       bool existeVertice(V dato);
 
+      /**
+       * Aplica algoritmo de Dijkstra para calculo de caminos minimos
+       */
       void dijkstra(Vertice<V> * origen);
 
+      /**
+       * Se agregan a la cola de prioridad los trayectos mas cortos, para obtener mejoras
+       * en cuanto al recorrido del camino
+       */
       void optimizarDistancias(Vertice<V> * actual, Vertice<V> * adyacente, int peso);
 
+      /**
+       * Imprime en consola vertices a seguir para recorrer el camino minimo
+       */
       void imprimirVerticeCaminoMinimo(V datoVertice);
-
 
 };
 
@@ -96,6 +152,11 @@ Grafo<V>::Grafo() {
 template<class V>
 bool Grafo<V>::estaVacio() {
    return this->vertices->estaVacia();
+}
+
+template<class V>
+Cola< Vertice<V>* > * Grafo<V>::obtenerColaParaRecorrido() {
+   return this->cola;
 }
 
 template<class V>

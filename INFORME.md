@@ -13,25 +13,8 @@
 **+ src/**
    Archivos fuente
 
-   * **Camino.cpp**:
-      Representa un recorrido en el laberinto. Está compuesto por puntos.
-      Cada punto tiene referencias a sus cuatro direcciones: Norte, Sur, Oeste, Este
-
-      Al tener los puntos referencias a todas las direcciones, se puede levantar
-      en memoria toda la estructura del laberinto. Ya que las uniones
-      a las bifurcaciones se representan uniendo los puntos de diferentes caminos
-      de acuerdo a la orientacion de cada uno de ellos.
-
-      Cada camino tiene referencia al comienzo y al final del recorrido.
-
-   * **Punto.cpp**:
-      Representa un "punto" en un recorrido del laberinto.
-      El punto tiene un atributo: "informacion" que es una instancia de InfoPunto.
-      InfoPunto contiene informacion acerca de la orientacion del punto, cuantos pasos se van a avanzar
-      en esa direccion, si existe un objeto, si hay una bifurcacion o una union.
-
    * **ImagenLaberinto.cpp**:
-      Recibe la lista de caminos y se encarga de dibujar todos los recorridos del laberinto a
+      Recibe grafo y se encarga de dibujar todos los recorridos del laberinto a
       una imagen. Se ultiliza la libreria EasyBMP: http://easybmp.sourceforge.net/
 
    * **Comando.cpp**:
@@ -41,9 +24,9 @@
       a una lista de Comandos. Cada comando tiene un nombre y un argumento.
       Por ej. Si la entrada del archivo de texto es:
 
-      PP 255 0 0   
-      L moneda    
-      ...   
+      PP 255 0 0
+      L moneda
+      ...
 
       El nombre del comando es L (levantar) y su argumento es: "moneda".
 
