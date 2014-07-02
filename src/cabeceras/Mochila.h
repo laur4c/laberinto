@@ -34,6 +34,8 @@ class Mochila {
        */
 		void mostrar();
 
+    ~Mochila();
+
 	private:
 
       /**

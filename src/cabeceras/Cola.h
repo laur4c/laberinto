@@ -44,6 +44,8 @@ template<class T> class Cola {
 
       Nodo<T> * obtenerFrente();
 
+      ~Cola();
+
    private:
 
       /**
@@ -109,6 +111,13 @@ void Cola<T>::mostrar() {
 template<class T>
 Nodo<T> * Cola<T>::obtenerFrente() {
   return this->frente;
+}
+
+template<class T>
+Cola<T>::~Cola() {
+   while(!this->estaVacia()) {
+      delete this->desacolar();
+   }
 }
 
 #endif

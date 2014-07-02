@@ -64,6 +64,8 @@ template<class V> class Arista {
        */
       void mostrar();
 
+      ~Arista();
+
     private:
 
       /**
@@ -159,5 +161,12 @@ void Arista<V>::mostrar() {
    std::cout << "Vertices: ";
    std::cout << "( " << this->entrada->obtenerDato() << " - ";
    std::cout << this->salida->obtenerDato() << ")" << std::endl;
+}
+
+template<class V>
+Arista<V>::~Arista() {
+  if (!this->enSentidoContrario)
+    delete this->tramos;
+
 }
 #endif

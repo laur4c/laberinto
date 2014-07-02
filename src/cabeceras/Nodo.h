@@ -34,6 +34,7 @@ class Nodo {
        */
       T obtenerDato();
 
+      ~Nodo();
    private:
       /**
        * Dato contenido en el nodo
@@ -67,4 +68,8 @@ void Nodo<T>::cambiarSiguiente(Nodo<T> * nodo) {
    this->siguiente = nodo;
 }
 
+template<class T>
+Nodo<T>::~Nodo() {
+   // delete this->dato;
+}
 #endif

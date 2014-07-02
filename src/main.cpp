@@ -14,18 +14,24 @@
 using namespace std;
 
 int main(int argc, char *argv[]) {
+   ImagenLaberinto * imagen;
+   Grafo<string> * grafo;
+   Laberinto * laberinto;
+   Parser * parser;
+
    try {
       string nombreArchivo;
       cout << "Ingrese el path del archivo: ";
-      cin >> nombreArchivo;
+      // cin >> nombreArchivo;
+      nombreArchivo = "/home/laurac/src/fiuba/laberinto/test/Caminos.txt";
 
-      Parser parser(nombreArchivo);
-      parser.iniciar();
-      Cola<Comando*> * listaComandos = parser.obtenerLista();
+      parser = new Parser(nombreArchivo);
+      parser->iniciar();
+      Cola<Comando*> * listaComandos = parser->obtenerLista();
       // listaComandos->mostrar();
 
-      Laberinto * laberinto = new Laberinto();
-      Grafo<string> * grafo = laberinto->crearGrafoDesdeListaDeComandos(listaComandos);
+      laberinto = new Laberinto();
+      grafo = laberinto->crearGrafoDesdeListaDeComandos(listaComandos);
 
       cout << "Estado de la mochila del caminante: " << endl;
       laberinto->mostrarMochila();
@@ -33,7 +39,7 @@ int main(int argc, char *argv[]) {
       cout << "Description cuantitativa del recorrido realizado por el caminante: " << endl;
       laberinto->mostrarInfo();
 
-      ImagenLaberinto * imagen = new ImagenLaberinto(grafo);
+      imagen = new ImagenLaberinto(grafo);
       imagen->generar();
 
       bool continuar = true;
@@ -45,22 +51,29 @@ int main(int argc, char *argv[]) {
          cout << "Ingrese origen y destino para conocer el minimo camino a recorrer: " << endl;
 
          cout << "Origen: ";
-         cin >> origen;
+         // cin >> origen;
+         origen = "ROJO-NARANJA-2";
 
          cout << "Destino: ";
-         cin >> destino;
+         // cin >> destino;
+         destino = "ROJO-ROSA-2";
 
          imagen->dibujarCaminoMinimo(origen, destino);
 
          cout << "Desea continuar? S/n ";
-         cin >> respuesta;
-
+         // cin >> respuesta;
+         respuesta = "n";
          continuar = (respuesta != "n");
       }
 
    } catch (const char* msg) {
       cout << msg << endl;
    }
+
+   delete imagen;
+   delete grafo;
+   delete laberinto;
+   delete parser;
 
    return 0;
 }

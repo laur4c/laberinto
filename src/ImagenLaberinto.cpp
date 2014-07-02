@@ -216,5 +216,7 @@ void ImagenLaberinto::imprimirVerticeCaminoMinimo(string datoVertice) {
 
 }
 
-
+ImagenLaberinto::~ImagenLaberinto() {
+   delete this->colorNegro;
+}
 

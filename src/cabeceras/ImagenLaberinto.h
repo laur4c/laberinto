@@ -40,6 +40,7 @@ class ImagenLaberinto {
 
       void dibujarCaminoMinimo(string origen, string destino);
 
+      ~ImagenLaberinto();
    private:
       /**
        * Lista de caminos que representan todo el laberinto

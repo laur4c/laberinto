@@ -54,6 +54,7 @@ class Tramo {
        */
       void marcarComoNoDibujado();
 
+      ~Tramo();
    private:
 
       /**

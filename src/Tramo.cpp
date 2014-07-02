@@ -1,5 +1,5 @@
 #include "cabeceras/Tramo.h"
-
+#include <iostream>
 Tramo::Tramo(char orientacion, int longitud, bool hayObjeto, Color * color) {
    this->orientacion = orientacion;
    this->longitud = longitud;
@@ -30,4 +30,9 @@ int Tramo::obtenerLongitud() {
 
 bool Tramo::tieneObjeto() {
    return this->hayObjeto;
+}
+
+Tramo::~Tramo() {
+   delete this->color;
+
 }

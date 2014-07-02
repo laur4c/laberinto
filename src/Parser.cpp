@@ -47,3 +47,7 @@ void Parser::iniciar() {
 Cola<Comando*> * Parser::obtenerLista() {
    return this->listaComandos;
 }
+
+Parser::~Parser() {
+   delete this->listaComandos;
+}

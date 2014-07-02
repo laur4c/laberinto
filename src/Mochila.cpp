@@ -55,3 +55,24 @@ void Mochila::mostrar() {
 		}
 	}
 }
+
+Mochila::~Mochila() {
+	this->items->iniciarCursor();
+   ItemMochila * aBorrar;
+
+   this->items->avanzarCursor();
+   ItemMochila * siguiente = this->items->obtenerCursor();
+
+   while(siguiente != NULL) {
+
+      aBorrar = siguiente;
+      if (this->items->avanzarCursor()) {
+         siguiente = this->items->obtenerCursor();
+      } else {
+         siguiente = NULL;
+      }
+      delete aBorrar;
+   }
+
+	delete this->items;
+}

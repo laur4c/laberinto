@@ -100,6 +100,7 @@ template<class V> class Vertice {
        */
       bool tieneCoordenadas();
 
+      ~Vertice();
    private:
 
       /**
@@ -236,5 +237,8 @@ bool Vertice<V>::tieneCoordenadas() {
    return (this->x != 0 && this->y != 0);
 }
 
-
+template<class V>
+Vertice<V>::~Vertice() {
+    delete this->aristas;
+}
 #endif

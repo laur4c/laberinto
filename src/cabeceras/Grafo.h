@@ -107,6 +107,7 @@ template<class V> class Grafo {
        */
       void imprimirCaminoMinimo(V origen, V destino);
 
+      ~Grafo();
    private:
       /**
        * Cola de prioridad
@@ -119,6 +120,10 @@ template<class V> class Grafo {
       Cola< Vertice<V>* > * cola;
 
       ListaEnlazada< Vertice<V>* > * vertices;
+
+      ListaEnlazada< Arista<V>* > * aristas;
+
+      ListaEnlazada< Tramo* > * tramos;
 
       /**
        * Retorna true si el vertice existe en el grafo
@@ -146,6 +151,8 @@ template<class V> class Grafo {
 template<class V>
 Grafo<V>::Grafo() {
    this->vertices = new ListaEnlazada< Vertice<V>* >();
+   this->aristas = new ListaEnlazada< Arista<V>* >();
+   this->tramos = new ListaEnlazada< Tramo* >();
    this->cola = new Cola< Vertice<V>* >();
 }
 
@@ -214,6 +221,15 @@ void Grafo<V>::agregarArista(V entrada, V salida, V dato, int peso, ListaEnlazad
    Arista<V> * aristaInversa = new Arista<V>(dato, vSalida, vEntrada, peso, tramos);
    aristaInversa->marcarSentidoContrario();
    vSalida->agregarArista(aristaInversa);
+
+   this->aristas->agregar(arista);
+   this->aristas->agregar(aristaInversa);
+
+   tramos->iniciarCursor();
+   while(tramos->avanzarCursor()) {
+      this->tramos->agregar(tramos->obtenerCursor());
+   }
+
 }
 
 template<class V>
@@ -341,6 +357,69 @@ void Grafo<V>::generarCaminosMinimos(V origen) {
    this->marcarTodosLosVerticesComoNoVisitados();
 
    this->dijkstra(this->obtenerVertice(origen));
+}
+
+template<class V>
+Grafo<V>::~Grafo() {
+  this->aristas->iniciarCursor();
+  Arista<V> * aristaABorrar;
+
+  this->aristas->avanzarCursor();
+  Arista<V> * aristaSiguiente = this->aristas->obtenerCursor();
+
+  while(aristaSiguiente != NULL) {
+
+      aristaABorrar = aristaSiguiente;
+      if (this->aristas->avanzarCursor()) {
+         aristaSiguiente = this->aristas->obtenerCursor();
+
+      } else {
+         aristaSiguiente = NULL;
+      }
+      delete aristaABorrar;
+   }
+
+   this->vertices->iniciarCursor();
+   Vertice<V> * verticeABorrar;
+
+   this->vertices->avanzarCursor();
+   Vertice<V> * verticeSiguiente = this->vertices->obtenerCursor();
+
+   while(verticeSiguiente != NULL) {
+
+      verticeABorrar = verticeSiguiente;
+      if (this->vertices->avanzarCursor()) {
+         verticeSiguiente = this->vertices->obtenerCursor();
+
+      } else {
+         verticeSiguiente = NULL;
+      }
+      delete verticeABorrar;
+   }
+
+   this->tramos->iniciarCursor();
+   Tramo * tramoABorrar;
+
+   this->tramos->avanzarCursor();
+   Tramo * tramoSiguiente = this->tramos->obtenerCursor();
+
+  while(tramoSiguiente != NULL) {
+
+      tramoABorrar = tramoSiguiente;
+      if (this->tramos->avanzarCursor()) {
+         tramoSiguiente = this->tramos->obtenerCursor();
+
+      } else {
+         tramoSiguiente = NULL;
+      }
+      delete tramoABorrar;
+   }
+
+  delete this->vertices;
+  delete this->aristas;
+  delete this->tramos;
+
+  delete this->cola;
 }
 
 #endif

@@ -61,13 +61,16 @@ void Laberinto::generarArista(Grafo<std::string> * grafo, Color * color, Cola<Co
 
       } else if (nombre == "A") {
          longitud = util::string_a_int(argumento);
-         tramos->agregar(new Tramo(ultimaOrientacion, longitud, tiroObjeto, color));
+         tramos->agregar(new Tramo(
+            ultimaOrientacion, longitud, tiroObjeto, new Color(color->rojo, color->verde, color->azul)
+         ));
          tiroObjeto = false;
          peso += longitud;
 
       } else if (nombre == "G") {
          ultimaOrientacion = argumento.c_str()[0];
       }
+
    }
    arista = "arista-" + entrada + "-" + salida;
    grafo->agregarArista(entrada, salida, arista, peso, tramos);
@@ -75,20 +78,25 @@ void Laberinto::generarArista(Grafo<std::string> * grafo, Color * color, Cola<Co
 
 Grafo<std::string> * Laberinto::crearGrafoDesdeListaDeComandos(Cola<Comando*> * comandos) {
    Comando * comando;
+   Comando * cmd;
    string nombre, argumento, orientacionContraria, ultimaOrientacion;
    Color * color;
 
    Grafo<string> * grafo = new Grafo<string>();
    Cola<Comando*> * componentesArista = new Cola<Comando*>();
+   Cola<Comando*> * comandosABorrar = new Cola<Comando*>();
+   Cola<Color*> * colores = new Cola<Color*>();
    bool existeVerticeEntrada = false;
 
    while (!comandos->estaVacia()) {
       comando = comandos->desacolar();
+      comandosABorrar->acolar(comando);
       nombre = comando->obtenerNombre();
       argumento = comando->obtenerArgumento();
 
       if (nombre == "PP") {
          color = util::string_a_color(argumento.substr(argumento.find(" ", 0) + 1));
+         colores->acolar(color);
       }
       if (nombre != "R") {
          componentesArista->acolar(comando);
@@ -125,8 +133,12 @@ Grafo<std::string> * Laberinto::crearGrafoDesdeListaDeComandos(Cola<Comando*> * 
       } else if (nombre == "R") { // retroceder es igual a girar hacia el sentido contrario y avanzar
          orientacionContraria = util::char_a_string(util::obtener_orientacion_contraria(ultimaOrientacion.c_str()[0]));
 
-         componentesArista->acolar(new Comando("G", orientacionContraria));
-         componentesArista->acolar(new Comando("A", argumento));
+         cmd = new Comando("G", orientacionContraria);
+         comandosABorrar->acolar(cmd);
+         componentesArista->acolar(cmd);
+         cmd = new Comando("A", argumento);
+         comandosABorrar->acolar(cmd);
+         componentesArista->acolar(cmd);
          this->info->agregarPasos(util::string_a_int(argumento));
 
       }
@@ -138,11 +150,18 @@ Grafo<std::string> * Laberinto::crearGrafoDesdeListaDeComandos(Cola<Comando*> * 
       } else if(nombre == "T") {
          this->mochila->quitar(argumento);
       }
+
    }
+
+   delete comandosABorrar;
+   delete colores;
+   delete componentesArista;
    return grafo;
 }
 
 Laberinto::~Laberinto() {
+   delete this->mochila;
+   delete this->info;
 }
 
 

@@ -35,6 +35,8 @@ class Parser {
        * Retorna lista de comandos
        */
       Cola<Comando*> * obtenerLista();
+
+      ~Parser();
    private:
 
       /**
