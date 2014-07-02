@@ -60,23 +60,26 @@ template<class V> class Grafo {
        */
       void mostrar();
 
+      /**
+       * Funciona como los cursores en la lista enlazada, se recorre grafo en anchura.
+       * No recibe argumentos y toma como vertice origen el primero insertado en el grafo
+       */
       void iniciarRecorridoEnAnchura();
 
+      /**
+       * Funciona como los cursores en la lista enlazada, se recorre grafo en anchura
+       */
       void iniciarRecorridoEnAnchura(V desde);
 
+      /**
+       * Procesa y apunta cursor a vertice siguiente. Se usa una cola para hacer el recorrido
+       */
       bool avanzarRecorridoEnAnchura();
 
+      /**
+       * Retorna vertice actual (cursor)
+       */
       Vertice<V> * obtenerVerticeRecorridoActual();
-
-      /**
-       * Recorrido en anchura
-       */
-      void recorrer(V desdeVertice);
-
-      /**
-       * Retorna cola para recorrido en anchura
-       */
-      Cola< Vertice<V>* > * obtenerColaParaRecorrido();
 
       struct comparador {
          bool operator() (pair<V, int> a, pair<V, int> b) {
@@ -123,18 +126,28 @@ template<class V> class Grafo {
       std::priority_queue<pair<V, int>, vector< pair<V, int> >, comparador> ColaDePrioridad;
 
       /**
-       * Cola para recorrido en anchura
+       * Vertice cursor
        */
-      Cola< Vertice<V>* > * cola;
-
       Vertice<V> * verticeActual;
 
+      /**
+       * Cola para recorrido en anchura
+       */
       Cola< Vertice<V>* > * colaParaRecorrido;
 
+      /**
+       * Almacena todos los vertices del grafo
+       */
       ListaEnlazada< Vertice<V>* > * vertices;
 
+      /**
+       * Almacena todas las aristas del grafo
+       */
       ListaEnlazada< Arista<V>* > * aristas;
 
+      /**
+       * Almacena todos los tramos de las aristas del grafo
+       */
       ListaEnlazada< Tramo* > * tramos;
 
       /**
@@ -158,6 +171,10 @@ template<class V> class Grafo {
        */
       void imprimirVerticeCaminoMinimo(V datoVertice);
 
+      /**
+       * Medio fulero, pero elimina todos los datos de los nodos de las listas
+       * Ver destructor
+       */
       void borrarDatosLista(ListaEnlazada< Vertice<V>* > * lista);
 
       void borrarDatosLista(ListaEnlazada< Tramo* > * lista);
@@ -170,7 +187,6 @@ Grafo<V>::Grafo() {
    this->vertices = new ListaEnlazada< Vertice<V>* >();
    this->aristas = new ListaEnlazada< Arista<V>* >();
    this->tramos = new ListaEnlazada< Tramo* >();
-   this->cola = new Cola< Vertice<V>* >();
    this->colaParaRecorrido = new Cola< Vertice<V>* >();
    this->verticeActual = NULL;
 }
@@ -178,11 +194,6 @@ Grafo<V>::Grafo() {
 template<class V>
 bool Grafo<V>::estaVacio() {
    return this->vertices->estaVacia();
-}
-
-template<class V>
-Cola< Vertice<V>* > * Grafo<V>::obtenerColaParaRecorrido() {
-   return this->cola;
 }
 
 template<class V>
@@ -272,7 +283,6 @@ void Grafo<V>::procesarVertice(Vertice<V> * vertice) {
    aristas->iniciarCursor();
 
    while(aristas->avanzarCursor()) {
-      this->cola->acolar(aristas->obtenerCursor()->obtenerSalida());//borrarrrr
       this->colaParaRecorrido->acolar(aristas->obtenerCursor()->obtenerSalida());
    }
 }
@@ -473,7 +483,6 @@ Grafo<V>::~Grafo() {
    this->borrarDatosLista(this->tramos);
 
    delete this->colaParaRecorrido;
-   delete this->cola;
 }
 
 #endif
