@@ -60,6 +60,14 @@ template<class V> class Grafo {
        */
       void mostrar();
 
+      void iniciarRecorridoEnAnchura();
+
+      void iniciarRecorridoEnAnchura(V desde);
+
+      bool avanzarRecorridoEnAnchura();
+
+      Vertice<V> * obtenerVerticeRecorridoActual();
+
       /**
        * Recorrido en anchura
        */
@@ -119,6 +127,10 @@ template<class V> class Grafo {
        */
       Cola< Vertice<V>* > * cola;
 
+      Vertice<V> * verticeActual;
+
+      Cola< Vertice<V>* > * colaParaRecorrido;
+
       ListaEnlazada< Vertice<V>* > * vertices;
 
       ListaEnlazada< Arista<V>* > * aristas;
@@ -146,6 +158,11 @@ template<class V> class Grafo {
        */
       void imprimirVerticeCaminoMinimo(V datoVertice);
 
+      void borrarDatosLista(ListaEnlazada< Vertice<V>* > * lista);
+
+      void borrarDatosLista(ListaEnlazada< Tramo* > * lista);
+
+      void borrarDatosLista(ListaEnlazada< Arista<V>* > * lista);
 };
 
 template<class V>
@@ -154,6 +171,8 @@ Grafo<V>::Grafo() {
    this->aristas = new ListaEnlazada< Arista<V>* >();
    this->tramos = new ListaEnlazada< Tramo* >();
    this->cola = new Cola< Vertice<V>* >();
+   this->colaParaRecorrido = new Cola< Vertice<V>* >();
+   this->verticeActual = NULL;
 }
 
 template<class V>
@@ -253,7 +272,8 @@ void Grafo<V>::procesarVertice(Vertice<V> * vertice) {
    aristas->iniciarCursor();
 
    while(aristas->avanzarCursor()) {
-      this->cola->acolar(aristas->obtenerCursor()->obtenerSalida());
+      this->cola->acolar(aristas->obtenerCursor()->obtenerSalida());//borrarrrr
+      this->colaParaRecorrido->acolar(aristas->obtenerCursor()->obtenerSalida());
    }
 }
 
@@ -266,20 +286,42 @@ void Grafo<V>::marcarTodosLosVerticesComoNoVisitados() {
 }
 
 template<class V>
-void Grafo<V>::recorrer(V desde) {
+void Grafo<V>::iniciarRecorridoEnAnchura() {
+   this->iniciarRecorridoEnAnchura(this->obtenerPrimerVertice()->obtenerDato());
+}
+
+template<class V>
+void Grafo<V>::iniciarRecorridoEnAnchura(V desde) {
    this->marcarTodosLosVerticesComoNoVisitados();
 
    Vertice<V> * vertice = this->obtenerVertice(desde);
-   this->cola->acolar(vertice);
 
-   while(!this->cola->estaVacia()) {
-      vertice = this->cola->desacolar();
+   this->colaParaRecorrido->acolar(vertice);
+}
 
-      if (!vertice->fueVisitado()) {
-         this->procesarVertice(vertice);
-         vertice->marcarComoVisitado();
+template<class V>
+bool Grafo<V>::avanzarRecorridoEnAnchura() {
+   if (!this->colaParaRecorrido->estaVacia()) {
+      this->verticeActual = this->colaParaRecorrido->desacolar();
+
+      if (!this->verticeActual->fueVisitado()) {
+         this->procesarVertice(this->verticeActual);
+         this->verticeActual->marcarComoVisitado();
       }
+
+   } else {
+      this->verticeActual = NULL;
    }
+   return this->verticeActual != NULL;
+}
+
+template<class V>
+Vertice<V> * Grafo<V>::obtenerVerticeRecorridoActual() {
+   Vertice<V> * vertice;
+   if (this->verticeActual != NULL) {
+      vertice = this->verticeActual;
+   }
+   return vertice;
 }
 
 template<class V>
@@ -360,66 +402,78 @@ void Grafo<V>::generarCaminosMinimos(V origen) {
 }
 
 template<class V>
+void Grafo<V>::borrarDatosLista(ListaEnlazada< Vertice<V>* > * lista) {
+   lista->iniciarCursor();
+   Vertice<V> * aBorrar;
+
+   lista->avanzarCursor();
+   Vertice<V> * siguiente = lista->obtenerCursor();
+
+   while(siguiente != NULL) {
+      aBorrar = siguiente;
+      if (lista->avanzarCursor()) {
+         siguiente = lista->obtenerCursor();
+
+      } else
+         siguiente = NULL;
+
+      delete aBorrar;
+   }
+   delete this->vertices;
+}
+
+template<class V>
+void Grafo<V>::borrarDatosLista(ListaEnlazada< Arista<V>* > * lista) {
+   lista->iniciarCursor();
+   Arista<V> * aBorrar;
+
+   lista->avanzarCursor();
+   Arista<V> * siguiente = lista->obtenerCursor();
+
+   while(siguiente != NULL) {
+      aBorrar = siguiente;
+      if (lista->avanzarCursor()) {
+         siguiente = lista->obtenerCursor();
+
+      } else
+         siguiente = NULL;
+
+      delete aBorrar;
+   }
+   delete this->aristas;
+}
+
+template<class V>
+void Grafo<V>::borrarDatosLista(ListaEnlazada< Tramo* > * lista) {
+   lista->iniciarCursor();
+   Tramo * aBorrar;
+
+   lista->avanzarCursor();
+   Tramo * siguiente = lista->obtenerCursor();
+
+   while(siguiente != NULL) {
+      aBorrar = siguiente;
+      if (lista->avanzarCursor()) {
+         siguiente = lista->obtenerCursor();
+
+      } else
+         siguiente = NULL;
+
+      delete aBorrar;
+   }
+
+   delete this->tramos;
+}
+
+template<class V>
 Grafo<V>::~Grafo() {
-  this->aristas->iniciarCursor();
-  Arista<V> * aristaABorrar;
 
-  this->aristas->avanzarCursor();
-  Arista<V> * aristaSiguiente = this->aristas->obtenerCursor();
+   this->borrarDatosLista(this->vertices);
+   this->borrarDatosLista(this->aristas);
+   this->borrarDatosLista(this->tramos);
 
-  while(aristaSiguiente != NULL) {
-
-      aristaABorrar = aristaSiguiente;
-      if (this->aristas->avanzarCursor()) {
-         aristaSiguiente = this->aristas->obtenerCursor();
-
-      } else {
-         aristaSiguiente = NULL;
-      }
-      delete aristaABorrar;
-   }
-
-   this->vertices->iniciarCursor();
-   Vertice<V> * verticeABorrar;
-
-   this->vertices->avanzarCursor();
-   Vertice<V> * verticeSiguiente = this->vertices->obtenerCursor();
-
-   while(verticeSiguiente != NULL) {
-
-      verticeABorrar = verticeSiguiente;
-      if (this->vertices->avanzarCursor()) {
-         verticeSiguiente = this->vertices->obtenerCursor();
-
-      } else {
-         verticeSiguiente = NULL;
-      }
-      delete verticeABorrar;
-   }
-
-   this->tramos->iniciarCursor();
-   Tramo * tramoABorrar;
-
-   this->tramos->avanzarCursor();
-   Tramo * tramoSiguiente = this->tramos->obtenerCursor();
-
-  while(tramoSiguiente != NULL) {
-
-      tramoABorrar = tramoSiguiente;
-      if (this->tramos->avanzarCursor()) {
-         tramoSiguiente = this->tramos->obtenerCursor();
-
-      } else {
-         tramoSiguiente = NULL;
-      }
-      delete tramoABorrar;
-   }
-
-  delete this->vertices;
-  delete this->aristas;
-  delete this->tramos;
-
-  delete this->cola;
+   delete this->colaParaRecorrido;
+   delete this->cola;
 }
 
 #endif

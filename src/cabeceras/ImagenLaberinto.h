@@ -45,7 +45,6 @@ class ImagenLaberinto {
       /**
        * Lista de caminos que representan todo el laberinto
        */
-      // ListaEnlazada<Camino*> * caminos;
       Grafo<string> * grafo;
 
       /**
@@ -126,6 +125,17 @@ class ImagenLaberinto {
        * Dibuja una unica unidad en la imagen
        */
       void dibujarUnidad(Color * color, int x, int y);
+
+
+      void recorrerTramos(ListaEnlazada<Tramo*> * tramos, bool cambiarSentido, int &x, int &y);
+
+      void recorrerAristas(Vertice<string> * vertice, int &x, int &y);
+
+      void recorrerTramosCaminoMinimo(ListaEnlazada<Tramo*> * tramos, bool cambiarSentido, int &x, int &y);
+
+      void recorrerAristasCaminoMinimo(Vertice<string> * vertice, int &x, int &y);
+
+      void dibujarCaminoMinimo(string datoVertice);
 
 };
 #endif

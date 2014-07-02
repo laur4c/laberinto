@@ -14,16 +14,13 @@
 using namespace std;
 
 int main(int argc, char *argv[]) {
-   ImagenLaberinto * imagen;
-   Grafo<string> * grafo;
-   Laberinto * laberinto;
    Parser * parser;
+   Laberinto * laberinto;
 
    try {
       string nombreArchivo;
       cout << "Ingrese el path del archivo: ";
-      // cin >> nombreArchivo;
-      nombreArchivo = "/home/laurac/src/fiuba/laberinto/test/Caminos.txt";
+      cin >> nombreArchivo;
 
       parser = new Parser(nombreArchivo);
       parser->iniciar();
@@ -31,38 +28,32 @@ int main(int argc, char *argv[]) {
       // listaComandos->mostrar();
 
       laberinto = new Laberinto();
-      grafo = laberinto->crearGrafoDesdeListaDeComandos(listaComandos);
+      laberinto->generarDesdeListaDeComandos(listaComandos);
 
       cout << "Estado de la mochila del caminante: " << endl;
       laberinto->mostrarMochila();
 
       cout << "Description cuantitativa del recorrido realizado por el caminante: " << endl;
       laberinto->mostrarInfo();
-
-      imagen = new ImagenLaberinto(grafo);
-      imagen->generar();
+      laberinto->generarImagen();
 
       bool continuar = true;
       string origen, destino, respuesta;
 
-      // grafo->mostrar();
 
       while(continuar) {
          cout << "Ingrese origen y destino para conocer el minimo camino a recorrer: " << endl;
 
          cout << "Origen: ";
-         // cin >> origen;
-         origen = "ROJO-NARANJA-2";
+         cin >> origen;
 
          cout << "Destino: ";
-         // cin >> destino;
-         destino = "ROJO-ROSA-2";
+         cin >> destino;
 
-         imagen->dibujarCaminoMinimo(origen, destino);
+         laberinto->dibujarCaminoMinimo(origen, destino);
 
          cout << "Desea continuar? S/n ";
-         // cin >> respuesta;
-         respuesta = "n";
+         cin >> respuesta;
          continuar = (respuesta != "n");
       }
 
@@ -70,10 +61,8 @@ int main(int argc, char *argv[]) {
       cout << msg << endl;
    }
 
-   delete imagen;
-   delete grafo;
-   delete laberinto;
    delete parser;
+   delete laberinto;
 
    return 0;
 }

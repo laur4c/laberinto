@@ -52,6 +52,8 @@ class Mochila {
        * Retorna item por nombre
        */
 		ItemMochila * obtenerItem(std::string nombre);
+
+    void borrarItems();
 };
 
 #endif

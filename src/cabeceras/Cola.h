@@ -116,7 +116,7 @@ Nodo<T> * Cola<T>::obtenerFrente() {
 template<class T>
 Cola<T>::~Cola() {
    while(!this->estaVacia()) {
-      delete this->desacolar();
+      this->desacolar();
    }
 }
 

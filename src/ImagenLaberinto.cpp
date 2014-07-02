@@ -7,15 +7,44 @@ ImagenLaberinto::ImagenLaberinto(Grafo<string> * grafo, int unidad) {
    this->colorNegro = new Color(0, 0, 0);
 }
 
+void ImagenLaberinto::recorrerTramos(ListaEnlazada<Tramo*> * tramos, bool cambiarSentido, int &x, int &y) {
+   Tramo * tramo;
+   tramos->iniciarCursor();
+
+   while(tramos->avanzarCursor()) {
+      tramo = tramos->obtenerCursor();
+
+      if (!tramo->estaDibujado()) {
+         this->dibujar(tramo, x, y, cambiarSentido);
+         tramo->marcarComoDibujado();
+      }
+   }
+}
+
+void ImagenLaberinto::recorrerAristas(Vertice<string> * vertice, int &x, int &y) {
+   Arista<string> * arista;
+   ListaEnlazada< Arista<string>* > * aristas = vertice->obtenerAristas();
+   aristas->iniciarCursor();
+   while(aristas->avanzarCursor()) {
+      arista = aristas->obtenerCursor();
+
+      // seteo x, y con las coordenadas del vertice
+      x = vertice->obtenerX();
+      y = vertice->obtenerY();
+      // Porque al generar el grafo se crean las aristas
+      // en el sentido qeu indica el archivo de entrada
+      // y en el sentido contrario, para poder llegar a todos los vertices
+      this->recorrerTramos(arista->obtenerTramos(), arista->dibujarEnSentidoContrario(), x, y);
+
+      // Las coordenadas finales del tramo son las coordenadas del proximo vertice
+      if (!arista->obtenerSalida()->tieneCoordenadas()) {
+         arista->obtenerSalida()->actualizarXY(x, y);
+      }
+   }
+}
+
 void ImagenLaberinto::generar() {
    SetEasyBMPwarningsOff();
-
-   ListaEnlazada< Arista<string>* > * aristas;
-   ListaEnlazada<Tramo*> * tramos;
-
-   Tramo * tramo;
-   Arista<string> * arista;
-   bool cambiarSentido;
 
    int sum = 1000;
    int tam = sum / 2;
@@ -23,55 +52,13 @@ void ImagenLaberinto::generar() {
    int x = tam;
    int y = tam;
 
-   this->grafo->marcarTodosLosVerticesComoNoVisitados();
-
-   // Obtengo primer vertice agregado al grafo y le seteo coordenadas en centro de la imagen
-   // El tamanio de la imagen se elige arbitrariamente
+   this->grafo->iniciarRecorridoEnAnchura();
    Vertice<string> * vertice = this->grafo->obtenerPrimerVertice();
    vertice->actualizarXY(x, y);
-   this->grafo->obtenerColaParaRecorrido()->acolar(vertice);
 
-   while(!this->grafo->obtenerColaParaRecorrido()->estaVacia()) {
-      vertice = this->grafo->obtenerColaParaRecorrido()->desacolar();
-
-      if (!vertice->fueVisitado()) {
-         this->grafo->procesarVertice(vertice);
-         vertice->marcarComoVisitado();
-
-         aristas = vertice->obtenerAristas();
-         // Recorro aristas del vertice
-         aristas->iniciarCursor();
-         while(aristas->avanzarCursor()) {
-            arista = aristas->obtenerCursor();
-
-            // seteo x, y con las coordenadas del vertice
-            x = vertice->obtenerX();
-            y = vertice->obtenerY();
-
-            // Recorro tramos de la arista
-            tramos = arista->obtenerTramos();
-            tramos->iniciarCursor();
-            while(tramos->avanzarCursor()) {
-               tramo = tramos->obtenerCursor();
-
-               if (!tramo->estaDibujado()) {
-                  // Porque al generar el grafo se crean las aristas
-                  // en el sentido qeu indica el archivo de entrada
-                  // y en el sentido contrario, para poder llegar a todos los vertices
-                  cambiarSentido = aristas->obtenerCursor()->dibujarEnSentidoContrario();
-
-                  this->dibujar(tramo, x, y, cambiarSentido);
-                  tramo->marcarComoDibujado();
-               }
-            }
-
-            // Las coordenadas finales del tramo son las coordenadas del proximo vertice
-            if (!arista->obtenerSalida()->tieneCoordenadas()) {
-               arista->obtenerSalida()->actualizarXY(x, y);
-            }
-
-         }
-      }
+   while(this->grafo->avanzarRecorridoEnAnchura()) {
+      vertice = this->grafo->obtenerVerticeRecorridoActual();
+      this->recorrerAristas(vertice, x, y);
    }
 
    this->imagen.WriteToFile("laberinto.bmp");
@@ -169,51 +156,50 @@ void ImagenLaberinto::dibujarUnidad(Color * color, int x, int y) {
 
 void ImagenLaberinto::dibujarCaminoMinimo(string origen, string destino) {
    this->grafo->generarCaminosMinimos(origen);
-   this->imprimirVerticeCaminoMinimo(destino);
+   this->dibujarCaminoMinimo(destino);
 }
 
-void ImagenLaberinto::imprimirVerticeCaminoMinimo(string datoVertice) {
+void ImagenLaberinto::dibujarCaminoMinimo(string datoVertice) {
    Vertice<string> * vertice = this->grafo->obtenerVertice(datoVertice);
-   ListaEnlazada< Arista<string>* > * aristas;
-   Tramo * tramo;
-   Arista<string> * arista;
-   ListaEnlazada<Tramo*> * tramos;
-   bool cambiarSentido;
-
    if(vertice->tieneAnterior()) {
-      this->imprimirVerticeCaminoMinimo(vertice->obtenerAnterior()->obtenerDato());
+      this->dibujarCaminoMinimo(vertice->obtenerAnterior()->obtenerDato());
 
       int x, y;
-      aristas = vertice->obtenerAnterior()->obtenerAristas();
-
-      aristas->iniciarCursor();
-      while(aristas->avanzarCursor()) {
-         arista = aristas->obtenerCursor();
-
-         if (arista->obtenerSalida()->obtenerDato() == vertice->obtenerDato()) {
-            x = vertice->obtenerAnterior()->obtenerX();
-            y = vertice->obtenerAnterior()->obtenerY();
-
-            arista->marcarTramosComoNoDibujados();
-            tramos = arista->obtenerTramos();
-            tramos->iniciarCursor();
-
-            while(tramos->avanzarCursor()) {
-               tramo = tramos->obtenerCursor();
-
-               if (!tramo->estaDibujado()) {
-                  cambiarSentido = arista->dibujarEnSentidoContrario();
-
-                  this->dibujar(tramo, x, y, cambiarSentido, true);
-                  tramo->marcarComoDibujado();
-               }
-            }
-         }
-      }
-
+      this->recorrerAristasCaminoMinimo(vertice, x, y);
       this->imagen.WriteToFile("laberinto.bmp");
    }
+}
 
+void ImagenLaberinto::recorrerTramosCaminoMinimo(ListaEnlazada<Tramo*> * tramos, bool cambiarSentido, int &x, int &y) {
+   Tramo * tramo;
+   tramos->iniciarCursor();
+
+   while(tramos->avanzarCursor()) {
+      tramo = tramos->obtenerCursor();
+
+      if (!tramo->estaDibujado()) {
+         this->dibujar(tramo, x, y, cambiarSentido, true);
+         tramo->marcarComoDibujado();
+      }
+   }
+}
+
+void ImagenLaberinto::recorrerAristasCaminoMinimo(Vertice<string> * vertice, int &x, int &y) {
+   Arista<string> * arista;
+   ListaEnlazada< Arista<string>* > * aristas = vertice->obtenerAnterior()->obtenerAristas();
+
+   aristas->iniciarCursor();
+   while(aristas->avanzarCursor()) {
+      arista = aristas->obtenerCursor();
+
+      if (arista->obtenerSalida()->obtenerDato() == vertice->obtenerDato()) {
+         x = vertice->obtenerAnterior()->obtenerX();
+         y = vertice->obtenerAnterior()->obtenerY();
+
+         arista->marcarTramosComoNoDibujados();
+         this->recorrerTramosCaminoMinimo(arista->obtenerTramos(), arista->dibujarEnSentidoContrario(), x, y);
+      }
+   }
 }
 
 ImagenLaberinto::~ImagenLaberinto() {

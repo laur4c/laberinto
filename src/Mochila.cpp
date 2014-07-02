@@ -56,15 +56,14 @@ void Mochila::mostrar() {
 	}
 }
 
-Mochila::~Mochila() {
-	this->items->iniciarCursor();
+void Mochila::borrarItems() {
+   this->items->iniciarCursor();
    ItemMochila * aBorrar;
 
    this->items->avanzarCursor();
    ItemMochila * siguiente = this->items->obtenerCursor();
 
    while(siguiente != NULL) {
-
       aBorrar = siguiente;
       if (this->items->avanzarCursor()) {
          siguiente = this->items->obtenerCursor();
@@ -74,5 +73,9 @@ Mochila::~Mochila() {
       delete aBorrar;
    }
 
-	delete this->items;
+   delete this->items;
+}
+
+Mochila::~Mochila() {
+	this->borrarItems();
 }

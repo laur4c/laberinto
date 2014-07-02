@@ -1,12 +1,9 @@
 #include "cabeceras/Laberinto.h"
 
-#include <iostream>
-
-using namespace std;
-
 Laberinto::Laberinto() {
    this->mochila = new Mochila();
    this->info = new InfoRecorrido();
+   this->grafo = new Grafo<string>();
 }
 
 void Laberinto::mostrarInfo() {
@@ -17,7 +14,16 @@ void Laberinto::mostrarMochila() {
    this->mochila->mostrar();
 }
 
-void Laberinto::generarArista(Grafo<std::string> * grafo, Color * color, Cola<Comando*> * componentes, char ultimaOrientacion) {
+void Laberinto::generarImagen() {
+   this->imagenLaberinto = new ImagenLaberinto(this->grafo);
+   this->imagenLaberinto->generar();
+}
+
+void Laberinto::dibujarCaminoMinimo(string origen, string destino) {
+   this->imagenLaberinto->dibujarCaminoMinimo(origen, destino);
+}
+
+void Laberinto::generarArista(Color * color, Cola<Comando*> * componentes, char ultimaOrientacion) {
    Comando * comando;
    string vertice, nombre, argumento, arista;
    ListaEnlazada<Tramo*> * tramos = new ListaEnlazada<Tramo*>();
@@ -73,16 +79,15 @@ void Laberinto::generarArista(Grafo<std::string> * grafo, Color * color, Cola<Co
 
    }
    arista = "arista-" + entrada + "-" + salida;
-   grafo->agregarArista(entrada, salida, arista, peso, tramos);
+   this->grafo->agregarArista(entrada, salida, arista, peso, tramos);
 }
 
-Grafo<std::string> * Laberinto::crearGrafoDesdeListaDeComandos(Cola<Comando*> * comandos) {
+void Laberinto::generarDesdeListaDeComandos(Cola<Comando*> * comandos) {
    Comando * comando;
    Comando * cmd;
    string nombre, argumento, orientacionContraria, ultimaOrientacion;
    Color * color;
 
-   Grafo<string> * grafo = new Grafo<string>();
    Cola<Comando*> * componentesArista = new Cola<Comando*>();
    Cola<Comando*> * comandosABorrar = new Cola<Comando*>();
    Cola<Color*> * colores = new Cola<Color*>();
@@ -112,7 +117,7 @@ Grafo<std::string> * Laberinto::crearGrafoDesdeListaDeComandos(Cola<Comando*> * 
 
 
          if (existeVerticeEntrada) {
-            this->generarArista(grafo, color, componentesArista, ultimaOrientacion.c_str()[0]);
+            this->generarArista(color, componentesArista, ultimaOrientacion.c_str()[0]);
 
             if (nombre != "PLL") {
                // acolo de nuevo el comando ya que va a ser la entrada de la
@@ -153,15 +158,24 @@ Grafo<std::string> * Laberinto::crearGrafoDesdeListaDeComandos(Cola<Comando*> * 
 
    }
 
+   while(!comandosABorrar->estaVacia())
+      delete comandosABorrar->desacolar();
    delete comandosABorrar;
+
+   while(!colores->estaVacia())
+      delete colores->desacolar();
    delete colores;
+
+   while(!componentesArista->estaVacia())
+      delete componentesArista->desacolar();
    delete componentesArista;
-   return grafo;
 }
 
 Laberinto::~Laberinto() {
    delete this->mochila;
    delete this->info;
+   delete this->imagenLaberinto;
+   delete this->grafo;
 }
 
 

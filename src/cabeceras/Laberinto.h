@@ -15,6 +15,10 @@
 #include "InfoRecorrido.h"
 #include "Cola.h"
 #include "Grafo.h"
+#include "ImagenLaberinto.h"
+
+#include <iostream>
+using namespace std;
 
 class Laberinto {
    public:
@@ -29,7 +33,7 @@ class Laberinto {
        * Con el resto de los comandos se generan los tramos de cada arista, ya que la arista
        * no es una linea recta.
        */
-      Grafo<std::string> * crearGrafoDesdeListaDeComandos(Cola<Comando*> * comandos);
+      void generarDesdeListaDeComandos(Cola<Comando*> * comandos);
 
       /**
        * Imprime items en la mochila, en consola
@@ -41,11 +45,15 @@ class Laberinto {
        */
       void mostrarInfo();
 
+      void generarImagen();
+
+      void dibujarCaminoMinimo(string origen, string destino);
 
       ~Laberinto();
 
 
    private:
+      ImagenLaberinto * imagenLaberinto;
 
       /**
        * Lista con elementos levantados en el camino
@@ -57,12 +65,9 @@ class Laberinto {
        */
       InfoRecorrido * info;
 
-      /**
-       * Agrega un elemento a la mochila
-       */
-      void agregarElementoAMochila(std::string elemento);
+      Grafo<string> * grafo;
 
-      void generarArista(Grafo<std::string> * grafo, Color * color, Cola<Comando*> * componentes, char ultimaOrientacion);
+      void generarArista(Color * color, Cola<Comando*> * componentes, char ultimaOrientacion);
 };
 
 #endif
