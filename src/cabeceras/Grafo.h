@@ -9,12 +9,11 @@
 #ifndef _GRAFO_H_
 #define _GRAFO_H_
 
+#include "ListaEnlazada.h"
 #include "Vertice.h"
 #include "Arista.h"
-#include "ListaEnlazada.h"
 #include "Cola.h"
 #include "Color.h"
-#include "Tramo.h"
 
 #include <iostream>
 #include <queue>
@@ -22,7 +21,7 @@
 
 #define MAX_PESO_ARISTA 100000
 
-template<class V> class Grafo {
+template<typename A, typename V> class Grafo {
    public:
 
       /**
@@ -33,12 +32,12 @@ template<class V> class Grafo {
       /**
        * Retorna vertice por su nombre
        */
-      Vertice<V> * obtenerVertice(V dato);
+      Vertice<V,A> * obtenerVertice(std::string nombre);
 
       /**
        * Retorna el primer vertice agregado a la lista
        */
-      Vertice<V> * obtenerPrimerVertice();
+      Vertice<V,A> * obtenerPrimerVertice();
 
       /**
        * Retorna true si el grafo no contiene vertices
@@ -48,12 +47,12 @@ template<class V> class Grafo {
       /**
        * Agrega vertice con nombre = dato. Si el vertice ya existe, no se hace nada.
        */
-      void agregarVertice(V dato);
+      void agregarVertice(std::string nombre, V dato);
 
       /**
        * Agrega arista al grafo. Si alguno de los vertices (entrada y salida) no existen, se agregan
        */
-      void agregarArista(V entrada, V salida, V dato, int peso, ListaEnlazada<Tramo*> * tramos);
+      void agregarArista(std::string nombre, std::string entrada, std::string salida, A dato, int peso);
 
       /**
        * Imprime info de vertices y aristas en consola
@@ -79,10 +78,10 @@ template<class V> class Grafo {
       /**
        * Retorna vertice actual (cursor)
        */
-      Vertice<V> * obtenerVerticeRecorridoActual();
+      Vertice<V,A> * obtenerVerticeRecorridoActual();
 
       struct comparador {
-         bool operator() (pair<V, int> a, pair<V, int> b) {
+         bool operator() (pair<std::string, int> a, pair<std::string, int> b) {
             return a.second > b.second;
          }
       };
@@ -91,7 +90,7 @@ template<class V> class Grafo {
        * Agrega a la cola los vertices adyacentes.
        * Metodo invocado para recorrer todos los vertices del grafo
        */
-      void procesarVertice(Vertice<V> * vertice);
+      void procesarVertice(Vertice<V,A> * vertice);
 
       /**
        * Setea en false el atributo visitado de cada vertice del grafo
@@ -101,7 +100,7 @@ template<class V> class Grafo {
       /**
        * Genera caminos minimos utilizando el algoritmo de Dijkstra
        */
-      void generarCaminosMinimos(V origen);
+      void generarCaminosMinimos(std::string origen);
 
       /**
        * Ejemplo de Uso. Ver grafo en resources/grafo.png
@@ -116,95 +115,95 @@ template<class V> class Grafo {
        * grafo->agregarArista("4", "3", "c", 25);
        * grafo->imprimirCaminoMinimo("1", "3");
        */
-      void imprimirCaminoMinimo(V origen, V destino);
+      void imprimirCaminoMinimo(std::string origen, std::string destino);
 
       ~Grafo();
    private:
       /**
        * Cola de prioridad
        */
-      std::priority_queue<pair<V, int>, vector< pair<V, int> >, comparador> ColaDePrioridad;
+      std::priority_queue<pair<std::string, int>, vector< pair<std::string, int> >, comparador> ColaDePrioridad;
 
       /**
        * Vertice cursor
        */
-      Vertice<V> * verticeActual;
+      Vertice<V,A> * verticeActual;
 
       /**
        * Cola para recorrido en anchura
        */
-      Cola< Vertice<V>* > * colaParaRecorrido;
+      Cola< Vertice<V,A>* > * colaParaRecorrido;
 
       /**
        * Almacena todos los vertices del grafo
        */
-      ListaEnlazada< Vertice<V>* > * vertices;
+      ListaEnlazada< Vertice<V,A>* > * vertices;
 
       /**
        * Almacena todas las aristas del grafo
        */
-      ListaEnlazada< Arista<V>* > * aristas;
+      ListaEnlazada< Arista<A,V>* > * aristas;
 
       /**
        * Almacena todos los tramos de las aristas del grafo
        */
-      ListaEnlazada< Tramo* > * tramos;
+      ListaEnlazada<A> * datosAristas;
 
       /**
        * Retorna true si el vertice existe en el grafo
        */
-      bool existeVertice(V dato);
+      bool existeVertice(std::string nombre);
 
       /**
        * Aplica algoritmo de Dijkstra para calculo de caminos minimos
        */
-      void dijkstra(Vertice<V> * origen);
+      void dijkstra(Vertice<V,A> * origen);
 
       /**
        * Se agregan a la cola de prioridad los trayectos mas cortos, para obtener mejoras
        * en cuanto al recorrido del camino
        */
-      void optimizarDistancias(Vertice<V> * actual, Vertice<V> * adyacente, int peso);
+      void optimizarDistancias(Vertice<V,A> * actual, Vertice<V,A> * adyacente, int peso);
 
       /**
        * Imprime en consola vertices a seguir para recorrer el camino minimo
        */
-      void imprimirVerticeCaminoMinimo(V datoVertice);
+      void imprimirVerticeCaminoMinimo(std::string nombreVertice);
 
       /**
        * Medio fulero, pero elimina todos los datos de los nodos de las listas
        * Ver destructor
        */
-      void borrarDatosLista(ListaEnlazada< Vertice<V>* > * lista);
+      void borrarDatosLista(ListaEnlazada< Vertice<V,A>* > * lista);
 
-      void borrarDatosLista(ListaEnlazada< Tramo* > * lista);
+      void borrarDatosLista(ListaEnlazada<A> * lista);
 
-      void borrarDatosLista(ListaEnlazada< Arista<V>* > * lista);
+      void borrarDatosLista(ListaEnlazada< Arista<A,V>* > * lista);
 };
 
-template<class V>
-Grafo<V>::Grafo() {
-   this->vertices = new ListaEnlazada< Vertice<V>* >();
-   this->aristas = new ListaEnlazada< Arista<V>* >();
-   this->tramos = new ListaEnlazada< Tramo* >();
-   this->colaParaRecorrido = new Cola< Vertice<V>* >();
+template<typename A, typename V>
+Grafo<A,V>::Grafo() {
+   this->vertices = new ListaEnlazada< Vertice<V,A>* >();
+   this->aristas = new ListaEnlazada< Arista<A,V>* >();
+   this->datosAristas = new ListaEnlazada<A>();
+   this->colaParaRecorrido = new Cola< Vertice<V,A>* >();
    this->verticeActual = NULL;
 }
 
-template<class V>
-bool Grafo<V>::estaVacio() {
+template<typename A, typename V>
+bool Grafo<A,V>::estaVacio() {
    return this->vertices->estaVacia();
 }
 
-template<class V>
-Vertice<V> * Grafo<V>::obtenerVertice(V dato) {
+template<typename A, typename V>
+Vertice<V,A> * Grafo<A,V>::obtenerVertice(std::string nombre) {
    this->vertices->iniciarCursor();
    bool encontrado = false;
-   Vertice<V> * vertice;
+   Vertice<V,A> * vertice;
 
    while(!encontrado && this->vertices->avanzarCursor()) {
       vertice = this->vertices->obtenerCursor();
-      encontrado = (vertice->obtenerDato() == dato);
+      encontrado = (vertice->obtenerNombre() == nombre);
    }
 
    if (!encontrado)
@@ -213,73 +212,73 @@ Vertice<V> * Grafo<V>::obtenerVertice(V dato) {
    return vertice;
 }
 
-template<class V>
-bool Grafo<V>::existeVertice(V dato) {
+template<typename A, typename V>
+bool Grafo<A,V>::existeVertice(std::string nombre) {
    bool encontrado = false;
 
    this->vertices->iniciarCursor();
    while(!encontrado && this->vertices->avanzarCursor()) {
-      encontrado = (this->vertices->obtenerCursor()->obtenerDato() == dato);
+      encontrado = (this->vertices->obtenerCursor()->obtenerNombre() == nombre);
    }
    return encontrado;
 }
 
-template<class V>
-void Grafo<V>::agregarVertice(V dato) {
-   if (!this->existeVertice(dato)) {
-      Vertice<V> * vertice = new Vertice<V>(dato);
+template<typename A, typename V>
+void Grafo<A,V>::agregarVertice(std::string nombre, V dato) {
+   if (!this->existeVertice(nombre)) {
+      Vertice<V,A> * vertice = new Vertice<V,A>(nombre, NULL);
       this->vertices->agregar(vertice);
    }
 }
 
-template<class V>
-void Grafo<V>::agregarArista(V entrada, V salida, V dato, int peso, ListaEnlazada<Tramo*> * tramos) {
+template<typename A, typename V>
+void Grafo<A,V>::agregarArista(std::string nombre, std::string entrada, std::string salida, A dato, int peso) {
    if (!this->existeVertice(entrada)) {
-      this->agregarVertice(entrada);
+      this->agregarVertice(entrada, NULL);
    }
-   Vertice<V> * vEntrada = this->obtenerVertice(entrada);
+   Vertice<V,A> * vEntrada = this->obtenerVertice(entrada);
 
    if (!this->existeVertice(salida)) {
-      this->agregarVertice(salida);
+      this->agregarVertice(salida, NULL);
    }
-   Vertice<V> * vSalida = this->obtenerVertice(salida);
+   Vertice<V,A> * vSalida = this->obtenerVertice(salida);
 
-   Arista<V> * arista = new Arista<V>(dato, vEntrada, vSalida, peso, tramos);
+   Arista<A,V> * arista = new Arista<A,V>(nombre, dato, vEntrada, vSalida, peso);
    vEntrada->agregarArista(arista);
 
    // agrego la inversa para poder recorrer todo el grafo desde un vertice
-   Arista<V> * aristaInversa = new Arista<V>(dato, vSalida, vEntrada, peso, tramos);
+   Arista<A,V> * aristaInversa = new Arista<A,V>(nombre, dato, vSalida, vEntrada, peso);
    aristaInversa->marcarSentidoContrario();
    vSalida->agregarArista(aristaInversa);
 
    this->aristas->agregar(arista);
    this->aristas->agregar(aristaInversa);
 
-   tramos->iniciarCursor();
-   while(tramos->avanzarCursor()) {
-      this->tramos->agregar(tramos->obtenerCursor());
-   }
+   // tramos->iniciarCursor();
+   // while(tramos->avanzarCursor()) {
+   //    this->tramos->agregar(tramos->obtenerCursor());
+   // }
 
 }
 
-template<class V>
-void Grafo<V>::mostrar() {
+template<typename A, typename V>
+void Grafo<A,V>::mostrar() {
    this->vertices->iniciarCursor();
    while(this->vertices->avanzarCursor()) {
       this->vertices->obtenerCursor()->mostrar();
    }
 }
 
-template<class V>
-Vertice<V> * Grafo<V>::obtenerPrimerVertice() {
+template<typename A, typename V>
+Vertice<V,A> * Grafo<A,V>::obtenerPrimerVertice() {
    this->vertices->iniciarCursor();
    this->vertices->avanzarCursor();
    return this->vertices->obtenerCursor();
 }
 
-template<class V>
-void Grafo<V>::procesarVertice(Vertice<V> * vertice) {
-   ListaEnlazada< Arista<V>* > * aristas = vertice->obtenerAristas();
+template<typename A, typename V>
+void Grafo<A,V>::procesarVertice(Vertice<V,A> * vertice) {
+   ListaEnlazada< Arista<A,V>* > * aristas = vertice->obtenerAristas();
    aristas->iniciarCursor();
 
    while(aristas->avanzarCursor()) {
@@ -287,30 +286,30 @@ void Grafo<V>::procesarVertice(Vertice<V> * vertice) {
    }
 }
 
-template<class V>
-void Grafo<V>::marcarTodosLosVerticesComoNoVisitados() {
+template<typename A, typename V>
+void Grafo<A,V>::marcarTodosLosVerticesComoNoVisitados() {
    this->vertices->iniciarCursor();
    while(this->vertices->avanzarCursor()) {
       this->vertices->obtenerCursor()->marcarComoNoVisitado();
    }
 }
 
-template<class V>
-void Grafo<V>::iniciarRecorridoEnAnchura() {
-   this->iniciarRecorridoEnAnchura(this->obtenerPrimerVertice()->obtenerDato());
+template<typename A, typename V>
+void Grafo<A,V>::iniciarRecorridoEnAnchura() {
+   this->iniciarRecorridoEnAnchura(this->obtenerPrimerVertice()->obtenerNombre());
 }
 
-template<class V>
-void Grafo<V>::iniciarRecorridoEnAnchura(V desde) {
+template<typename A, typename V>
+void Grafo<A,V>::iniciarRecorridoEnAnchura(V desde) {
    this->marcarTodosLosVerticesComoNoVisitados();
 
-   Vertice<V> * vertice = this->obtenerVertice(desde);
+   Vertice<V,A> * vertice = this->obtenerVertice(desde);
 
    this->colaParaRecorrido->acolar(vertice);
 }
 
-template<class V>
-bool Grafo<V>::avanzarRecorridoEnAnchura() {
+template<typename A, typename V>
+bool Grafo<A,V>::avanzarRecorridoEnAnchura() {
    if (!this->colaParaRecorrido->estaVacia()) {
       this->verticeActual = this->colaParaRecorrido->desacolar();
 
@@ -325,44 +324,44 @@ bool Grafo<V>::avanzarRecorridoEnAnchura() {
    return this->verticeActual != NULL;
 }
 
-template<class V>
-Vertice<V> * Grafo<V>::obtenerVerticeRecorridoActual() {
-   Vertice<V> * vertice;
+template<typename A, typename V>
+Vertice<V,A> * Grafo<A,V>::obtenerVerticeRecorridoActual() {
+   Vertice<V,A> * vertice;
    if (this->verticeActual != NULL) {
       vertice = this->verticeActual;
    }
    return vertice;
 }
 
-template<class V>
-void Grafo<V>::imprimirVerticeCaminoMinimo(V datoVertice) {
-   Vertice<V> * vertice = this->obtenerVertice(datoVertice);
+template<typename A, typename V>
+void Grafo<A,V>::imprimirVerticeCaminoMinimo(std::string nombreVertice) {
+   Vertice<V,A> * vertice = this->obtenerVertice(nombreVertice);
    if(vertice->tieneAnterior()) {
-      this->imprimirVerticeCaminoMinimo(vertice->obtenerAnterior()->obtenerDato());
+      this->imprimirVerticeCaminoMinimo(vertice->obtenerAnterior()->obtenerNombre());
    }
 }
 
-template<class V>
-void Grafo<V>::imprimirCaminoMinimo(V origen, V destino) {
+template<typename A, typename V>
+void Grafo<A,V>::imprimirCaminoMinimo(std::string origen, std::string destino) {
    this->generarCaminosMinimos(origen);
    this->imprimirVerticeCaminoMinimo(destino);
 }
 
-template<class V>
-void Grafo<V>::optimizarDistancias(Vertice<V> * actual, Vertice<V> * adyacente, int peso) {
+template<typename A, typename V>
+void Grafo<A,V>::optimizarDistancias(Vertice<V,A> * actual, Vertice<V,A> * adyacente, int peso) {
    if (adyacente->obtenerPesoArista() > (actual->obtenerPesoArista() + peso)) {
       adyacente->guardarPesoArista(actual->obtenerPesoArista() + peso);
       adyacente->guardarAnterior(actual);
 
-      pair<V, int> nuevo;
-      nuevo.first = adyacente->obtenerDato();
+      pair<std::string, int> nuevo;
+      nuevo.first = adyacente->obtenerNombre();
       nuevo.second = adyacente->obtenerPesoArista();
       ColaDePrioridad.push(nuevo);
    }
 }
 
-template<class V>
-void Grafo<V>::dijkstra(Vertice<V> * origen) {
+template<typename A, typename V>
+void Grafo<A,V>::dijkstra(Vertice<V,A> * origen) {
    pair<V, int> elemento;
    elemento.first = origen->obtenerDato();
    elemento.second = 0;
@@ -370,17 +369,17 @@ void Grafo<V>::dijkstra(Vertice<V> * origen) {
    ColaDePrioridad.push(elemento);
    origen->guardarPesoArista(0);
 
-   Vertice<V> * verticeActual;
-   Vertice<V> * verticeAdyacente;
-   V datoVertice;
-   ListaEnlazada< Arista<V>* > * aristas;
-   Arista<V> * arista;
+   Vertice<V,A> * verticeActual;
+   Vertice<V,A> * verticeAdyacente;
+   std::string nombreVertice;
+   ListaEnlazada< Arista<A,V>* > * aristas;
+   Arista<A,V> * arista;
 
    while(!ColaDePrioridad.empty()) {
-      datoVertice = ColaDePrioridad.top().first;
+      nombreVertice = ColaDePrioridad.top().first;
       ColaDePrioridad.pop();
 
-      verticeActual = this->obtenerVertice(datoVertice);
+      verticeActual = this->obtenerVertice(nombreVertice);
       if(!verticeActual->fueVisitado()) {
          verticeActual->marcarComoVisitado();
 
@@ -399,8 +398,8 @@ void Grafo<V>::dijkstra(Vertice<V> * origen) {
    }
 }
 
-template<class V>
-void Grafo<V>::generarCaminosMinimos(V origen) {
+template<typename A, typename V>
+void Grafo<A,V>::generarCaminosMinimos(std::string origen) {
    // Primero inicializo todos los vertices con pesoArista = MAX_PESO_ARISTA
    this->vertices->iniciarCursor();
    while(this->vertices->avanzarCursor()) {
@@ -411,13 +410,13 @@ void Grafo<V>::generarCaminosMinimos(V origen) {
    this->dijkstra(this->obtenerVertice(origen));
 }
 
-template<class V>
-void Grafo<V>::borrarDatosLista(ListaEnlazada< Vertice<V>* > * lista) {
+template<typename A, typename V>
+void Grafo<A,V>::borrarDatosLista(ListaEnlazada< Vertice<V,A>* > * lista) {
    lista->iniciarCursor();
-   Vertice<V> * aBorrar;
+   Vertice<V,A> * aBorrar;
 
    lista->avanzarCursor();
-   Vertice<V> * siguiente = lista->obtenerCursor();
+   Vertice<V,A> * siguiente = lista->obtenerCursor();
 
    while(siguiente != NULL) {
       aBorrar = siguiente;
@@ -432,13 +431,13 @@ void Grafo<V>::borrarDatosLista(ListaEnlazada< Vertice<V>* > * lista) {
    delete this->vertices;
 }
 
-template<class V>
-void Grafo<V>::borrarDatosLista(ListaEnlazada< Arista<V>* > * lista) {
+template<typename A, typename V>
+void Grafo<A,V>::borrarDatosLista(ListaEnlazada< Arista<A,V>* > * lista) {
    lista->iniciarCursor();
-   Arista<V> * aBorrar;
+   Arista<A,V> * aBorrar;
 
    lista->avanzarCursor();
-   Arista<V> * siguiente = lista->obtenerCursor();
+   Arista<A,V> * siguiente = lista->obtenerCursor();
 
    while(siguiente != NULL) {
       aBorrar = siguiente;
@@ -453,13 +452,13 @@ void Grafo<V>::borrarDatosLista(ListaEnlazada< Arista<V>* > * lista) {
    delete this->aristas;
 }
 
-template<class V>
-void Grafo<V>::borrarDatosLista(ListaEnlazada< Tramo* > * lista) {
+template<typename A, typename V>
+void Grafo<A,V>::borrarDatosLista(ListaEnlazada<A> * lista) {
    lista->iniciarCursor();
-   Tramo * aBorrar;
+   A aBorrar;
 
    lista->avanzarCursor();
-   Tramo * siguiente = lista->obtenerCursor();
+   A siguiente = lista->obtenerCursor();
 
    while(siguiente != NULL) {
       aBorrar = siguiente;
@@ -471,16 +470,15 @@ void Grafo<V>::borrarDatosLista(ListaEnlazada< Tramo* > * lista) {
 
       delete aBorrar;
    }
-
-   delete this->tramos;
+   delete this->datosAristas;
 }
 
-template<class V>
-Grafo<V>::~Grafo() {
+template<typename A, typename V>
+Grafo<A,V>::~Grafo() {
 
    this->borrarDatosLista(this->vertices);
    this->borrarDatosLista(this->aristas);
-   this->borrarDatosLista(this->tramos);
+   this->borrarDatosLista(this->datosAristas);
 
    delete this->colaParaRecorrido;
 }

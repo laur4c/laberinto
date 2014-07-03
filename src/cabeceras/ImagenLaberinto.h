@@ -14,10 +14,13 @@
 #include "../EasyBMP/EasyBMP.h"
 #include "util.h"
 
+
 #include "Color.h"
 #include "Tramo.h"
 #include "ListaEnlazada.h"
 #include "Grafo.h"
+#include "VerticeLaberinto.h"
+#include "AristaLaberinto.h"
 
 #include <string>
 
@@ -28,8 +31,7 @@ class ImagenLaberinto {
        * @param caminos Lista de caminos. Representacion de todo el laberinto
        * @param unidad Tamanio de la unidad, por default: 3x3
        */
-      // ImagenLaberinto(ListaEnlazada<Camino*> * caminos, int unidad = 3);
-      ImagenLaberinto(Grafo<string> * grafo, int unidad = 3);
+      ImagenLaberinto(Grafo<ListaEnlazada <Tramo*>*, std::string> * grafo, int unidad = 3);
 
       /**
        * Generar imagen de caminos del laberinto
@@ -45,7 +47,7 @@ class ImagenLaberinto {
       /**
        * Lista de caminos que representan todo el laberinto
        */
-      Grafo<string> * grafo;
+      Grafo<ListaEnlazada <Tramo*>*, std::string> * grafo;
 
       /**
        * Tamanio de unidad de mapa.
@@ -129,11 +131,11 @@ class ImagenLaberinto {
 
       void recorrerTramos(ListaEnlazada<Tramo*> * tramos, bool cambiarSentido, int &x, int &y);
 
-      void recorrerAristas(Vertice<string> * vertice, int &x, int &y);
+      void recorrerAristas(VerticeLaberinto * vertice, int &x, int &y);
 
       void recorrerTramosCaminoMinimo(ListaEnlazada<Tramo*> * tramos, bool cambiarSentido, int &x, int &y);
 
-      void recorrerAristasCaminoMinimo(Vertice<string> * vertice, int &x, int &y);
+      void recorrerAristasCaminoMinimo(VerticeLaberinto * vertice, int &x, int &y);
 
       void dibujarCaminoMinimo(string datoVertice);
 

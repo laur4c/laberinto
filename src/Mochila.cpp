@@ -5,6 +5,8 @@ Mochila::Mochila() {
 }
 
 void Mochila::agregar(std::string nombre) {
+	std::cout << nombre << std::endl;
+
 	if (this->existeItem(nombre)) {
 		ItemMochila * item = this->obtenerItem(nombre);
 		item->total++;

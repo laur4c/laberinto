@@ -3,7 +3,7 @@
 Laberinto::Laberinto() {
    this->mochila = new Mochila();
    this->info = new InfoRecorrido();
-   this->grafo = new Grafo<string>();
+   this->grafo = new Grafo();
 }
 
 void Laberinto::mostrarInfo() {
@@ -78,8 +78,9 @@ void Laberinto::generarArista(Color * color, Cola<Comando*> * componentes, char 
       }
 
    }
+
    arista = "arista-" + entrada + "-" + salida;
-   this->grafo->agregarArista(entrada, salida, arista, peso, tramos);
+   this->grafo->agregarArista(arista, entrada, salida, tramos, peso);
 }
 
 void Laberinto::generarDesdeListaDeComandos(Cola<Comando*> * comandos) {

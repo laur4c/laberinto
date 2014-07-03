@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "cabeceras/ImagenLaberinto.h"
 
-ImagenLaberinto::ImagenLaberinto(Grafo<string> * grafo, int unidad) {
+ImagenLaberinto::ImagenLaberinto(Grafo<ListaEnlazada <Tramo*>*, std::string> * grafo, int unidad) {
    this->grafo = grafo;
    this->unidad = unidad;
    this->colorNegro = new Color(0, 0, 0);
@@ -21,9 +21,9 @@ void ImagenLaberinto::recorrerTramos(ListaEnlazada<Tramo*> * tramos, bool cambia
    }
 }
 
-void ImagenLaberinto::recorrerAristas(Vertice<string> * vertice, int &x, int &y) {
-   Arista<string> * arista;
-   ListaEnlazada< Arista<string>* > * aristas = vertice->obtenerAristas();
+void ImagenLaberinto::recorrerAristas(VerticeLaberinto * vertice, int &x, int &y) {
+   AristaLaberinto * arista;
+   ListaEnlazada<AristaLaberinto*> * aristas = vertice->obtenerAristas();
    aristas->iniciarCursor();
    while(aristas->avanzarCursor()) {
       arista = aristas->obtenerCursor();
@@ -53,7 +53,7 @@ void ImagenLaberinto::generar() {
    int y = tam;
 
    this->grafo->iniciarRecorridoEnAnchura();
-   Vertice<string> * vertice = this->grafo->obtenerPrimerVertice();
+   VerticeLaberinto * vertice = this->grafo->obtenerPrimerVertice();
    vertice->actualizarXY(x, y);
 
    while(this->grafo->avanzarRecorridoEnAnchura()) {
@@ -160,7 +160,7 @@ void ImagenLaberinto::dibujarCaminoMinimo(string origen, string destino) {
 }
 
 void ImagenLaberinto::dibujarCaminoMinimo(string datoVertice) {
-   Vertice<string> * vertice = this->grafo->obtenerVertice(datoVertice);
+   VerticeLaberinto * vertice = this->grafo->obtenerVertice(datoVertice);
    if(vertice->tieneAnterior()) {
       this->dibujarCaminoMinimo(vertice->obtenerAnterior()->obtenerDato());
 
@@ -184,9 +184,9 @@ void ImagenLaberinto::recorrerTramosCaminoMinimo(ListaEnlazada<Tramo*> * tramos,
    }
 }
 
-void ImagenLaberinto::recorrerAristasCaminoMinimo(Vertice<string> * vertice, int &x, int &y) {
-   Arista<string> * arista;
-   ListaEnlazada< Arista<string>* > * aristas = vertice->obtenerAnterior()->obtenerAristas();
+void ImagenLaberinto::recorrerAristasCaminoMinimo(VerticeLaberinto * vertice, int &x, int &y) {
+   AristaLaberinto * arista;
+   ListaEnlazada< AristaLaberinto* > * aristas = vertice->obtenerAnterior()->obtenerAristas();
 
    aristas->iniciarCursor();
    while(aristas->avanzarCursor()) {

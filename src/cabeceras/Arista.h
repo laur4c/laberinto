@@ -9,45 +9,31 @@
 #define _ARISTA_H_
 
 #include <iostream>
-#include "Tramo.h"
 #include "ListaEnlazada.h"
 
-template<class V> class Vertice;
-template<class V> class Arista {
+template<typename V, typename A> class Vertice;
+template<typename A, typename V> class Arista {
    public:
 
       /**
        * Constructor
        */
-      Arista(V dato, Vertice<V> * entrada, Vertice<V> * salida, int peso, ListaEnlazada<Tramo*> * tramos);
+      Arista(std::string nombre, A dato, Vertice<V,A> * entrada, Vertice<V,A> * salida, int peso);
 
       /**
        * Retorna entrada de la arista
        */
-      Vertice<V> * obtenerEntrada();
+      Vertice<V,A> * obtenerEntrada();
 
       /**
        * Retorna salida de la arista
        */
-      Vertice<V> * obtenerSalida();
+      Vertice<V,A> * obtenerSalida();
 
       /**
-       * Retorna lista de tramos
-       *
-       * Cada tramo tiene una sentido y una longitud.
-       * Ver Tramo.h
+       * Retorna dato
        */
-      ListaEnlazada<Tramo*> * obtenerTramos();
-
-      /**
-       * Marca todos los tramos de la arista como no dibujados
-       */
-      void marcarTramosComoNoDibujados();
-
-      /**
-       * Retorna true si sus tramos deben dibujarse en el sentido contrario
-       */
-      bool dibujarEnSentidoContrario();
+      A obtenerDato();
 
       /**
        * Setea el atributo enSentidoContrario igual a true
@@ -66,95 +52,76 @@ template<class V> class Arista {
 
       ~Arista();
 
-    private:
+   protected:
+
+      /**
+       * Dato
+       */
+      A dato;
+
+      bool enSentidoContrario;
+
+      /**
+       * Vertice de entrada
+       */
+      Vertice<V,A> * entrada;
+
+      /**
+       * Vertice de salida
+       */
+      Vertice<V,A> * salida;
+
+   private:
 
       /**
        * Nombre de la arista
        */
-      V dato;
+      std::string nombre;
+
 
       /**
        * Peso de la arista
        */
       int peso;
-
-      /**
-       * Indica si debe dibujarse en sentido contrario.
-       * Cuando se agrega una arista al laberinto, se agrega la arista con el sentido
-       * que indica el archivo de texto y otra con el sentido contrario.
-       * Esto se hace para poder, desde un vertice
-       * recorrer todo el laberinto
-       */
-      bool enSentidoContrario;
-
-      /**
-       * Lista de tramos
-       * Porque las aristas entre vertice y vertice no son lineas rectas
-       */
-      ListaEnlazada<Tramo*> * tramos;
-
-      /**
-       * Vertice de entrada
-       */
-      Vertice<V> * entrada;
-
-      /**
-       * Vertice de salida
-       */
-      Vertice<V> * salida;
-
 };
 
-template<class V>
-Arista<V>::Arista(V dato, Vertice<V> * entrada, Vertice<V> * salida, int peso, ListaEnlazada<Tramo*> * tramos) {
+template<typename A, typename V>
+Arista<A,V>::Arista(std::string nombre, A dato, Vertice<V,A> * entrada, Vertice<V,A> * salida, int peso) {
    this->entrada = entrada;
    this->salida = salida;
+   this->nombre = nombre;
    this->dato = dato;
    this->peso = peso;
-   this->tramos = tramos;
    this->enSentidoContrario = false;
 }
 
-template<class V>
-Vertice<V> * Arista<V>::obtenerEntrada() {
+template<typename A, typename V>
+Vertice<V,A> * Arista<A,V>::obtenerEntrada() {
    return this->entrada;
 }
 
-template<class V>
-Vertice<V> * Arista<V>::obtenerSalida() {
+template<typename A, typename V>
+Vertice<V,A> * Arista<A,V>::obtenerSalida() {
    return this->salida;
 }
 
-template<class V>
-ListaEnlazada<Tramo*> * Arista<V>::obtenerTramos() {
-  return this->tramos;
+template<typename A, typename V>
+A Arista<A,V>::obtenerDato() {
+   return this->dato;
 }
 
-template<class V>
-void Arista<V>::marcarTramosComoNoDibujados() {
-  this->tramos->iniciarCursor();
-  while(this->tramos->avanzarCursor()) {
-    this->tramos->obtenerCursor()->marcarComoNoDibujado();
-  }
-}
-
-template<class V>
-void Arista<V>::marcarSentidoContrario() {
+template<typename A, typename V>
+void Arista<A,V>::marcarSentidoContrario() {
   this->enSentidoContrario = true;
 }
 
-template<class V>
-bool Arista<V>::dibujarEnSentidoContrario() {
-   return this->enSentidoContrario;
-}
-
-template<class V>
-int Arista<V>::obtenerPeso() {
+template<typename A, typename V>
+int Arista<A,V>::obtenerPeso() {
    return this->peso;
 }
 
-template<class V>
-void Arista<V>::mostrar() {
+template<typename A, typename V>
+void Arista<A,V>::mostrar() {
    std::cout << "Arista: ";
    std::cout << this->dato << "(" << this->peso << ") -";
 
@@ -163,10 +130,7 @@ void Arista<V>::mostrar() {
    std::cout << this->salida->obtenerDato() << ")" << std::endl;
 }
 
-template<class V>
-Arista<V>::~Arista() {
-  if (!this->enSentidoContrario)
-    delete this->tramos;
-
+template<typename A, typename V>
+Arista<A,V>::~Arista() {
 }
 #endif

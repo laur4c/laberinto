@@ -12,28 +12,34 @@
 #include "Arista.h"
 #include <iostream>
 
-template<class V> class Vertice {
+template<typename V, typename A> class Vertice {
+
    public:
 
       /**
        * Constructor
        */
-      Vertice(V dato);
+      Vertice(std::string nombre, V dato);
 
       /**
        * Retorna nombre del vertice
+       */
+      std::string obtenerNombre();
+
+      /**
+       * Retorna dato del vertice
        */
       V obtenerDato();
 
       /**
        * Agrega arista saliente del vertice
        */
-      void agregarArista(Arista<V> * arista);
+      void agregarArista(Arista<A,V> * arista);
 
       /**
        * Retorna lista de aristas
        */
-      ListaEnlazada< Arista<V>* > * obtenerAristas();
+      ListaEnlazada< Arista<A,V>* > * obtenerAristas();
 
       /**
        * Marca vertice como no visitado (visitado = false)
@@ -68,7 +74,7 @@ template<class V> class Vertice {
       /**
        * Guarda el vertice anterior. Se ultiza para recorrer caminos minimos
        */
-      void guardarAnterior(Vertice<V> * anterior);
+      void guardarAnterior(Vertice<V,A> * anterior);
 
       /**
        * Retorna true si anterior distinto de NULL
@@ -78,33 +84,19 @@ template<class V> class Vertice {
       /**
        * Retorna vertice anterior. Utilizado para recorrer caminos minimos
        */
-      Vertice<V> * obtenerAnterior();
+      Vertice<V,A> * obtenerAnterior();
 
-      /**
-       * Actualiza coordenadas (x, y) del vertice
-       */
-      void actualizarXY(int x, int y);
-
-      /**
-       * Retorna valor coordenada X
-       */
-      int obtenerX();
-
-      /**
-       * Retorna valor coordenada Y
-       */
-      int obtenerY();
-
-      /**
-       * Retorna true si coordenadas igual a (0, 0)
-       */
-      bool tieneCoordenadas();
 
       ~Vertice();
    private:
 
       /**
        * Nombre del vertice
+       */
+      std::string nombre;
+
+      /**
+       * Dato
        */
       V dato;
 
@@ -122,52 +114,47 @@ template<class V> class Vertice {
       /**
        * Vertice anterior. Se ultiliza para recorrer caminos minimos
        */
-      Vertice<V> * anterior;
+      Vertice<V,A> * anterior;
 
       /**
        * Aristas salientes del vertice
        */
-      ListaEnlazada< Arista<V>* > * aristas;
+      ListaEnlazada< Arista<A,V>* > * aristas;
 
-      /**
-       * Representa coordenada X en la imagen del laberinto
-       */
-      int x;
-
-      /**
-       * Representa coordenada Y en la imagen del laberinto
-       */
-      int y;
 
 };
 
-template<class V>
-Vertice<V>::Vertice(V dato) {
+template<typename V, typename A>
+Vertice<V, A>::Vertice(std::string nombre, V dato) {
+   this->nombre = nombre;
    this->dato = dato;
-   this->aristas = new ListaEnlazada< Arista<V>* >();
+   this->aristas = new ListaEnlazada< Arista<A,V>* >();
    this->visitado = false;
    this->anterior = NULL;
-   this->x = 0;
-   this->y = 0;
 }
 
-template<class V>
-V Vertice<V>::obtenerDato() {
+template<typename V, typename A>
+std::string Vertice<V,A>::obtenerNombre() {
+   return this->nombre;
+}
+
+template<typename V, typename A>
+V Vertice<V,A>::obtenerDato() {
    return this->dato;
 }
 
-template<class V>
-void Vertice<V>::agregarArista(Arista<V> * arista) {
+template<typename V, typename A>
+void Vertice<V,A>::agregarArista(Arista<A,V> * arista) {
    return this->aristas->agregar(arista);
 }
 
-template<class V>
-ListaEnlazada< Arista<V>* > * Vertice<V>::obtenerAristas() {
+template<typename V, typename A>
+ListaEnlazada< Arista<A,V>* > * Vertice<V,A>::obtenerAristas() {
    return this->aristas;
 }
 
-template<class V>
-void Vertice<V>::mostrar() {
+template<typename V, typename A>
+void Vertice<V,A>::mostrar() {
    std::cout << "Vertice: " << this->dato << std::endl;
 
    this->aristas->iniciarCursor();
@@ -176,69 +163,48 @@ void Vertice<V>::mostrar() {
    }
 }
 
-template<class V>
-void Vertice<V>::marcarComoVisitado() {
+template<typename V, typename A>
+void Vertice<V,A>::marcarComoVisitado() {
    this->visitado = true;
 }
 
-template<class V>
-void Vertice<V>::marcarComoNoVisitado() {
+template<typename V, typename A>
+void Vertice<V,A>::marcarComoNoVisitado() {
    this->visitado = false;
 }
 
-template<class V>
-bool Vertice<V>::fueVisitado() {
+template<typename V, typename A>
+bool Vertice<V,A>::fueVisitado() {
    return this->visitado;
 }
 
-template<class V>
-void Vertice<V>::guardarPesoArista(int valor) {
+template<typename V, typename A>
+void Vertice<V,A>::guardarPesoArista(int valor) {
    this->pesoArista = valor;
 }
 
-template<class V>
-int Vertice<V>::obtenerPesoArista() {
+template<typename V, typename A>
+int Vertice<V,A>::obtenerPesoArista() {
    return this->pesoArista;
 }
 
-template<class V>
-Vertice<V> * Vertice<V>::obtenerAnterior() {
+template<typename V, typename A>
+Vertice<V,A> * Vertice<V,A>::obtenerAnterior() {
    return this->anterior;
 }
 
-template<class V>
-void Vertice<V>::guardarAnterior(Vertice<V> * anterior) {
+template<typename V, typename A>
+void Vertice<V,A>::guardarAnterior(Vertice<V,A> * anterior) {
    this->anterior = anterior;
 }
 
-template<class V>
-bool Vertice<V>::tieneAnterior() {
+template<typename V, typename A>
+bool Vertice<V,A>::tieneAnterior() {
    return this->anterior != NULL;
 }
 
-template<class V>
-void Vertice<V>::actualizarXY(int x, int y) {
-   this->x = x;
-   this->y = y;
-}
-
-template<class V>
-int Vertice<V>::obtenerX() {
-   return this->x;
-}
-
-template<class V>
-int Vertice<V>::obtenerY() {
-   return this->y;
-}
-
-template<class V>
-bool Vertice<V>::tieneCoordenadas() {
-   return (this->x != 0 && this->y != 0);
-}
-
-template<class V>
-Vertice<V>::~Vertice() {
+template<typename V, typename A>
+Vertice<V,A>::~Vertice() {
     delete this->aristas;
 }
 #endif

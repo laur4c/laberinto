@@ -65,7 +65,7 @@ class Laberinto {
        */
       InfoRecorrido * info;
 
-      Grafo<string> * grafo;
+      Grafo<ListaEnlazada <Tramo*>*, std::string> * grafo;
 
       void generarArista(Color * color, Cola<Comando*> * componentes, char ultimaOrientacion);
 };
